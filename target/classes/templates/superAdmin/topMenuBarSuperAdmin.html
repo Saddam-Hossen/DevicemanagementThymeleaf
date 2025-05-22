@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<body>
+<nav th:fragment="topMenuBarSuperAdmin">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4 fixed-top" id="navbar" style="background-color: #D3D3D3;">
+        <div class="container-fluid">
+            <div>
+                <span class="navbar-toggler-icon" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" style="background-image: url('data:image/svg+xml,%3Csvg xmlns%3D%22http://www.w3.org/2000/svg%22 width%3D%2216%22 height%3D%2216%22 fill%3D%22black%22 class%3D%22bi bi-list%22 viewBox%3D%220 0 16 16%22%3E%3Cpath fill-rule%3D%22evenodd%22 d%3D%22M3 12.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z%22/%3E%3C/svg%3E');"></span>
+                <img th:src="@{/img/eartface.png}" alt="Uploaded Image">
+                <span class="softwareName" style="font-weight: bold;font-size:26px ;margin-left:20px;">Device Management</span>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"  data-bs-target="#offcanvasNavbarExample-expand-lg" aria-controls="offcanvasNavbarExample-expand-lg">
+                <span class="navbar-toggler-icon" data-bs-target="#offcanvasNavbarExample-expand-lg" ></span>
+            </button>
+
+            <div class="offcanvas offcanvas-start" style="background-color: #D3D3D3;" data-bs-hideresize="true" tabindex="-1" id="offcanvasNavbarExample-expand-lg" aria-labelledby="offcanvasNavbarExample-expand-lg">
+                <div class="offcanvas-header">
+                    <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body" style="background-color: #D3D3D3;">
+                    <ul class="navbar-nav justify-content-start flex-grow-1 pe-3 topUI">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="index.html" style="color: black;">Home</a>
+                        </li>
+                        <li >
+                            <div class="notification-icon profile" >
+                                <i class="fas fa-bell"></i> <!-- FontAwesome bell icon -->
+                                <span class="notification-number" >0</span>
+                            </div>
+                        </li>
+                        <li class=" dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
+                                <img th:src="@{/img/manLogo.png}"  class="profile" alt="Uploaded Image">
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item departmentName" href="#" th:text="${departmentName} + ' -> ' + ${departmentUserName}" th:data-departmentname="${departmentName}" th:data-departmentuser-name="${departmentUserName}" th:data-departmentuser-Id="${userId}"></a>
+                                </li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+</nav>
+
+
+
+</body>
+</html>

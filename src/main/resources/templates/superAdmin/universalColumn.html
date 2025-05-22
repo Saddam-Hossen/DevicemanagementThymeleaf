@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div th:fragment="universalColumn">
+
+    <div>
+        <p> > Add Universal Device Column Name</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 firstDiv" >
+            <div  class="leftDiv" >
+                <!-- Toggle Content Button -->
+                <div class="d-flex justify-content-center mb-2">
+                    <button class="btn btn-success btn-sm" onclick="addUniversalColumnToggle()" style="width: 10%;">Add</button>
+                </div>
+                <div id="universalColumnForm" style="display: none; " class="  mb-2">
+                    <div class="mb-3" style="margin-left: 0%;text-align:left;">
+                        <label for="universalColumnName" class="form-label">Universal Column</label>
+                        <input type="text" class="form-control" id="universalColumnName" placeholder="Enter universal column name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputTypeUniversal" class="form-label">Choose an input type:</label>
+                        <select id="inputTypeUniversal" class="form-select">
+                            <option value="">Select an input type</option>
+                            <th:block th:each="type : ${inputTypes}">
+                                <option th:value="${type}" th:text="${type}">Type</option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="requiredTypeUniversal" class="form-label">Required Type</label>
+                        <select id="requiredTypeUniversal" class="form-select" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" style="margin-left: 0%;text-align:left;">
+                        <button type="button" class="btn btn-primary"  onclick="saveUniversalColumnBtn('universalColumnForm')">Save</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeToggle('universalColumnForm')">Close</button>
+                    </div>
+
+                </div>
+
+                <div class="table-wrapper">
+                <!-- Category Table -->
+                <table id="universalColumnTable" >
+                    <thead>
+                    <tr>
+                        <th scope="col" style="background-color: gray;">SN</th>
+                        <th scope="col" style="background-color: gray;">Universal Column Name</th>
+                        <th scope="col" style="background-color: gray;">Data Type</th>
+                        <th scope="col" style="background-color: gray;">Required Type</th>
+                        <th scope="col" style="background-color: gray;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="universalColumnTableBody">
+                    <tr th:each="column, iterStat : ${universalColumns}">
+                        <td  th:text="${iterStat.count}">1</td>
+                        <td th:text="${column.columnName}"> Name</td>
+                        <td th:text="${column.dataType}"> Name</td>
+                        <td th:text="${column.requiredType}"> Name</td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center action-button-container">
+                                <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2"></button>
+                                <button class="btn btn-sm  fas fa-trash text-danger small-button Delete ms-2"></button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-0 secondDiv"  style="display:none;" >
+            <div  class="rightDiv" >
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

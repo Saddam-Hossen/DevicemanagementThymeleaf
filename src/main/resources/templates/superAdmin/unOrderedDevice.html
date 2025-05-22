@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="unOrderedDevice">
+    <div>
+        <p> > Unordered Device List</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 firstDiv" >
+            <div  class="leftDiv" >
+                <!-- Toggle Content Button -->
+
+
+                <table id="unOrderedDeviceTable" >
+                    <thead id="tableHeaderAddData" >
+                    <tr  >
+                        <th scope="col" style="background-color: gray;">SN</th>
+                        <th scope="col" style="background-color: gray;">Category Name</th>
+                        <!-- Dynamically generated headers from universalColumns -->
+                        <th th:each="column : ${universalColumns}" th:text="${column.columnName}" style="background-color: gray;"></th>
+                        <th scope="col" style="background-color: gray;">Description</th>
+                        <th scope="col" style="background-color: gray;">Components</th>
+                        <th scope="col" style="background-color: gray;">Status</th>
+                        <th scope="col" style="background-color: gray;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="unOrderedDeviceBody">
+                    <tr th:each="device, iterStat : ${allDeviceData}"
+                        th:if="${device.userName == 'purchase' and
+                        device.unOrderedDevice != null and
+                        (device.unOrderedDevice.COOUnOrderedDeviceAcceptedStatus == 'UnOrdered' or
+                         device.unOrderedDevice.COOUnOrderedDeviceAcceptedStatus == 'Ordered')}">                        <td scope="row" th:text="${device.visibleId}">1</td>
+                        <td th:text="${device.categoryName}">categoryName</td>
+                        <td th:each="universalColumn : ${universalColumns}" th:text="${device.allData[universalColumn.columnName]}"></td>
+                        <td>
+                            <ul style="list-style: none; padding-left: 0;text-align: center;" >
+                                <li th:each="individualColumn : ${individualColumns}"
+                                    th:if="${device.categoryName == individualColumn.categoryName}"
+                                    th:text="${individualColumn.columnName+' :'+device.allData[individualColumn.columnName]}">1</li>
+                            </ul>
+
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm componentsView" th:data-device-id="${device.id}" th:data-button-id="componentsView" title="View child">
+                                View   &#128065;
+                            </button>
+                        </td>
+                        <td th:text="${device.unOrderedDevice != null and device.unOrderedDevice.COOUnOrderedDeviceAcceptedStatus == 'Ordered' ? 'Approved' : 'Pending'}"></td>
+
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center action-button-container">
+                                <button class="btn  btn-sm text-white acceptUnOrderedDevice" th:data-device-id="${device.id}" style="background-color:green;" th:if="${device.unOrderedDevice != null and device.unOrderedDevice.COOUnOrderedDeviceAcceptedStatus  =='UnOrdered'}" title="Accept un ordered device">✔</button>
+
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-0 secondDiv"  style="display:none;" >
+            <div  class="rightDiv" >
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div th:fragment="deviceList">
+    <div>
+        <p> > Device Information</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 firstDiv" >
+            <div  class="leftDiv" >
+                <!-- Toggle Content Button -->
+
+                <table id="deviceListTable" >
+                    <thead id="tableHeaderAddDataList" >
+                    <tr  >
+                        <th scope="col" style="background-color: gray;">SN</th>
+                        <th scope="col" style="background-color: gray;">Category Name</th>
+                        <!-- Dynamically generated headers from universalColumns -->
+                        <th th:each="column : ${universalColumns}" th:text="${column.columnName}" style="background-color: gray;"></th>
+                        <th scope="col" style="background-color: gray;">Description</th>
+                    </tr>
+                    </thead>
+                    <tbody id="deviceListBody">
+                    <tr th:each="device, iterStat : ${allDeviceData}">
+                        <td scope="row" th:text="${iterStat.count}">1</td>
+                        <td th:text="${device.categoryName}">categoryName</td>
+                        <td th:each="universalColumn : ${universalColumns}" th:text="${device.allData[universalColumn.columnName]}"></td>
+                        <td>
+                            <ul style="list-style: none; padding-left: 0;text-align: center;" >
+                                <li th:each="individualColumn : ${individualColumns}"
+                                    th:if="${device.categoryName == individualColumn.categoryName}"
+                                    th:text="${individualColumn.columnName+' :'+device.allData[individualColumn.columnName]}">1</li>
+                            </ul>
+
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-0 secondDiv"  style="display:none;" >
+            <div  class="rightDiv" >
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

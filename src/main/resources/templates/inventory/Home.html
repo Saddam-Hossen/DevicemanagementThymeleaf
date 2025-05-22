@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <p th:include="inventory/header :: inventoryUserHeader"></p>
+</head>
+
+<body style="background-color:#fff5ec;">
+<nav th:include="inventory/topMenuBar:: topMenuBarDepartmentUser"></nav>
+<div style="padding-top:5em;"  class="mainBody" >
+    <section class="container mb-4   ">
+
+        <div th:include="inventory/requestData :: requestData" data-page="requestData"></div>
+        <div th:include="inventory/requestDataProposal :: requestDataProposal" data-page="requestDataProposal"></div>
+        <div th:include="inventory/requestDataAlternative :: requestDataAlternative" data-page="requestDataAlternative"></div>
+        <div th:include="inventory/serviceAccessoriesPendingData :: serviceAccessoriesPendingData" data-page="serviceAccessoriesPendingData"></div>
+        <div th:include="inventory/serviceAccessoriesPendingPurchaseData :: serviceAccessoriesPendingPurchaseData" data-page="serviceAccessoriesPendingPurchaseData"></div>
+        <div th:include="inventory/serviceAccessoriesPendingAlternativeData :: serviceAccessoriesPendingAlternativeData" data-page="serviceAccessoriesPendingAlternativeData"></div>
+        <div th:include="inventory/serviceAccessoriesDeliveryData :: serviceAccessoriesDeliveryData" data-page="serviceAccessoriesDeliveryData"></div>
+        <div th:include="inventory/deviceInformation :: deviceInformation" data-page="deviceInformation"></div>
+
+    </section>
+
+</div>
+<div th:include="inventory/leftOffCanvas :: leftOffCanvas"></div>
+<div th:include="inventory/publicModal :: publicModal"></div>
+
+</body>
+</html>

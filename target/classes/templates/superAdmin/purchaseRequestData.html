@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div th:fragment="purchaseRequestData">
+
+    <div>
+        <p> > Purchase Request Data</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-9 firstDiv" >
+            <div  class="leftDiv" >
+                <div class="table-wrapper">
+                <table id="requestPurchaseDataTable" >
+                    <thead>
+
+                    <tr>
+                        <th scope="col" style="background-color: gray; color:white">SN</th>
+                        <th scope="col" style="background-color: gray; color:white">Bivag Name</th>
+                        <th scope="col" style="background-color: gray; color:white">Category Name</th>
+                        <!-- Dynamically generated headers from universalColumns -->
+                        <th scope="col" style="background-color: gray; color:white">Description</th>
+
+                        <th scope="col" style="background-color: gray; color:white"> Status In Coo</th>
+
+                        <th scope="col" style="background-color: gray; color:white">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="requestPurchaseDataTableBody">
+                    <tr th:each="device, iterStat : ${requestData}"  onclick="printRowDataForCustomerCare(this)">
+                        <td  th:text="${device.visibleRequestId}" th:if="${device.requestMode == 'Accepted' && device.inventory.inventoryStatus=='Purchased'}">1</td>
+                        <td  th:text="${device.departmentName}" th:if="${device.requestMode == 'Accepted'&& device.inventory.inventoryStatus=='Purchased'}">1</td>
+                        <td  th:text="${device.allData[category]}" th:if="${device.requestMode == 'Accepted'&& device.inventory.inventoryStatus=='Purchased'}">1</td>
+                        <td style="text-align: left;" th:data-request-id="${device.id}" class="viewInfo"  th:if="${device.requestMode == 'Accepted' && device.inventory.inventoryStatus=='Purchased'}">
+                            <!-- Loop over the requestColumns to create list items -->
+                            <div  th:each="individualColumn : ${requestColumns}"
+                                  th:if="${individualColumn.visibleType == 'yes' && device.requestMode == 'Accepted' && device.inventory.inventoryStatus == 'Purchased'}">
+                                <!-- Check if the column data type is 'textarea' -->
+                                <div th:if="${individualColumn.dataType == 'textarea'}">
+                                    <textarea class="plain-textarea"
+                                              th:text="${device.allData[individualColumn.columnName]}"></textarea>
+                                </div>
+                                <!-- For any other data type -->
+                                <div th:if="${individualColumn.dataType != 'textarea'}">
+                                    <span th:text="${individualColumn.columnName}"></span>:
+                                    <span th:text="${device.allData[individualColumn.columnName] ?: 'N/A'}"></span>
+                                </div>
+                            </div>
+                            <p  th:data-request-id="${device.id}" th:data-button-id="viewInfo">
+                                &#128065;
+                            </p>
+                        </td>
+
+
+                        <td th:if="${device.requestMode == 'Accepted' && device.inventory.inventoryStatus == 'Purchased'}"
+                            th:text="${device.purchase?.cooAns}">
+                        </td>
+
+
+
+                        <td th:if="${device.requestMode == 'Accepted' && device.inventory.inventoryStatus=='Purchased'}">
+                            <div class="d-flex justify-content-center align-items-center action-button-container">
+                            <button class="btn btn-secondary btn-sm chat-button" th:data-request-id="${device.id}" th:data-button-id="chat" th:if="${device.purchase?.cooAns !='Accepted'}">
+                                &#128172; <!-- Speech Bubble -->
+                            </button>
+                            <button class="btn btn-info btn-sm view-button" th:data-request-id="${device.id}" th:data-button-id="view" th:if="${device.purchase?.cooAns =='Accepted'}">
+                                &#128065;
+                            </button>
+                            </div>
+                        </td>
+
+
+                    </tr>
+                    </tbody>
+
+                </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 secondDiv"   >
+            <div  class="rightDiv" >
+                <div style="text-align: right;">
+                    <button class="btn btn-sm text-black small-button hideButton" style="display:inline-block">X</button>
+                </div>
+                <div class="activityDiv">
+                    <div style="text-align:center;font-weight:bold;color:green">Activity</div>
+                    <p> <b>Note: </b> <br> Click on any row of Table and see the Activity.</p>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

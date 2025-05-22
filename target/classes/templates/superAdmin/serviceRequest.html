@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div th:fragment="serviceRequest">
+    <div>
+        <p> > Add Service Column Name</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 firstDiv" >
+            <div  class="leftDiv" >
+                <div class="dropdown">
+                    <input type="text" style="width:20%" class="form-control dropdown-toggle custom-width" id="internalUser" data-bs-toggle="dropdown" placeholder="User" aria-expanded="false">
+                    <ul  class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownTextField" id="internalUserUlList">
+                        <li th:each="user : ${allUsers}"><a class="dropdown-item internalUserItemTop" href="#" th:text="${user.userName}"></a></li>
+                    </ul>
+                </div>
+
+                <!-- Toggle Content Button -->
+                <div class="d-flex justify-content-center mb-2">
+                    <!--        <button class="btn btn-success btn-sm" onclick="addIndividualColumnToggle()" style="width: 10%;">Add</button>-->
+                    <button class="btn btn-success btn-sm" onclick="addServiceDataToggle()" style="width: 10%;">Add</button>
+                </div>
+                <div id="serviceForm" style="display: none; " class="  mb-2">
+                    <div class="mb-3" style="margin-left: 0%;text-align:left;">
+                        <label for="serviceColumnName" class="form-label"> Field Name</label>
+                        <input type="text" class="form-control" id="serviceColumnName" placeholder="Enter field name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputTypeService" class="form-label">Choose an input type:</label>
+                        <select id="inputTypeService" class="form-select">
+                            <option value="">Select an input type</option>
+                            <th:block th:each="type : ${inputTypes}">
+                                <option th:value="${type}" th:text="${type}">Type</option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="requiredTypeService" class="form-label">Required Type</label>
+                        <select id="requiredTypeService" class="form-select" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="visibleTypeService" class="form-label">Visible</label>
+                        <select id="visibleTypeService" class="form-select" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+
+
+                    <div class="mb-3" style="margin-left: 0%;text-align:left;">
+                        <button type="button" class="btn btn-primary"  onclick="saveRequestBtn()">Save</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeToggle('serviceForm')">Close</button>
+                    </div>
+
+                </div>
+                <div class="table-wrapper">
+                <table id="deviceInformationTable" >
+                    <thead id="tableHeaderAddData" >
+                    <tr  >
+                        <th scope="col" style="background-color: gray;">SN</th>
+                        <th scope="col" style="background-color: gray;">User</th>
+                        <th scope="col" style="background-color: gray;">Category Name</th>
+                        <!-- Dynamically generated headers from universalColumns -->
+                        <th th:each="column : ${universalColumns}" th:text="${column.columnName}" style="background-color: gray;"></th>
+                        <th scope="col" style="background-color: gray;">Description</th>
+                        <th scope="col" style="background-color: gray;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="deviceInformationBody">
+                    <tr th:each="device, iterStat : ${allDeviceData}" >
+                        <td scope="row" th:text="${iterStat.count}">1</td>
+                        <td th:text="${device.userName}">categoryName</td>
+                        <td th:text="${device.categoryName}">categoryName</td>
+                        <td th:each="universalColumn : ${universalColumns}" th:text="${device.allData[universalColumn.columnName]}"></td>
+                        <td>
+                            <ul style="list-style: none; padding-left: 0;text-align: center;" >
+                                <li th:each="individualColumn : ${individualColumns}"
+                                    th:if="${device.categoryName == individualColumn.categoryName}"
+                                    th:text="${individualColumn.columnName+' :'+device.allData[individualColumn.columnName]}">1</li>
+                            </ul>
+
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center action-button-container">
+                                <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2" th:data-device-id="${device.id}"></button>
+                                <button class="btn btn-sm  fas fa-trash text-danger small-button Delete ms-2" th:data-device-id="${device.id}"></button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-0 secondDiv"  style="display:none;" >
+            <div  class="rightDiv" >
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

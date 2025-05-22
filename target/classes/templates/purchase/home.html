@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <p th:include="purchase/header :: purchaseUserHeader"></p>
+</head>
+
+<body>
+<nav th:include="purchase/topMenuBar:: topMenuBarDepartmentUser"></nav>
+<div style="padding-top:5em"  class="mainBody">
+    <section class="container mb-4   ">
+        <div th:include="purchase/deviceInformation :: deviceInformation" data-page="deviceInformation"></div>
+        <div th:include="purchase/unOrderedDevice :: unOrderedDevice" data-page="unOrderedDevice"></div>
+        <div th:include="purchase/requestData :: requestData" data-page="requestData"></div>
+        <div th:include="purchase/requestDataForPayment :: requestDataForPayment" data-page="requestDataForPayment"></div>
+        <div th:include="purchase/requestDataForPaymentExport :: requestDataForPaymentExport" data-page="requestDataForPaymentExport"></div>
+        <div th:include="purchase/servicePriceData :: servicePriceData" data-page="servicePriceData"></div>
+        <div th:include="purchase/servicePurchaseData :: servicePurchaseData" data-page="servicePurchaseData"></div>
+    </section>
+
+</div>
+<div th:include="purchase/leftOffCanvas :: leftOffCanvas"></div>
+<div th:include="purchase/publicModal :: publicModal"></div>
+<div th:include="purchase/publicModal :: linkModal"></div>
+<div th:include="purchase/publicModal :: exportModal"></div>
+
+</body>
+</html>

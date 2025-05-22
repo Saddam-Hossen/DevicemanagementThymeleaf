@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+
+<body>
+<div  th:fragment="leftOffCanvas">
+
+
+   <!-- <div class="offcanvas offcanvas-start show sideoffcanvus" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel" style="background-color:#1d4961" >
+        <div class="offcanvas-body d-flex justify-content-center align-items-center">
+            <ul class="list-group" id="itemListLeftOffCanvas" >
+                <li  class="list-group-item  leftListBgColor" onclick="printValue('Category', this)">Request</li>
+
+            </ul>
+        </div>
+    </div>-->
+    <div class="offcanvas offcanvas-start show sideoffcanvus" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel" style="background-color:#1d4961" >
+        <div class="offcanvas-body ">
+            <ul class="list-group">
+                <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'requestData')">Request</li>
+
+
+                <!-- <li class="list-group-item leftListBgColor" onclick="toggleList(this)">User
+                     <i class="fas fa-chevron-down float-end"></i> &lt;!&ndash; Dropdown icon &ndash;&gt;
+                     &lt;!&ndash; First nested ul list &ndash;&gt;
+                     <ul class="list-group nested-list">
+                         <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'addUser')">Add User</li>
+
+                     </ul>
+                 </li>-->
+
+
+            </ul>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

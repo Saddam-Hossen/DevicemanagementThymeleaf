@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <p th:include="customerCare/header :: inventoryUserHeader"></p>
+</head>
+
+<body style="background-color:#fff5ec;">
+<nav th:include="customerCare/topMenuBar:: topMenuBarDepartmentUser"></nav>
+<div style="padding-top:5em"  class="mainBody">
+    <section class="container mb-4   ">
+
+        <div th:include="customerCare/deviceInformation :: deviceInformation" data-page="deviceInformation"></div>
+        <div th:include="customerCare/requestData :: requestData" data-page="requestData"></div>
+        <div th:include="customerCare/serviceRequestPending :: serviceRequestPending" data-page="serviceRequestPending"></div>
+        <div th:include="customerCare/serviceRequest :: serviceRequest" data-page="serviceRequest"></div>
+    </section>
+
+</div>
+<div th:include="customerCare/leftOffCanvas :: leftOffCanvas"></div>
+<div th:include="customerCare/publicModal :: publicModal"></div>
+
+</body>
+</html>

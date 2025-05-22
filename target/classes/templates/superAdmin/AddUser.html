@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div th:fragment="addUser">
+    <div>
+        <p> > Add User</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 firstDiv" >
+            <div  class="leftDiv" >
+                <!-- Toggle Content Button -->
+                <div class="d-flex justify-content-center mb-2">
+                    <button class="btn btn-success btn-sm" onclick="addUerToggle()" style="width: 10%;">Add</button>
+                </div>
+                <div id="userForm" style="display: none; " class="  mb-2">
+                    <div class="mb-3" style="margin-left: 0%;text-align:left;">
+                        <label for="userName" class="form-label">User Name</label>
+                        <input type="text" class="form-control" id="userName" placeholder="Enter user name">
+                    </div>
+                    <div class="mb-3" style="margin-left: 0%;text-align:left;">
+                        <label for="userId" class="form-label">User Id </label>
+                        <input type="text" class="form-control" id="userId" placeholder="Enter Id name">
+                    </div>
+                    <div class="mb-3" style="margin-left: 0%;text-align:left;">
+                        <label for="userPassword" class="form-label">User Password</label>
+                        <input type="password" class="form-control" id="userPassword" placeholder="Enter Password">
+                    </div>
+                    <div class="mb-3" style="margin-left: 0%;text-align:left;">
+                        <button type="button" class="btn btn-primary"  onclick="saveUserBtn('userForm')">Save</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeToggle('userForm')">Close</button>
+                    </div>
+
+                </div>
+
+                <div class="table-wrapper">
+                <!-- Category Table -->
+                <table id="userTable" >
+                    <thead>
+                    <tr>
+                        <th scope="col" style="background-color: gray;">SN</th>
+                        <th scope="col" style="background-color: gray;">User Name</th>
+                        <th scope="col" style="background-color: gray;">User Id</th>
+                        <th scope="col" style="background-color: gray;">User Password</th>
+                        <th scope="col" style="background-color: gray;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                    <tr th:each="user, iterStat : ${allUsers}">
+                        <td  th:text="${iterStat.count}">1</td>
+                        <td th:text="${user.userName}"> userName</td>
+                        <td th:text="${user.userId}">userId</td>
+                        <td th:text="${user.userPassword}">userPassword</td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center action-button-container">
+                                <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2"></button>
+                                <button class="btn btn-sm  fas fa-trash text-danger small-button Delete ms-2"></button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1 secondDiv"  style="display:none;">
+            <div  class="rightDiv" >
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

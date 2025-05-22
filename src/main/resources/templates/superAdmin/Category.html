@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div th:fragment="DeviceCategory">
+    <div>
+        <p> > Add Category</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 firstDiv" >
+            <div  class="leftDiv" >
+                <!-- Toggle Content Button -->
+                <div class="d-flex justify-content-center mb-2">
+                    <button class="btn btn-success btn-sm" onclick="addCategoryToggle()" style="width: 10%;">Add</button>
+                </div>
+                <div id="categoryForm" style="display: none; " class="  mb-2">
+                    <div class="mb-3" style="margin-left: 0%;text-align:left;">
+                        <label for="categoryName" class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="categoryName" placeholder="Enter category name">
+                    </div>
+                    <div class="mb-3" style="margin-left: 0%;text-align:left;">
+                        <button type="button" class="btn btn-primary"  onclick="saveCategoryBtn('categoryForm')">Save</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeToggle('categoryForm')">Close</button>
+                    </div>
+
+                </div>
+
+                <div class="table-wrapper">
+                <!-- Category Table -->
+                <table id="categoryTable" >
+                    <thead>
+                    <tr>
+                        <th scope="col" style="background-color: gray;">SN</th>
+                        <th scope="col" style="background-color: gray;">Category Name</th>
+                        <th scope="col" style="background-color: gray;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="categoryTableBody">
+                    <tr th:each="category, iterStat : ${data}">
+                        <td  th:text="${iterStat.count}">1</td>
+                        <td th:text="${category.categoryName}">Category Name</td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center action-button-container">
+                                <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2"></button>
+                                <button class="btn btn-sm  fas fa-trash text-danger small-button Delete ms-2"></button>
+                            </div>
+
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-0 secondDiv" style="display:none;" >
+            <div  class="rightDiv" >
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div  th:fragment="Column" >
+  <p>Column ColumnColumn   ColumnColumnCol   umnColumnColumnColumnCol   umnColumn</p>
+</div>
+</body>
+</html>

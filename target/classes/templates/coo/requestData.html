@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div th:fragment="requestData">
+    <div>
+        <p> > Request Data</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-9 firstDiv" >
+            <div  class="leftDiv" >
+                <div style="text-align: right;">
+                    <button class="btn btn-sm text-black small-button showButton"  style="display:none;"> < </button>
+                </div>
+                <div class="dropdown">
+                    <input type="text" style="width:20%" class="form-control dropdown-toggle custom-width" id="individualTopInput" data-bs-toggle="dropdown" placeholder="Category" aria-expanded="false" value="Category">
+                    <ul  class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownTextFieldTop" id="individualTopUlList">
+                        <li th:each="category : ${data}"><a class="dropdown-item individualTopSelection" href="#" th:text="${category.categoryName}"></a></li>
+                    </ul>
+                </div>
+                <div class="d-flex justify-content-center mb-2">
+                    <button class="btn btn-success btn-sm" onclick="addUerToggle111()" style="width: 10%;">Add</button>
+                </div>
+                <!-- Toggle Content Button -->
+                <!-- Category Table -->
+                <table id="requestTable" class="table table-gray table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="background-color: gray;">SN</th>
+                        <th scope="col" style="background-color: gray;">Bivag Name</th>
+                        <!-- Dynamically generated headers from universalColumns -->
+                        <th th:each="column : ${requestColumns}"
+                            th:if="${column.visibleType} == 'yes'"
+                            th:text="${column.columnName}"
+                            style="background-color: gray;">
+                        </th>
+
+                        <th scope="col" style="background-color: gray;">Request Status</th>
+                        <th scope="col" style="background-color: gray;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="requestTableBody">
+                    <tr th:each="device, iterStat : ${requestData}"  onclick="printRowDataForCustomerCare(this)">
+                        <td  th:text="${iterStat.count}">1</td>
+                        <td  th:text="${device.departmentName}">1</td>
+                        <td th:each="individualColumn : ${requestColumns}"
+                            th:if="${individualColumn.visibleType} == 'yes'"  >
+                            <div th:if="${individualColumn.dataType == 'textarea'}">
+                                <textarea class="plain-textarea"  th:text="${device.allData[individualColumn.columnName]}"></textarea>
+                            </div>
+                            <div th:unless="${individualColumn.dataType == 'textarea'}"
+                                 th:text="${device.allData[individualColumn.columnName]}">
+
+                            </div>
+                        </td>
+                        <td>
+                <span th:if="${device.requestMode == 'Denied'}">
+                    <a href="#" th:data-reject-cause="${device.rejectCause}" onclick="printRejectCause(this)" style="text-decoration:none">Denied</a>
+                </span>
+                            <span th:unless="${device.requestMode == 'Denied'}" th:text="${device.requestMode}"></span>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center action-button-container">
+                            <button class="btn  btn-sm text-white" th:data-request-id="${device.id}" style="background-color:green;">✔</button>
+
+                            <button class="btn btn-danger btn-sm delete-button" th:data-request-id="${device.id}">
+                                &#10007;
+                            </button>
+                            <button class="btn btn-info btn-sm view-button" th:data-request-id="${device.id}">
+                                &#128065;
+                            </button>
+                            <button class="btn btn-secondary btn-sm chat-button" th:data-request-id="${device.id}">
+                                &#128172; <!-- Speech Bubble -->
+                            </button>
+                            </div>
+                        </td>
+
+
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-3 secondDiv"  >
+            <div  class="rightDiv" >
+                <div style="text-align: right;">
+                    <button class="btn btn-sm text-black small-button hideButton" style="display:inline-block">X</button>
+                </div>
+
+                <div class="activityDiv">
+                    <div style="text-align:center;font-weight:bold;color:green">Activity</div>
+                    <p> <b>Note: </b> <br> Click on any row of Table and see the Activity.</p>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <p th:include="superAdmin/deviceHeader :: deviceHeader"></p>
+</head>
+
+<body style="background-color:#fff5ec;">
+<nav th:include="superAdmin/topMenuBarSuperAdmin:: topMenuBarSuperAdmin"></nav>
+<div style="padding-top:5em" class="mainBody">
+    <section class="container mb-4">
+        <div th:include="superAdmin/Category :: DeviceCategory" data-page="DeviceCategory"></div>
+        <div th:include="superAdmin/universalColumn :: universalColumn" data-page="universalColumn"></div>
+        <div th:include="superAdmin/individualColumn :: individualColumn" data-page="individualColumn"></div>
+        <div th:include="superAdmin/dropdownList :: dropdownList" data-page="dropdownList"></div>
+        <div th:include="superAdmin/AddUser :: addUser" data-page="addUser"></div>
+        <div th:include="superAdmin/internalUser :: internalUser" data-page="internalUser"></div>
+        <div th:include="superAdmin/Designation :: Designation" data-page="Designation"></div>
+        <div th:include="superAdmin/deviceInformation :: deviceInformation" data-page="deviceInformation"></div>
+        <div th:include="superAdmin/deviceList :: deviceList" data-page="deviceList"></div>
+        <div th:include="superAdmin/requestColumn :: requestColumn" data-page="requestColumn"></div>
+        <div th:include="superAdmin/requestData :: requestData" data-page="requestData"></div>
+        <div th:include="superAdmin/requestDataForPayment :: requestDataForPayment" data-page="requestDataForPayment"></div>
+        <div th:include="superAdmin/listRequestData :: listRequestData" data-page="listRequestData"></div>
+        <div th:include="superAdmin/purchaseRequestData :: purchaseRequestData" data-page="purchaseRequestData"></div>
+        <div th:include="superAdmin/CustomerCareRequestData :: customerCareRequestData" data-page="customerCareRequestData"></div>
+        <div th:include="superAdmin/unOrderedDevice :: unOrderedDevice" data-page="unOrderedDevice"></div>
+
+
+        <div th:include="superAdmin/serviceRequest :: serviceRequest" data-page="serviceRequest"></div>
+        <div th:include="superAdmin/serviceProposalData :: serviceProposalData" data-page="serviceProposalData"></div>
+        <div th:include="superAdmin/serviceReportData :: serviceReportData" data-page="serviceReportData"></div>
+    </section>
+</div>
+
+<div th:include="superAdmin/leftOffCanvas :: leftOffCanvas"></div>
+<div th:include="superAdmin/publicModal :: publicModal"></div>
+<div th:include="superAdmin/publicModal :: publicModalView"></div>
+
+</body>
+</html>

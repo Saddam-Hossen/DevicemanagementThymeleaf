@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="purchaseDevice">
+    <div>
+        <p> > Purchase Device</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 firstDiv" >
+            <div  class="leftDiv" >
+                <!-- Toggle Content Button -->
+                <div class="d-flex justify-content-center mb-2">
+                    <!--        <button class="btn btn-success btn-sm" onclick="addIndividualColumnToggle()" style="width: 10%;">Add</button>-->
+                    <button class="btn btn-success btn-sm" onclick="addDeviceInformation()" style="width: 15%; white-space: nowrap;">Add Old Device</button>
+
+                </div>
+                <div class="table-wrapper">
+                <table id="purchaseDeviceInformationTable" >
+                    <thead id="tableHeaderAddData" >
+                    <tr  >
+                        <th scope="col" style="background-color: gray;">SN</th>
+                        <th scope="col" style="background-color: gray;">Category Name</th>
+                        <!-- Dynamically generated headers from universalColumns -->
+                        <th th:each="column : ${universalColumns}" th:text="${column.columnName}" style="background-color: gray;"></th>
+                        <th scope="col" style="background-color: gray;">Description</th>
+                        <th scope="col" style="background-color: gray;">Status</th>
+                        <th scope="col" style="background-color: gray;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="purchaseDeviceInformationBody">
+                    <tr th:each="device, iterStat : ${requestData}" th:if="${device.purchase != null && device.purchase.deviceData != null}">
+                        <!-- Iteration count -->
+                        <td th:text="${iterStat.count}">1</td>
+
+                        <!-- Category Name -->
+                        <td th:text="${device.purchase.deviceData.categoryName}">categoryName</td>
+
+                        <!-- Universal Columns -->
+                        <td th:each="universalColumn : ${universalColumns}" th:text="${device.purchase.deviceData[universalColumn.columnName]}">Default Value</td>
+
+                        <!-- Individual Columns -->
+                        <td>
+                            <ul style="list-style: none; padding-left: 0; text-align: center;">
+                                <li th:each="individualColumn : ${individualColumns}"
+                                    th:if="${device.purchase.deviceData.categoryName == individualColumn.categoryName}"
+                                    th:text="${individualColumn.columnName + ' :' + device.purchase.deviceData[individualColumn.columnName]}">
+                                    1
+                                </li>
+                            </ul>
+                        </td>
+                        <td th:text="${device.purchase.cooPurchaseAcceptedAns}">No</td>
+                        <!-- Action Buttons -->
+                        <td>
+                            <div class="action-button-container">
+                                <button class="btn  btn-sm  text-white small-button" th:data-request-id="${device.id}" th:data-button-id="accepted" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="background-color:green;">
+                                    ✔
+                                </button>
+                                <button class="btn btn-danger btn-sm small-button" th:data-request-id="${device.id}" th:data-button-id="cancel">
+                                    &#10007;
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-0 secondDiv"  style="display:none;" >
+            <div  class="rightDiv" >
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

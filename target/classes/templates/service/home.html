@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <p th:include="service/header :: inventoryUserHeader"></p>
+</head>
+
+<body style="background-color:#fff5ec;">
+<nav th:include="service/topMenuBar:: topMenuBarDepartmentUser"></nav>
+<div style="padding-top:5em;"  class="mainBody" >
+    <section class="container mb-4   ">
+
+        <div th:include="service/deviceInOutList :: deviceInOutList" data-page="deviceInOutList"></div>
+        <div th:include="service/servicingList :: servicingList" data-page="servicingList"></div>
+        <div th:include="service/cooFeedback :: cooFeedback" data-page="cooFeedback"></div>
+        <div th:include="service/serviceAccessoriesListData :: serviceAccessoriesListData" data-page="serviceAccessoriesListData"></div>
+    </section>
+
+</div>
+<div th:include="service/leftOffCanvas :: leftOffCanvas"></div>
+<div th:include="service/publicModal :: publicModal"></div>
+<div th:include="service/publicModal :: publicModalView"></div>
+<div th:include="service/publicModal :: publicModalExtract"></div>
+
+</body>
+</html>

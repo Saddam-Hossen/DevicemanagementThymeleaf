@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div th:fragment="cooFeedback">
+    <!-- Toggle Content Button -->
+    <!-- Category Table -->
+    <div>
+        <p> > Coo feedback</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 firstDiv" >
+            <div  class="leftDiv" >
+                <div style="text-align: right;">
+                    <button class="btn btn-sm text-black small-button showButton"  style="display:none;"> < </button>
+                </div>
+                <div class="dropdown">
+                    <input type="text" style="width:20%" class="form-control dropdown-toggle custom-width" id="individualTopInput" data-bs-toggle="dropdown" placeholder="Category" aria-expanded="false" value="Category">
+                    <ul  class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownTextFieldTop" id="individualTopUlList">
+                        <li th:each="category : ${data}"><a class="dropdown-item individualTopSelection" href="#" th:text="${category.categoryName}"></a></li>
+                    </ul>
+                </div>
+                <div class="d-flex justify-content-center mb-2">
+                    <button class="btn btn-success btn-sm" onclick="addUerToggle111()" style="width: 10%;">Add</button>
+                </div>
+                <table id="cooFeedbackTable" style="width: 100%; border-collapse: collapse; " class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="background-color: gray; width: 5%;">SN</th>
+                        <th scope="col" style="background-color: gray; width: 5%;">Bivag Name</th>
+                        <th scope="col" style="background-color: gray; width: 15%;">Category</th>
+
+
+                        <th scope="col" style="background-color: gray; width: 10%;">Problem</th>
+
+                        <th scope="col" style="background-color: gray; width: 15%;">Accessories</th>
+                        <th scope="col" style="background-color: gray; width: 10%;">Price</th>
+                        <th scope="col" style="background-color: gray; width: 15%;">Status</th>
+                        <th scope="col" style="background-color: gray; width: 15%;">Comment</th>
+                        <th scope="col" style="background-color: gray; width: 10%;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="cooFeedbackTableBody">
+
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

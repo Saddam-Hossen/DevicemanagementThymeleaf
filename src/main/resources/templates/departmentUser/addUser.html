@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div th:fragment="addUser">
+    <!-- Toggle Content Button -->
+    <div class="d-flex justify-content-center mb-2">
+        <button class="btn btn-success btn-sm" onclick="addUerToggle()" style="width: 10%;">Add</button>
+    </div>
+    <div id="userForm" style="display: none; " class="  mb-2">
+        <div class="mb-3" style="margin-left: 0%;text-align:left;">
+            <label for="userName" class="form-label">User Name</label>
+            <input type="text" class="form-control" id="userName" placeholder="Enter user name">
+        </div>
+        <div class="mb-3" style="margin-left: 0%;text-align:left;">
+            <label for="userId" class="form-label">User Id </label>
+            <input type="text" class="form-control" id="userId" placeholder="Enter Id name">
+        </div>
+        <div class="mb-3">
+            <label for="designation" class="form-label">Choose designation type:</label>
+            <select id="designation" class="form-select">
+                <option value="">Select an input type</option>
+                <th:block th:each="type : ${designations}">
+                    <option th:value="${type.designationName}" th:text="${type.designationName}">Type</option>
+                </th:block>
+            </select>
+        </div>
+        <div class="mb-3" style="margin-left: 0%;text-align:left;">
+            <label for="userJoinDate" class="form-label">User Join Date </label>
+            <input type="date" class="form-control" id="userJoinDate" placeholder="Enter Join Date">
+        </div>
+        <div class="mb-3" style="margin-left: 0%;text-align:left;">
+            <button type="button" class="btn btn-primary"  onclick="saveUserBtn('userForm')">Save</button>
+            <button type="button" class="btn btn-secondary" onclick="closeToggle('userForm')">Close</button>
+        </div>
+
+    </div>
+
+
+    <!-- Category Table -->
+    <table id="branchUserTable" class="table table-gray table-bordered table-hover">
+        <thead>
+        <tr>
+            <th scope="col" style="background-color: gray;">SN</th>
+            <th scope="col" style="background-color: gray;">User Name</th>
+            <th scope="col" style="background-color: gray;">User Id</th>
+            <th scope="col" style="background-color: gray;">User Join Date</th>
+            <th scope="col" style="background-color: gray;">User Designation</th>
+            <th scope="col" style="background-color: gray;">Action</th>
+        </tr>
+        </thead>
+        <tbody id="branchUserTableBody">
+        <tr th:each="user, iterStat : ${userAccountData}" th:if="${user.branchName==departmentUserName}">
+            <td th:text="${iterStat.count}">1</td>
+            <td th:text="${user.userName}"> userName</td>
+            <td th:text="${user.userId}">userId</td>
+            <td th:text="${user.userJoinDate}">userPassword</td>
+            <td th:text="${user.userDesignation}">userPassword</td>
+            <td>
+                <div class="d-flex justify-content-center align-items-center action-button-container">
+                    <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2" th:data-user-Id="${user.id}" th:data-button-id="Edit"></button>
+                    <button class="btn btn-sm  fas fa-trash text-danger small-button Delete ms-2" th:data-user-Id="${user.id}" th:data-button-id="Delete"></button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

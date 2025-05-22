@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="serviceRequest">
+    <div>
+        <p> > Service Request</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 firstDiv" >
+            <div  class="leftDiv" >
+
+                <table id="serviceInformationTable" >
+                    <thead id="tableHeaderAddData" >
+                    <tr  >
+                        <th scope="col" style="background-color: gray;">SN</th>
+                        <th scope="col" style="background-color: gray;">Department Name</th>
+                        <th scope="col" style="background-color: gray;">Category</th>
+                        <!-- Dynamically generated headers from universalColumns -->
+
+                        <th scope="col" style="background-color: gray;">Problems</th>
+                        <th scope="col" style="background-color: gray;">Device Information</th>
+                        <th scope="col" style="background-color: gray;">Request Status</th>
+                        <th scope="col" style="background-color: gray;">Device Receiving Date</th>
+                        <th scope="col" style="background-color: gray;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="serviceInformationBody">
+                    <tr th:each="device, iterStat : ${serviceRequests}" >
+                        <td scope="row" th:text="${device.visibleServiceId}">1</td>
+                        <td th:text="${device.departmentName}">departmentName</td>
+                        <td th:text="${device.categoryName}">categoryName</td>
+
+                        <td>
+                            <ol style=" padding-left: 0;text-align: left;"  >
+                                <li th:each="problem : ${device.allProblem}" th:text="${problem.name}">Problem Name</li>
+                            </ol>
+                        </td>
+
+                        <td >
+
+                            <button class="btn btn-info btn-sm view-button" th:data-device-id="${device.deviceId}" th:data-button-id="viewAlternative">
+                                View   &#128065;
+                            </button>
+
+                        </td>
+
+                        <td th:text="${device != null && device.customerCareServiceRequestStatus != null ? device.customerCareServiceRequestStatus : 'Pending'}">
+                        </td>
+                        <td>
+                            <span th:if="${device.customerCareServiceRequestStatus == 'Accepted'}" th:text="${device.proposalReceivingDateTime}" >10/11/2024</span>
+                            <span th:unless="${device.customerCareServiceRequestStatus == 'Accepted'}"></span>
+                        </td>
+
+                        <td>
+
+                            <div class="d-flex justify-content-center align-items-center action-button-container">
+                                <button  th:if="${device.customerCareServiceRequestStatus != 'Accepted'}" class="btn btn-sm  fas fa-trash text-danger small-button Delete ms-2" th:data-sevice-id="${device.id}"></button>
+                                <span th:unless="${device.customerCareServiceRequestStatus == 'Accepted'}"></span>
+                                <button th:if="${device.customerCareToDepartmentStatus == 'Device delivered' && device.departmentReceiveDeviceFromCustomerCareStatus != 'Device received' }" class="btn  btn-sm text-white receiveDevice" th:data-service-id="${device.id}" th:data-button-id="receiveDevice" style="background-color:green;" title="Receive device from CustomerCare">✔</button>
+                                <button th:if="${device.departmentReceiveDeviceFromCustomerCareStatus == 'Device received' && device.distributeDeviceToUserStatus !='Distributed'  }" class="btn  btn-sm text-white distributeDevice" th:data-service-id="${device.id}" th:data-button-id="distributeDevice" style="background-color:green;" title="Distribute Device to Specific User">✔</button>
+
+                            </div>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-0 secondDiv"  style="display:none;" >
+            <div  class="rightDiv" >
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div th:fragment="deviceList">
+    <div>
+        <p> > Device Information</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 firstDiv" >
+            <div  class="leftDiv" >
+                <!-- Toggle Content Button -->
+
+                <table id="deviceListTable" >
+                    <thead id="tableHeaderAddDataList" >
+                    <tr  >
+                        <th scope="col" style="background-color: gray;">SN</th>
+                        <th scope="col" style="background-color: gray;">Category Name</th>
+                        <!-- Dynamically generated headers from universalColumns -->
+                        <th th:each="column : ${universalColumns}" th:text="${column.columnName}" style="background-color: gray;"></th>
+                        <th scope="col" style="background-color: gray;">Description</th>
+                    </tr>
+                    </thead>
+                    <tbody id="deviceListBody">
+                    <tr th:each="device, iterStat : ${allDeviceData}">
+                        <td scope="row" th:text="${iterStat.count}">1</td>
+                        <td th:text="${device.categoryName}">categoryName</td>
+                        <td th:each="universalColumn : ${universalColumns}" th:text="${device.allData[universalColumn.columnName]}"></td>
+                        <td>
+                            <ul style="list-style: none; padding-left: 0;text-align: center;" >
+                                <li th:each="individualColumn : ${individualColumns}"
+                                    th:if="${device.categoryName == individualColumn.categoryName}"
+                                    th:text="${individualColumn.columnName+' :'+device.allData[individualColumn.columnName]}">1</li>
+                            </ul>
+
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-0 secondDiv"  style="display:none;" >
+            <div  class="rightDiv" >
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

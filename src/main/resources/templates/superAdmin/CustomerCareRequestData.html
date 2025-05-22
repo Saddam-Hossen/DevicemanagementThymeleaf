@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div th:fragment="customerCareRequestData">
+    <div>
+        <p> > CustomerCare Request </p>
+    </div>
+    <!-- Toggle Content Button -->
+    <!-- Category Table -->
+    <div class="row">
+        <div class="col-sm-9 firstDiv" >
+            <div  class="leftDiv" >
+                <div style="text-align: right;">
+                    <button class="btn btn-sm text-black small-button showButton"  style="display:none;"> < </button>
+                </div>
+            <div class="dropdown">
+                <input type="text" style="width:20%" class="form-control dropdown-toggle custom-width" id="individualTopInput" data-bs-toggle="dropdown" placeholder="Category" aria-expanded="false" value="Category">
+                <ul  class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownTextFieldTop" id="individualTopUlList">
+                    <li th:each="category : ${data}"><a class="dropdown-item individualTopSelection" href="#" th:text="${category.categoryName}"></a></li>
+                </ul>
+            </div>
+            <div class="d-flex justify-content-center mb-2">
+                <button class="btn btn-success btn-sm" onclick="addUerToggle111()" style="width: 10%;">Add</button>
+            </div>
+                <div class="table-wrapper">
+            <table id="requestCustomerCareTable" >
+                <thead>
+                <tr>
+                    <th scope="col" style="background-color: gray;">SN</th>
+                    <th scope="col" style="background-color: gray;">Bivag Name</th>
+                    <th scope="col" style="background-color: gray;">Category Name</th>
+                    <!-- Dynamically generated headers from universalColumns -->
+                    <th th:each="column : ${requestColumns}"
+                        th:if="${column.visibleType} == 'yes'"
+                        th:text="${column.columnName}"
+                        style="background-color: gray;">
+                    </th>
+                    <th scope="col" style="background-color: gray;">Delivery Product <br> Details</th>
+                    <th scope="col" style="background-color: gray;">Delivery Mode In customerCare</th>
+                    <th scope="col" style="background-color: gray;">Feedback</th>
+                    <th scope="col" style="background-color: gray;">Status In COO</th>
+                    <th scope="col" style="background-color: gray;">Available Product</th>
+                    <th scope="col" style="background-color: gray;">Action</th>
+                </tr>
+                </thead>
+                <tbody id="requestCustomerCareTableBody">
+                <tr th:each="device, iterStat : ${requestData}"
+                    th:if="${ (device.inventory != null && device.inventory.checkAvailability != null && device.inventory.checkAvailability != 'No')
+                && device.requestMode == 'Accepted' && (device.inventory.inventoryStatus == 'Direct Delivery'
+                || device.inventory.inventoryStatus == 'Purchased' || device.inventory.inventoryStatus == 'Proposal Rejected'
+                || device.inventory.inventoryStatus == 'Proposal' || device.inventory.inventoryStatus == 'Pending'
+                || device.inventory.inventoryStatus == 'Proposal Accepted' || device.customerCare.deliveryMode=='Delivered')}" onclick="printRowDataForCustomerCare(this)">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${device.departmentName}"></td>
+                    <td th:text="${device.allData[category]}"></td>
+                    <td th:each="individualColumn : ${requestColumns}"
+                        th:if="${individualColumn.visibleType == 'yes'}">
+                        <!-- Check if the column data type is 'textarea' -->
+                        <div th:if="${individualColumn.dataType == 'textarea'}">
+                            <textarea class="plain-textarea" th:text="${device.allData[individualColumn.columnName]}"></textarea>
+                        </div>
+                        <!-- For any other data type -->
+                        <div th:unless="${individualColumn.dataType == 'textarea'}"
+                             th:text="${device.allData[individualColumn.columnName]}">
+                        </div>
+                    </td>
+                    <td>
+                        <div th:if="${device.inventory.inventoryStatus == 'Direct Delivery'}">
+                            See Request Data
+                        </div>
+                        <div th:if="${device.inventory.inventoryStatus == 'Purchased'}">
+                            <p th:text="${device.purchase.details}"></p>
+                        </div>
+                        <div th:if="${device.inventory.inventoryStatus == 'Proposal Accepted'}">
+                            <button class="btn btn-info btn-sm view-button" th:data-request-id="${device.id}" th:data-button-id="viewAlternative">
+                                View   &#128065;
+                            </button>
+                        </div>
+                    </td>
+                    <td th:text="${device.customerCare != null && device.customerCare.deliveryMode != null ? device.customerCare.deliveryMode : 'Not Delivered'}">
+                    </td>
+                    <td th:text="${device.inventory.inventoryStatus == 'Proposal Accepted' ? 'Alternative Device' : device.inventory.inventoryStatus}">
+                    </td>
+                    <td th:text="${device.inventory != null && device.inventory.cooDeliveryAns != null ? device.inventory.cooDeliveryAns : 'Pending'}">
+                    </td>
+                    <td th:text="${device.inventory != null && device.inventory.checkAvailability != null ? device.inventory.checkAvailability : 'No'}">
+                    </td>
+                    <td>
+                        <div class="action-button-container">
+                            <button class="btn  btn-sm  text-white small-button" th:data-request-id="${device.id}" th:data-button-id="accepted" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="background-color:green;">
+                                ✔
+                            </button>
+                            <button class="btn btn-danger btn-sm small-button" th:data-request-id="${device.id}" th:data-button-id="cancel">
+                                &#10007;
+                            </button>
+                        </div>
+
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3 secondDiv" >
+            <div  class="rightDiv" >
+
+
+                <div style="text-align: right;">
+                    <button class="btn btn-sm text-black small-button hideButton" style="display:inline-block" >X</button>
+                </div>
+               <div class="activityDiv">
+                   <div style="text-align:center;font-weight:bold;color:green">Activity</div>
+                   <p> <b>Note: </b> <br> Click on any row of Table and see the Activity.</p>
+               </div>
+
+
+
+                <br>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+</body>
+</html>

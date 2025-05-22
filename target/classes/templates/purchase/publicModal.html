@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="exportModal">
+    <!-- Modal -->
+    <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Selected Rows for Export</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p id="totalPriceDisplay" class="text-center fw-bold text-success mb-3"></p>
+
+                    <table class="table table-bordered">
+                        <thead id="modalHeaderRow"></thead>
+                        <tbody id="modalBodyRows"></tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="confirmExport()">Confirm Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div th:fragment="publicModal">
+    <!-- Modal structure -->
+    <div class="modal fade" id="publicModal" tabindex="-1" aria-labelledby="publicModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="publicModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    This is a Bootstrap 5.3 modal.
+
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:fragment="linkModal">
+    <!-- Modal structure -->
+    <div class="modal fade  bg-success" id="linkModal" tabindex="-1" aria-labelledby="linkModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="linkModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body link-body">
+                    This is a Bootstrap 5.3 modal.
+
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

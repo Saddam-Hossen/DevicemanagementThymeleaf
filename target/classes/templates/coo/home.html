@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <p th:include="coo/header :: departmentUserHeader"></p>
+</head>
+
+<body>
+<nav th:include="coo/topMenuBar:: topMenuBarDepartmentUser"></nav>
+<div style="padding-top:5em"  class="mainBody">
+    <section class="container mb-4   ">
+
+        <div th:include="coo/requestData :: requestData" data-page="requestData"></div>
+    </section>
+
+</div>
+<div th:include="coo/leftOffCanvas :: leftOffCanvas"></div>
+<div th:include="coo/publicModal :: publicModal"></div>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div th:fragment="requestDataForPaymentExport">
+    <div>
+        <p> > Export file for Payment </p>
+    </div>
+    <div class="row">
+        <div class="col-sm-9 firstDiv" >
+            <div  class="leftDiv" >
+                <div style="text-align: right;">
+                    <button class="btn btn-sm text-black small-button showButton"  style="display:none;"> < </button>
+                </div>
+                <div class="dropdown">
+                    <input type="text" style="width:20%" class="form-control dropdown-toggle custom-width" id="individualTopInput" data-bs-toggle="dropdown" placeholder="Category" aria-expanded="false" value="Category">
+                    <ul  class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownTextFieldTop" id="individualTopUlList">
+                        <li th:each="category : ${data}"><a class="dropdown-item individualTopSelection" href="#" th:text="${category.categoryName}"></a></li>
+                    </ul>
+                </div>
+                <div class="d-flex justify-content-center mb-2">
+                    <button class="btn btn-success btn-sm" onclick="addUerToggle111()" style="width: 10%;">Add</button>
+                </div>
+                <!-- Toggle Content Button -->
+                <!-- Category Table -->
+                <table id="requestForPaymentExportTable" class="table table-gray table-bordered table-hover">
+                    <thead>
+
+                    <tr>
+                        <th scope="col" style="background-color: gray; color:white">SN</th>
+                        <th scope="col" style="background-color: gray; color:white">Bivag Name</th>
+                        <th scope="col" style="background-color: gray; color:white">Category Name</th>
+                        <!-- Dynamically generated headers from universalColumns -->
+                        <th scope="col" style="background-color: gray; color:white">Description</th>
+                        <th scope="col" style="background-color: gray; color:white">Proposal Status In COO</th>
+                        <th scope="col" style="background-color: gray; color:white">Export Status</th>
+                        <th scope="col" style="background-color: gray; color:white">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="requestForPaymentExportTableBody">
+                    <tr th:each="device, iterStat : ${requestData}"
+                        onclick="printRowDataForCustomerCare(this)"
+                        th:if="${device.purchase != null and device.purchase.cooAns == 'Accepted'  }">
+                    <td  th:text="${device.visibleRequestId}" >1</td>
+                        <td  th:text="${device.departmentName}" >1</td>
+                        <td  th:text="${device.allData[category]}" >1</td>
+                        <td style="text-align: left;" th:data-request-id="${device.id}" class="viewInfo"  >
+                            <!-- Loop over the requestColumns to create list items -->
+                            <div  th:each="individualColumn : ${requestColumns}"
+                                 th:if="${individualColumn.visibleType == 'yes' && device.requestMode == 'Accepted' && device.inventory.inventoryStatus == 'Purchased'}">
+                                <!-- Check if the column data type is 'textarea' -->
+                                <div th:if="${individualColumn.dataType == 'textarea'}">
+                                    <textarea class="plain-textarea"
+                                              th:text="${device.allData[individualColumn.columnName]}"></textarea>
+                                </div>
+                                <!-- For any other data type -->
+                                <div th:if="${individualColumn.dataType != 'textarea'}">
+                                    <span th:text="${individualColumn.columnName}"></span>:
+                                    <span th:text="${device.allData[individualColumn.columnName] ?: 'N/A'}"></span>
+                                </div>
+                            </div>
+                            <p  th:data-request-id="${device.id}" th:data-button-id="viewInfo">
+                                &#128065;
+                            </p>
+                        </td>
+
+
+
+
+                        <td
+                            th:text="${device.purchase != null && device.purchase?.cooAns != null ? device.purchase?.cooAns : ' '}">
+                        </td>
+                        <td
+                            th:text="${device.purchase != null && device.purchase?.purchaseDeviceExportStatus != null ? device.purchase?.purchaseDeviceExportStatus : 'No Exported'}">
+                        </td>
+                        <td >
+                            <div class="d-flex justify-content-center align-items-center action-button-container">
+                                <input type="checkbox"  th:data-request-id="${device.id}" th:data-button-id="accepted" style="background-color: green; transform: scale(1.5); width: 12px; height: 12px;"  title="Select For Payment" th:if="${device.purchase?.cooAns =='Accepted'}">
+
+                            </div>
+
+                        </td>
+
+
+                    </tr>
+                    </tbody>
+
+                </table>
+                <div class="d-flex justify-content-center mb-2">
+                    <button class="btn btn-success btn-sm" onclick="addTableInformationOfServiceForPaymentExport()" style="width: 10%; margin-top: 20px;">Export</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 secondDiv"   >
+            <div  class="rightDiv" >
+                <div style="text-align: right;">
+                    <button class="btn btn-sm text-black small-button hideButton" style="display:inline-block">X</button>
+                </div>
+
+                <div class="activityDiv">
+                    <div style="text-align:center;font-weight:bold;color:green">Activity</div>
+                    <p> <b>Note: </b> <br> Click on any row of Table and see the Activity.</p>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

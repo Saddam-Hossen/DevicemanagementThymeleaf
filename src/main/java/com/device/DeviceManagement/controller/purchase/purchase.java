@@ -43,6 +43,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/purchase")
 public class purchase {
@@ -697,8 +699,8 @@ public class purchase {
         String departmentName = allParams.get("departmentName");
         allParams.remove("departmentName");
 
-        String requestId = allParams.get("requestId");
-        allParams.remove("requestId");
+        String startingDate = allParams.get("startingDate");
+        allParams.remove("startingDate");
 
         String userName = allParams.get("userName");
         allParams.remove("userName");
@@ -709,42 +711,24 @@ public class purchase {
         String deviceType = allParams.get("deviceType");
         allParams.remove("deviceType");
 
+        System.out.println(allParams);
 
         LocalDateTime now = LocalDateTime.now();
         String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         AddData adddata=new AddData(departmentName,categoryName,formattedDateTime,currentDate,allParams,"1");
         adddata.setVisibleId(generateNewVisibleIdForOldDevice());
-        adddata.setDeviceTypeServicingOrRequestingOrOldAsInputting("New");
+        adddata.setDeviceTypeServicingOrRequestingOrOldAsInputting("Old");
         adddata.setDeviceTypePrimaryOrSecondary(deviceType);
         if(deviceType.equals("Secondary")){
             adddata.setDeviceTypeSecondaryInOrOut("Out");
         }
-        AddData.DeviceUser user=new AddData.DeviceUser(departmentName,userName,userId,getCurrentLocalDateTime(),"1");
+        AddData.DeviceUser user=new AddData.DeviceUser(departmentName,userName,userId,startingDate,"1");
         List<AddData.DeviceUser> list=new ArrayList<>();
         list.add(user);
         adddata.setDeviceUsers(list);
 
         addDataRepository.save(adddata);
-
-        // last device id
-        List<AddData>  data=addDataRepository.findByStatus("1");
-
-        Optional<RequestData> optionalRequestData = requestDataRepository.findDevicesIDS(requestId, "1");
-
-        if (optionalRequestData.isPresent()) {
-            RequestData requestData = optionalRequestData.get();
-            requestData.getPurchase().setDeviceBuyingStatus("Bought");
-            // Update the inventory with the new deviceIds
-
-            requestData.getPurchase().setBuyingDeviceId(data.get(data.size()-1).getId());
-            requestData.setPurchase(requestData.getPurchase());
-
-            // Save the updated RequestData document
-            requestDataRepository.save(requestData);
-        }
-
-
 
         try {
 
@@ -942,6 +926,176 @@ public class purchase {
         return ResponseEntity.ok("Selected rows processed successfully");
     }
 
+    @PostMapping("/exportDataForOrderedDevice")
+    public ResponseEntity<byte[]> exportDataForOrderedDevice(@RequestBody List<Map<String, String>> data) {
+       // System.out.println(data);
+
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+
+            PdfWriter writer = new PdfWriter(baos);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            try {
+                InputStream imageStream = getClass().getClassLoader()
+                        .getResourceAsStream("static/img/eartface.png");
+
+                if (imageStream == null) {
+                    throw new FileNotFoundException("Image resource not found");
+                }
+
+                ImageData imageData = ImageDataFactory.create(IOUtils.toByteArray(imageStream));
+                Image image = new Image(imageData);
+
+                image.setWidth(100);
+                image.setAutoScale(true);
+
+                document.add(image);
+
+            } catch (IOException e) {
+                throw new RuntimeException("Error loading image resource", e);
+            }
+
+            document.add(new Paragraph("\n"));
+
+            Paragraph title = new Paragraph("(Ordered Devices)")
+                    .setBold()
+                    .setFontSize(16)
+                    .setTextAlignment(TextAlignment.CENTER);
+
+            document.add(title);
+            document.add(new Paragraph("\n"));
+
+            if (!data.isEmpty()) {
+                Set<String> headers = data.get(0).keySet();
+
+                double totalPrice = data.stream()
+                        .map(row -> row.get("Price"))
+                        .filter(Objects::nonNull)
+                        .mapToDouble(p -> {
+                            try {
+                                return Double.parseDouble(p);
+                            } catch (Exception e) {
+                                return 0.0;
+                            }
+                        })
+                        .sum();
+
+                // Info table for total price and date
+                Table infoTable = new Table(2).useAllAvailableWidth();
+
+                Cell priceCell = new Cell()
+                        .add(new Paragraph("Total Price: $" + String.format("%.2f", totalPrice)).setBold())
+                        .setBorder(Border.NO_BORDER)
+                        .setTextAlignment(TextAlignment.LEFT);
+
+                String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+                Cell dateCell = new Cell()
+                        .add(new Paragraph("Date: " + currentDate).setBold())
+                        .setBorder(Border.NO_BORDER)
+                        .setTextAlignment(TextAlignment.RIGHT);
+
+                infoTable.addCell(priceCell);
+                infoTable.addCell(dateCell);
+
+                document.add(infoTable);
+                document.add(new Paragraph("\n"));
+
+                // Remove "Action" from headers before setting column widths
+                List<String> filteredHeaders = headers.stream()
+                        .filter(h -> !"Action".equalsIgnoreCase(h))
+                        .collect(Collectors.toList());
+
+                Table table = new Table(UnitValue.createPercentArray(filteredHeaders.size()))
+                        .useAllAvailableWidth();
+                // Header row with gray background and white text
+                for (String header : filteredHeaders) {
+                    Cell headerCell = new Cell()
+                            .add(new Paragraph(header).setBold().setFontColor(ColorConstants.WHITE))
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setBackgroundColor(ColorConstants.GRAY);
+                    table.addHeaderCell(headerCell);
+                }
+
+                // Data rows with alternating background colors and centered text
+                boolean alternate = false;
+                for (Map<String, String> row : data) {
+                    for (String header : filteredHeaders) {
+                        String value = row.getOrDefault(header, "");
+
+                        // Clean only the "Description" field
+                        if ("Description".equalsIgnoreCase(header)) {
+                            value = value.replaceAll("\\s+", " ").trim();
+                        }
+
+                        Cell cell = new Cell()
+                                .add(new Paragraph(value))
+                                .setTextAlignment(TextAlignment.CENTER);
+
+                        if (alternate) {
+                            cell.setBackgroundColor(ColorConstants.LIGHT_GRAY);
+                        }
+                        table.addCell(cell);
+                    }
+
+                    alternate = !alternate;
+                }
+
+                // Add empty cells spanning entire table width for signature row
+                int colCount = headers.size();
+                Cell signatureCell = new Cell(1, colCount).setBorder(Border.NO_BORDER);
+                table.addCell(signatureCell);  // blank row for spacing
+
+                // Signature row (two cells)
+                Table signatureTable = new Table(new float[]{1, 1}).useAllAvailableWidth().setBorder(Border.NO_BORDER);
+
+                Cell purchaseCell = new Cell()
+                        .add(new Paragraph("Purchase").setBold())
+                        .setBorder(Border.NO_BORDER)
+                        .setTextAlignment(TextAlignment.LEFT);
+
+                Cell cooCell = new Cell()
+                        .add(new Paragraph("COO").setBold())
+                        .setBorder(Border.NO_BORDER)
+                        .setTextAlignment(TextAlignment.RIGHT);
+
+                signatureTable.addCell(purchaseCell);
+                signatureTable.addCell(cooCell);
+
+                // Wrap signature table in a cell spanning the full width of the main table
+                Cell signatureWrapperCell = new Cell(1, colCount)
+                        .add(signatureTable)
+                        .setBorder(Border.NO_BORDER);
+
+                Cell spacerCell = new Cell(1, colCount)
+                        .setBorder(Border.NO_BORDER)
+                        .setHeight(60f); // add vertical height for space
+                table.addCell(spacerCell);
+
+                table.addCell(signatureWrapperCell);
+
+
+                document.add(table);
+            } else {
+                document.add(new Paragraph("No data available."));
+            }
+
+            document.close();
+
+            byte[] pdfBytes = baos.toByteArray();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDisposition(ContentDisposition.attachment().filename("exported-data.pdf").build());
+            headers.setContentLength(pdfBytes.length);
+
+            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
     @PostMapping("/exportDataForExtraDevice")
     public ResponseEntity<byte[]> receiveExportData(@RequestBody List<Map<String, String>> data) {
         System.out.println("Received data: " + data);
@@ -987,7 +1141,7 @@ public class purchase {
 
             document.add(new Paragraph("\n"));
 
-            Paragraph title = new Paragraph("Un-Ordered Devices")
+            Paragraph title = new Paragraph("(Un-Ordered Devices)")
                     .setBold()
                     .setFontSize(16)
                     .setTextAlignment(TextAlignment.CENTER);

@@ -15,7 +15,7 @@
                 <!-- Toggle Content Button -->
                 <div class="d-flex justify-content-center mb-2">
                     <!--        <button class="btn btn-success btn-sm" onclick="addIndividualColumnToggle()" style="width: 10%;">Add</button>-->
-                    <button class="btn btn-success btn-sm" onclick="addDeviceInformation()" style="width: 15%; white-space: nowrap;">Add Old Device</button>
+                    <button class="btn btn-success btn-sm" onclick="addDeviceInformationOfPurchase()" style="width: 15%; white-space: nowrap;">Add Old Device</button>
 
                 </div>
 
@@ -34,9 +34,7 @@
                     <tbody id="deviceInformationBody">
                     <tr th:each="device, iterStat : ${allDeviceData}"
                         th:if="${device.userName == departmentName and
-                        device.unOrderedDevice != null and
-                        (device.unOrderedDevice.COOUnOrderedDeviceAcceptedStatus != 'UnOrdered' or
-                         device.unOrderedDevice.COOUnOrderedDeviceAcceptedStatus != 'Ordered')}">
+                        device.unOrderedDevice == null }">
                         <td scope="row" th:text="${device.visibleId}">1</td>
                         <td th:text="${device.categoryName}">categoryName</td>
                         <td th:each="universalColumn : ${universalColumns}" th:text="${device.allData[universalColumn.columnName]}"></td>

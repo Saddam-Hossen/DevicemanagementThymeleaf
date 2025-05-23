@@ -27,7 +27,7 @@ function saveFormDataForService(serviceId,problemName,solutionName) {
         }
     });
 }
-function addTableInformationOfServiceForPaymentExport(){
+function confirmExport(){
   // Define the Service class
           class Service {
           constructor(serviceId, problemName, solutionName) {
@@ -92,8 +92,9 @@ function addTableInformationOfServiceForPaymentExport(){
              contentType: "application/json",
              data: JSON.stringify(requestData),
              success: function (response) {
-                 alert(response); // Display success response
-                 location.reload(); // Refresh the page
+                // alert(response); // Display success response
+                 confirmExport1(); // pdf download
+                 //location.reload(); // Refresh the page
              },
              error: function (xhr, status, error) {
                  alert("Error: " + error); // Display error response
@@ -1386,7 +1387,9 @@ $(document).ready(function() {
                                <span>${solution.name}:${solution.value} </span> <br>
                                <span>Price:${solution.price} </span>
                                </td>
-
+                               <td>
+                               ${solution.price}
+                             </td>
                              <td>
                                ${cooAnswer}
                              </td>
@@ -1700,3 +1703,117 @@ $(document).ready(function() {
         }
     });
 });
+
+function addTableInformationOfServiceForPaymentExportModal() {
+    const mainTable = document.getElementById("requestForPaymentExportTable");
+      const modalHeader = document.getElementById("modalHeaderRow");
+          const modalBody = document.getElementById("modalBodyRows");
+          const totalPriceDisplay = document.getElementById("totalPriceDisplay");
+
+          // Clear previous content
+          modalHeader.innerHTML = "";
+          modalBody.innerHTML = "";
+          totalPriceDisplay.textContent = "";
+
+          const originalHeaderRow = mainTable.querySelector("thead tr");
+          const headerClone = originalHeaderRow.cloneNode(true);
+          const headerCells = [...headerClone.cells];
+
+          const removeIndexes = [];
+          let priceColumnIndex = -1;
+
+          headerCells.forEach((cell, index) => {
+              const text = cell.textContent.trim().toLowerCase();
+              if ( text === "components") {
+                  removeIndexes.push(index);
+              }
+              if (text === "price") {
+                  priceColumnIndex = index;
+              }
+          });
+
+          removeIndexes.reverse().forEach(i => headerClone.deleteCell(i));
+          modalHeader.appendChild(headerClone);
+
+          // Sum price from selected rows
+          let totalPrice = 0;
+
+          const checkboxes = document.querySelectorAll('input[type="checkbox"][data-button-id="accepted"]:checked');
+          checkboxes.forEach((checkbox) => {
+              const row = checkbox.closest("tr");
+              const rowClone = row.cloneNode(true);
+
+              // Get price before deleting columns
+              const cells = row.querySelectorAll("td");
+              if (priceColumnIndex !== -1 && cells[priceColumnIndex]) {
+                  const priceText = cells[priceColumnIndex].textContent.trim().replace(/[^\d.]/g, "");
+                  const price = parseFloat(priceText);
+                  if (!isNaN(price)) totalPrice += price;
+              }
+
+              // Remove unwanted columns
+              removeIndexes.forEach(i => rowClone.deleteCell(i));
+             const checkboxInClone = rowClone.querySelector('input[type="checkbox"]');
+             if (checkboxInClone) {
+                 checkboxInClone.disabled = true; // Properly disable the checkbox
+             }
+
+              modalBody.appendChild(rowClone);
+          });
+
+          if (checkboxes.length > 0) {
+              totalPriceDisplay.textContent = "Total Price: $" + totalPrice.toFixed(2);
+              const modal = new bootstrap.Modal(document.getElementById("exportModal"));
+              modal.show();
+          } else {
+              alert("Please select at least one row.");
+          }
+}
+
+function confirmExport1() {
+    const modalRows = document.querySelectorAll("#modalBodyRows tr");
+    const headerCells = document.querySelectorAll("#modalHeaderRow th");
+
+    const exportData = [];
+
+    modalRows.forEach(row => {
+        const rowData = {};
+        const cells = row.querySelectorAll("td");
+
+        cells.forEach((cell, index) => {
+            const key = headerCells[index].textContent.trim();
+            const value = cell.textContent.trim();
+            rowData[key] = value;
+        });
+
+        exportData.push(rowData);
+    });
+
+    fetch("/purchase/exportDataForOrderedDevice", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(exportData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to export PDF");
+        }
+        return response.blob();  // <-- Get PDF blob
+    })
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "exported-data For Ordered.pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Error occurred during export.");
+    });
+}

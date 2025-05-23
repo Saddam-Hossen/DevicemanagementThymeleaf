@@ -25,7 +25,7 @@ function addTableInformationOfService(deviceId,comment,categoryName){
  }
 
 
- function saveTableInformationOfDevice(categoryName) {
+ function saveTableInformationOfDeviceOfPurchase(categoryName) {
      // Serialize form data
      var formData = $("#dynamicFormAddDevice").serialize();
 
@@ -54,7 +54,7 @@ function addTableInformationOfService(deviceId,comment,categoryName){
 
      // AJAX call to save data
      $.ajax({
-         url: '/inventory/addDeviceInformation', // URL to your endpoint for saving data
+         url: '/purchase/addDeviceInformation', // URL to your endpoint for saving data
          type: 'POST',
          data: formData, // Send serialized form data along with additional fields
          success: function(response) {
@@ -93,7 +93,7 @@ function editTableInformationOfDevice(deviceId,categoryName){
  }
 
 
-function addDeviceInformation(){
+function addDeviceInformationOfPurchase(){
   var departmentElement = $(".departmentName"); // Assuming you set a unique ID for the `<a>` element
   var departmentName = departmentElement.data("departmentuser-name");
 
@@ -253,7 +253,7 @@ function addDeviceInformation(){
 
              $('#saveEditBtn').click(function() {
                  var categoryName=$('#deviceInputFieldAdd').val();
-                  saveTableInformationOfDevice(categoryName);
+                  saveTableInformationOfDeviceOfPurchase(categoryName);
                 });
 
           showModal();

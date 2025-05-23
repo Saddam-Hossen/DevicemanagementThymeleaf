@@ -36,6 +36,8 @@
                         <th scope="col" style="background-color: gray; color:white">Category Name</th>
                         <!-- Dynamically generated headers from universalColumns -->
                         <th scope="col" style="background-color: gray; color:white">Description</th>
+                        <th scope="col" style="background-color: gray; color:white">Price</th>
+
                         <th scope="col" style="background-color: gray; color:white">Proposal Status In COO</th>
                         <th scope="col" style="background-color: gray; color:white">Export Status</th>
                         <th scope="col" style="background-color: gray; color:white">Action</th>
@@ -69,7 +71,9 @@
                         </td>
 
 
-
+                        <td
+                                th:text="${device.purchase != null && device.purchase?.budget != null ? device.purchase?.budget : ' '}">
+                        </td>
 
                         <td
                             th:text="${device.purchase != null && device.purchase?.cooAns != null ? device.purchase?.cooAns : ' '}">
@@ -91,7 +95,7 @@
 
                 </table>
                 <div class="d-flex justify-content-center mb-2">
-                    <button class="btn btn-success btn-sm" onclick="addTableInformationOfServiceForPaymentExport()" style="width: 10%; margin-top: 20px;">Export</button>
+                    <button class="btn btn-success btn-sm" onclick="addTableInformationOfServiceForPaymentExportModal()" style="width: 10%; margin-top: 20px;">Export</button>
                 </div>
             </div>
         </div>

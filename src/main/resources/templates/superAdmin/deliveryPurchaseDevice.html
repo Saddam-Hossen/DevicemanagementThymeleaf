@@ -6,9 +6,9 @@
 </head>
 
 <body>
-<div th:fragment="requestData">
+<div th:fragment="deliveryPurchaseDevice">
     <div>
-        <p> > Request Data</p>
+        <p> > Request data</p>
     </div>
     <div class="row">
         <div class="col-sm-9 firstDiv" >
@@ -27,7 +27,7 @@
                 </div>
                 <!-- Toggle Content Button -->
                 <!-- Category Table -->
-                <table id="requestCustomerCareTable" class="table table-gray table-bordered table-hover">
+                <table id="deliveryDeviceTable" class="table table-gray table-bordered table-hover">
                     <thead>
                     <tr>
                         <th scope="col" style="background-color: gray;">SN</th>
@@ -35,19 +35,18 @@
                         <th scope="col" style="background-color: gray;">Category Name</th>
                         <!-- Dynamically generated headers from universalColumns -->
                         <th scope="col" style="background-color: gray;">Description</th>
-
-                        <th scope="col" style="background-color: gray;">Device Received Status In customerCare</th>
-                        <th scope="col" style="background-color: gray;">Delivery Status In Dept</th>
-                        <th scope="col" style="background-color: gray;">Delivery Status In COO</th>
-                       <!-- <th scope="col" style="background-color: gray;">Check Availability</th>-->
+                        <th scope="col" style="background-color: gray;">Delivery Mode</th>
+                        <th scope="col" style="background-color: gray;"> Status In Inventory</th>
+                        <th scope="col" style="background-color: gray;"> Delivery Status In COO</th>
+                        <th scope="col" style="background-color: gray;"> Delivery Status In CustomerCare</th>
+                        <th scope="col" style="background-color: gray;"> Available Product</th>
                         <th scope="col" style="background-color: gray;">Action</th>
                     </tr>
                     </thead>
-                    <tbody id="requestCustomerCareTableBody">
-
+                    <tbody id="deliveryDeviceTableBody">
                     </tbody>
-
                 </table>
+
             </div>
         </div>
         <div class="col-sm-3 secondDiv"   >
@@ -55,7 +54,6 @@
                 <div style="text-align: right;">
                     <button class="btn btn-sm text-black small-button hideButton" style="display:inline-block">X</button>
                 </div>
-
                 <div class="activityDiv">
                     <div style="text-align:center;font-weight:bold;color:green">Activity</div>
                     <p> <b>Note: </b> <br> Click on any row of Table and see the Activity.</p>

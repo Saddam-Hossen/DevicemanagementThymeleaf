@@ -644,6 +644,53 @@ public class Inventory {
 
         return ResponseEntity.ok("Selected rows processed successfully");
     }
+
+    @PostMapping("/receiveUnOrderedDeviceInformation")
+    @ResponseBody
+    public ResponseEntity<String> receiveUnOrderedDeviceInformation(@RequestBody Map<String, Object> payload) {
+
+
+        String deviceId=(String) payload.get("deviceId");
+        String departmentName = (String) payload.get("departmentName");
+        String departmentUserName = (String) payload.get("departmentUserName");
+        String departmentUserId = (String) payload.get("departmentUserId");
+
+
+        // Generate current date and time
+        String presentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println("Generated presentDateTime: " + presentDateTime);
+
+        // Find the RequestData document by requestId and status
+        AddData deviceRequestData = addDataRepository.findByIdAndStatus(deviceId, "1");
+
+        if (deviceRequestData !=null) {
+            AddData.UnOrderedDevice dd=deviceRequestData.getUnOrderedDevice();
+            dd.setUnWantedSendDeviceToInventoryStatus("Accepted");
+            dd.setUnWantedReceiveDeviceInventoryManInfo(departmentName+"_"+departmentUserName+"_"+departmentUserId);
+            dd.setUnWantedReceiveDeviceInventoryTime(getCurrentDateTime());
+            deviceRequestData.setUserName(departmentName);
+            List<AddData.DeviceUser> list=deviceRequestData.getDeviceUsers();
+            list.forEach(e->{
+                System.out.println(e.toString());
+                if(e.getStatus().equals("1")){
+                    // update EndingDate
+                    e.setEndingDate(getCurrentDateTime());
+                    e.setStatus("0");
+                }
+
+            });
+            // add new device user
+            list.add(new AddData.DeviceUser(departmentName,departmentUserName,departmentUserId,getCurrentDateTime(),"1"));
+
+            addDataRepository.save(deviceRequestData);
+
+
+        } else {
+            return ResponseEntity.status(404).body("RequestData with deviceId " + deviceId + " not found.");
+        }
+
+        return ResponseEntity.ok("Selected rows processed successfully");
+    }
     public  String getCurrentLocalDateTime() {
         LocalDateTime now = LocalDateTime.now();
         return now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));

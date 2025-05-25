@@ -251,7 +251,7 @@ function addDeviceInformationOfExtraDevice(){
            });
 
             // selection and input handler.
-            selectionAndInputDeviceInfo();
+           selectionAndInputDeviceInfo();
             selectionAndInputUserInfo();
 
 
@@ -393,47 +393,47 @@ $(document).ready(function() {
 
 
     }
-    else if(button.hasClass("deliverUnOrdered")){
-            const deviceId = button.data('deviceId'); // Get device ID from data-device-id attribute
+    else if(button.hasClass("receiveUnOrdered")){
+                const deviceId = button.data('deviceId'); // Get device ID from data-device-id attribute
 
-                  if (!deviceId) {
-                    console.error("Missing data-device-id attribute on delete button!");
-                    return; // Handle potential missing attribute error gracefully
-                  }
+                      if (!deviceId) {
+                        console.error("Missing data-device-id attribute on delete button!");
+                        return; // Handle potential missing attribute error gracefully
+                      }
 
-                  // Confirmation step (optional):
-                  if (confirm(`Are you sure you want to deliver device ${deviceId}?`)) {
-                    // Send AJAX request to server for deletion (explained below)
-                           var departmentElement = $(".departmentName"); // Assuming you set a unique ID for the `<a>` element
-                            var departmentName = departmentElement.data("departmentname");//it
-                            var departmentUserName = departmentElement.data("departmentuser-name");//saho
-                            var departmentUserId = departmentElement.data("departmentuser-id");//s
-                     $.ajax({
-                            url: '/purchase/deliverUnOrderedDeviceInformation', // URL to your delete endpoint
-                            type: 'POST',
-                           contentType: "application/json",
-                            data: JSON.stringify({
-                                 deviceId: deviceId ,
-                                 departmentName:departmentName,
-                                 departmentUserName:departmentUserName,
-                                 departmentUserId:departmentUserId
-                                 }),// Send category name as data
-                            success: function(result) {
-                                // Remove the row from the table body
-                              //  $row.remove();
-                                 alert(result);
-                                 location.reload();
-                            },
-                            error: function(xhr, status, error) {
-                                console.error("Error deleting category: " + error);
-                            }
-                        });
+                      // Confirmation step (optional):
+                      if (confirm(`Are you sure you want to receive device ${deviceId}?`)) {
+                        // Send AJAX request to server for deletion (explained below)
+                               var departmentElement = $(".departmentName"); // Assuming you set a unique ID for the `<a>` element
+                                var departmentName = departmentElement.data("departmentname");//it
+                                var departmentUserName = departmentElement.data("departmentuser-name");//saho
+                                var departmentUserId = departmentElement.data("departmentuser-id");//s
+                         $.ajax({
+                                url: '/inventory/receiveUnOrderedDeviceInformation', // URL to your delete endpoint
+                                type: 'POST',
+                               contentType: "application/json",
+                                data: JSON.stringify({
+                                     deviceId: deviceId ,
+                                     departmentName:departmentName,
+                                     departmentUserName:departmentUserName,
+                                     departmentUserId:departmentUserId
+                                     }),// Send category name as data
+                                success: function(result) {
+                                    // Remove the row from the table body
+                                  //  $row.remove();
+                                     alert(result);
+                                     location.reload();
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error("Error deleting category: " + error);
+                                }
+                            });
 
-                  } else {
-                    console.log("Delete canceled.");
-                  }
-            }
-    else if (button.hasClass("Edit")) {
+                      } else {
+                        console.log("Delete canceled.");
+                      }
+                }
+   else if (button.hasClass("Edit")) {
       // Handle edit button click (add your logic here)
       console.log("Edit button clicked!");
       const deviceId = button.data('deviceId'); // Get device ID from data-device-id attribute

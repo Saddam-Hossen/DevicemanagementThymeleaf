@@ -738,6 +738,67 @@ public class purchase {
             return ResponseEntity.badRequest().body("Error saving data: " + e.getMessage());
         }
     }
+    @PostMapping("/addDeviceInformationPurchase")
+    @ResponseBody
+    public ResponseEntity<String> addDeviceInformationPurchase(@RequestParam Map<String, String> allParams) {
+        if (allParams.isEmpty()) {
+            return ResponseEntity.badRequest().body("No data provided");
+        }
+        System.out.println("Received data: " + allParams);
+
+        String categoryName = allParams.get("categoryName");
+        allParams.remove("categoryName");
+
+        String departmentName = allParams.get("departmentName");
+        allParams.remove("departmentName");
+
+        String startingDate = allParams.get("startingDate");
+        allParams.remove("startingDate");
+
+        String userName = allParams.get("userName");
+        allParams.remove("userName");
+
+        String userId = allParams.get("userId");
+        allParams.remove("userId");
+
+        String deviceType = allParams.get("deviceType");
+        allParams.remove("deviceType");
+
+        String requestId = allParams.get("requestId");
+        allParams.remove("requestId");
+       // System.out.println(allParams);
+
+        LocalDateTime now = LocalDateTime.now();
+        String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        AddData adddata=new AddData(departmentName,categoryName,formattedDateTime,currentDate,allParams,"1");
+        adddata.setVisibleId(generateNewVisibleIdForOldDevice());
+        adddata.setDeviceTypeServicingOrRequestingOrOldAsInputting("Old");
+        adddata.setDeviceTypePrimaryOrSecondary(deviceType);
+        if(deviceType.equals("Secondary")){
+            adddata.setDeviceTypeSecondaryInOrOut("Out");
+        }
+        AddData.DeviceUser user=new AddData.DeviceUser(departmentName,userName,userId,startingDate,"1");
+        List<AddData.DeviceUser> list=new ArrayList<>();
+        list.add(user);
+        adddata.setDeviceUsers(list);
+
+        addDataRepository.save(adddata);
+
+     RequestData data=requestDataRepository.findByIdAndStatus(requestId,"1");
+     List<AddData>  dataList=addDataRepository.findByStatus("1");
+     RequestData.Purchase mm=data.getPurchase();
+     mm.setBuyingDeviceId(dataList.get(dataList.size()-1).getId());
+     mm.setDeviceBuyingStatus("Bought");
+     requestDataRepository.save(data);
+        try {
+
+
+            return ResponseEntity.ok("Data saved successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error saving data: " + e.getMessage());
+        }
+    }
     @PostMapping("/addDeviceInformationForService")
     @ResponseBody
     public ResponseEntity<String> addDeviceInformationForService(@RequestParam Map<String, String> allParams) {
@@ -871,6 +932,7 @@ public class purchase {
 
         return ResponseEntity.ok("Selected rows processed successfully");
     }
+
     // Endpoint to handle the incoming request
     @PostMapping("/sendDeliveryDevicePurchaseToInventoryForService")
     @ResponseBody
@@ -1267,7 +1329,35 @@ public class purchase {
         }
     }
 
+    @PostMapping("/deliverUnOrderedDeviceInformation")
+    @ResponseBody
+    public ResponseEntity<String> deleteDeviceInformation(@RequestBody Map<String, Object> payload) {
+        String deviceId=(String) payload.get("deviceId");
+        String departmentName = (String) payload.get("departmentName");
+        String departmentUserName = (String) payload.get("departmentUserName");
+        String departmentUserId = (String) payload.get("departmentUserId");
+        AddData device = addDataRepository.findByIdAndStatus(deviceId,"1");
+        try {
+            if (device != null) {
+                // Update category name
+                /// category.setCategoryName(newCategoryName);
+                AddData.UnOrderedDevice dd=device.getUnOrderedDevice();
+                dd.setUnWantedSendDeviceToInventoryStatus("Pending");
+                dd.setUnWantedSendDeviceToInventoryTime(getCurrentLocalDateTime());
+                dd.setUnWantedSendDeviceToInventoryManInfo(departmentName+"_"+departmentUserName+"_"+departmentUserId);
+                addDataRepository.save(device); // Save the updated category
 
+
+                return ResponseEntity.ok("Device deliver request successfully");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error deleting category");
+        }
+    }
     // Method to extract the part before the hyphen inside parentheses
     public static String extractSolution(String input) {
         // Regular expression to capture the part before the hyphen inside parentheses

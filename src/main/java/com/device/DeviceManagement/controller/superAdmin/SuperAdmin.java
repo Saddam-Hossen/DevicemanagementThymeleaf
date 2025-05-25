@@ -366,9 +366,26 @@ public class SuperAdmin {
 
             String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-            Column data=columnRepository.findByCategoryNameAndColumnNameAndColumnTypeAndStatus(individualCategoryName,individualColumnName,"individual","1");
-            if(data!=null){
-                columnRepository.save(new Column(individualColumnName,formattedDateTime,currentDate,"1","individual",individualCategoryName,dataType,requiredType));
+            Optional<Column> existingColumn = columnRepository.findByCategoryNameAndColumnNameAndColumnTypeAndStatus(
+                    individualCategoryName, individualColumnName, "individual", "1");
+
+            if (existingColumn.isEmpty()) {
+                Column newColumn = new Column(
+                        individualColumnName,
+                        formattedDateTime,
+                        currentDate,
+                        "1",
+                        "individual",
+                        individualCategoryName,
+                        dataType,
+                        requiredType
+                );
+                columnRepository.save(newColumn);
+               // System.out.println("Inserted");
+            }
+
+            else{
+                System.out.println("Not Inserted");
             }
             // Save the Category object
 
@@ -386,14 +403,13 @@ public class SuperAdmin {
     public ResponseEntity<String> deleteIndividualColumn(@RequestParam String oldIndividualCategoryName,@RequestParam String oldIndividualColumnName) {
         try {
             // Find the category by old name
-            Column column = columnRepository.findByCategoryNameAndColumnNameAndColumnTypeAndStatus(oldIndividualCategoryName,oldIndividualColumnName,"individual","1");
-            if (column != null) {
+            Optional<Column> columnOptional = columnRepository.findByCategoryNameAndColumnNameAndColumnTypeAndStatus(
+                    oldIndividualCategoryName, oldIndividualColumnName, "individual", "1");
 
+            if (columnOptional.isPresent()) {
+                Column column = columnOptional.get();
                 column.setStatus("2");
-
-                columnRepository.save(column); // Save the updated category
-
-
+                columnRepository.save(column);
                 return ResponseEntity.ok("Column deleted successfully");
             } else {
                 return ResponseEntity.notFound().build();
@@ -415,25 +431,41 @@ public class SuperAdmin {
             @RequestParam String newRequiredType) {
         try {
             // Find the category by old name
-            Column column = columnRepository.findByCategoryNameAndColumnNameAndColumnTypeAndStatus(oldIndividualCategoryName, oldIndividualColumnName, "individual", "1");
-            if (column != null) {
-                column.setStatus("0");
-                columnRepository.save(column); // Save the updated category
+            Optional<Column> optionalOldColumn = columnRepository.findByCategoryNameAndColumnNameAndColumnTypeAndStatus(
+                    oldIndividualCategoryName, oldIndividualColumnName, "individual", "1");
+
+            if (optionalOldColumn.isPresent()) {
+                Column oldColumn = optionalOldColumn.get();
+                oldColumn.setStatus("0");
+                columnRepository.save(oldColumn); // Mark the old column as inactive
 
                 LocalDateTime now = LocalDateTime.now();
                 String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                 String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-                // Save the new column object
-                Column data=columnRepository.findByCategoryNameAndColumnNameAndColumnTypeAndStatus(newIndividualCategoryName,newIndividualColumnName,"individual","1");
-                if(data!=null){
-                    columnRepository.save(new Column(newIndividualColumnName, formattedDateTime, currentDate, "1", "individual", newIndividualCategoryName, newRequiredType,newDataType));
+                Optional<Column> optionalNewColumn = columnRepository.findByCategoryNameAndColumnNameAndColumnTypeAndStatus(
+                        newIndividualCategoryName, newIndividualColumnName, "individual", "1");
 
+                if (optionalNewColumn.isPresent()) {
+                    // Save the new column object
+                    Column newColumn = new Column(
+                            newIndividualColumnName,
+                            formattedDateTime,
+                            currentDate,
+                            "1",
+                            "individual",
+                            newIndividualCategoryName,
+                            newDataType,
+                            newRequiredType
+                    );
+                    columnRepository.save(newColumn);
                 }
+
                 return ResponseEntity.ok("Column updated successfully");
             } else {
                 return ResponseEntity.notFound().build();
             }
+
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error updating category");
         }
@@ -2027,6 +2059,43 @@ public class SuperAdmin {
         } else {
             return "No match found"; // Return a default message if no match is found
         }
+    }
+    // Endpoint to handle the incoming request
+    @PostMapping("/approveFinalPurchaseDeviceDelivery")
+    @ResponseBody
+    public ResponseEntity<String> approveFinalPurchaseDeviceDelivery(@RequestBody Map<String, Object> payload) {
+
+        // Extract requestId and deviceIds from the payload
+        String requestId = (String) payload.get("requestId");
+
+        String departmentName = (String) payload.get("departmentName");
+        String departmentUserName = (String) payload.get("departmentUserName");
+        String departmentUserId = (String) payload.get("departmentUserId");
+
+        System.out.println("Received requestId: " + requestId);
+
+        // Generate current date and time
+        String presentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println("Generated presentDateTime: " + presentDateTime);
+
+        // Find the RequestData document by requestId and status
+        Optional<RequestData> optionalRequestData = requestDataRepository.findDevicesIDS(requestId, "1");
+
+        if (optionalRequestData.isPresent()) {
+            RequestData requestData = optionalRequestData.get();
+            requestData.getInventory().setCooDeliveryAns("Accepted");
+            requestData.setPurchase(requestData.getPurchase());
+
+            // Save the updated RequestData document
+            requestDataRepository.save(requestData);
+
+
+
+        } else {
+            return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
+        }
+
+        return ResponseEntity.ok("Selected rows processed successfully");
     }
     // Method to get the value for a specific formId and name
     public static String getValueForFormAndName(Map<String, Map<String, Map<String, String>>> groupedData, String formId, String name) {

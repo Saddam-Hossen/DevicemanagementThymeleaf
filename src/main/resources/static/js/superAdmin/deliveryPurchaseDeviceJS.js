@@ -199,7 +199,40 @@ function sendDeliveryDevice(requestId,deviceId){
              }
          });
 }
+function approveFinalPurchaseDeviceDelivery(requestId,deviceId){
+ // Define the Service class
 
+         var mergedFormData = {}; // Object to hold all form data based on formId
+
+
+          var departmentElement = $(".departmentName"); // Assuming you set a unique ID for the `<a>` element
+          var departmentName = departmentElement.data("departmentname");//it
+          var departmentUserName = departmentElement.data("departmentuser-name");//saho
+          var departmentUserId = departmentElement.data("departmentuser-id");//s
+
+
+         // Send AJAX request to backend
+         $.ajax({
+             url: "/superAdmin/approveFinalPurchaseDeviceDelivery",
+             type: "POST",
+             contentType: "application/json",
+             data: JSON.stringify({
+                  requestId: requestId,
+                  deviceId: deviceId ,
+                  departmentName:departmentName,
+                  departmentUserName:departmentUserName,
+                  departmentUserId:departmentUserId
+                  }),
+             success: function (response) {
+                 alert(response); // Display success response
+                 location.reload(); // Refresh the page
+             },
+             error: function (xhr, status, error) {
+                 alert("Error: " + error); // Display error response
+                 console.error("Error:", error);
+             }
+         });
+}
 
 function showModal(){
 $('#publicModal').modal('show');
@@ -882,6 +915,8 @@ function formatTime(inputDateTime) {
 
                     return formattedTime;
                 }
+
+
 $(document).ready(function() {
     // Perform a single AJAX call
     $.ajax({
@@ -892,7 +927,7 @@ $(document).ready(function() {
             var allData = data['requestData'];
             var requestColumns = data['requestColumns'];
             var allAddData = data['allAddData'];
-            const tableBody = document.getElementById("requestInventoryTableBody");
+            const tableBody = document.getElementById("deliveryDeviceTableBody");
 
             // Function to check availability count
             function getAvailability(categoryName) {
@@ -910,12 +945,22 @@ $(document).ready(function() {
 
            // Loop through each device in allData
           allData.forEach(function (device) {
+          if(device.inventory?.inventoryStatus==='Purchased' && device.inventory?.inventoryToCustomerCareDeviceSendingStatus==='Pending' ){
+
               // Extract required variables
               const bivagName = device.departmentName || "N/A"; // Handle undefined cases
               const categoryName = device.allData["category"] || "N/A";
               const sn = device.visibleRequestId || "N/A";
               console.log(bivagName);
+                 let content = '';
 
+                  if (device.inventory?.inventoryStatus === "Purchased") {
+                      content = device.inventory?.inventoryToCustomerCareDeviceSendingStatus || ' ';
+                  } else if (device.inventory?.inventoryStatus === "Alternative Proposal Accepted") {
+                      content = device.inventory?.cooDeliveryAns || ' ';
+                  } else {
+                      content = ' ';
+                  }
              const availability = getAvailability(categoryName);
               // Create a new row
               const row = document.createElement("tr");
@@ -976,8 +1021,8 @@ $(document).ready(function() {
 
           // Add new cells for `cooDeliveryAns` and `checkAvailability`
               htmlData += `
-               <td>${device.inventory?.cooDeliveryAns || 'Pending'}</td>
-                 <td>${device.inventory?.inventoryToCustomerCareDeviceSendingStatus || 'Pending'}</td>
+                <td>${device.inventory?.cooDeliveryAns || 'Pending'}</td>
+                  <td>${device.inventory?.inventoryToCustomerCareDeviceSendingStatus || 'Pending'}</td>
                   <td>
                       <button class="btn btn-info btn-sm viewAvailability" data-category-id="${categoryName}" data-request-id="${device.id}" data-button-id="viewAlternative" title="View Available Same Accessories Category Devices" >
                           ${availability}
@@ -991,46 +1036,12 @@ $(document).ready(function() {
                         <div class="d-flex justify-content-center align-items-center action-button-container">
 
 
-                             ${ device.inventory?.inventoryStatus==='Alternative Proposal Accepted' && device.inventory?.inventoryToAlternativeDeviceRequestStatus==='Accepted' && device.inventory?.inventoryToCustomerCareDeviceSendingStatus !=='Accepted' ? `
-                               <button class="btn btn-primary btn-sm text-white fas  deliverDeviceForAlternative" if="${device.inventory.inventoryStatus==='Alternative Proposal Accepted' }" data-category-id="${device.allData['category']}" data-alternativedevice-id="${device.inventory.acceptedId}" data-request-id="${device.id}" data-button-id="deliver" title="Delivery device">
-                                   &#xf0d1;
+                             ${ device.inventory?.inventoryToCustomerCareDeviceSendingStatus === "Pending" ? `
+                               <button class="btn btn-primary btn-sm text-white fas  approveDeliveryDevice"  data-category-id="${device.allData['category']}" data-alternativedevice-id="${device.inventory.acceptedId}" data-request-id="${device.id}" data-button-id="deliver" title="Approve device delivery">
+                                  ✔
                                </button>
                              ` : ""}
-                             ${ device.inventory.inventoryStatus==='Purchased' && device.purchase ?.purchaseDeviceSenderToInventoryStatus ==='Accepted' && device.inventory?.inventoryToCustomerCareDeviceSendingStatus !=='Accepted' ? `
-                                 <button class="btn btn-primary btn-sm text-white fas  deliverDeviceForPurchase"  data-category-id="${device.allData['category']}" data-buyingdevice-id="${device.purchase.purchaseDeviceSenderToInventoryDeviceId}" data-request-id="${device.id}" data-button-id="deliver" title="Delivery device">
-                                    &#xf0d1;
-                                </button>
-                              ` : ""}
 
-
-                            ${ device.inventory.inventoryStatus !=='Alternative Proposal Accepted' && device.purchase ?.cooAns !=='Accepted' ?  `
-                               <button class="btn btn-danger btn-sm delete-button fas purchase" data-request-id="${device.id}" data-button-id="purchase" title="Request for purchase">
-                                    &#xf07a;
-                                </button>
-                          ` : ""}
-                           ${ device.inventory.inventoryToAlternativeDeviceRequestStatus ==='Rejected'  ? `
-                             <button class="btn btn-danger btn-sm delete-button fas purchase" data-request-id="${device.id}" data-button-id="purchase" title="Request for purchase">
-                                  &#xf07a;
-                              </button>
-                        ` : ""}
-
-
-
-                           ${ device.inventory.inventoryStatus !=='Purchased' && device.inventory.inventoryToAlternativeDeviceRequestStatus !=='Accepted' ? `
-                              <button class="btn btn-secondary btn-sm chat-button  viewAlternativeDevice"  data-category-id="${device.allData['category']}" data-request-id="${device.id}" data-button-id="chat" title="Request for Alternative Device">
-                                  &#128172; <!-- Speech Bubble -->
-                              </button>
-                          ` : ""}
-                           ${ device.purchase ?.cooAns ==='Rejected'  ? `
-                            <button class="btn btn-secondary btn-sm chat-button  viewAlternativeDevice"  data-category-id="${device.allData['category']}" data-request-id="${device.id}" data-button-id="chat" title="Request for Alternative Device">
-                                &#128172; <!-- Speech Bubble -->
-                            </button>
-                        ` : ""}
-
-
-                            <button class="btn btn-info btn-sm view-button chat"  data-buyingdevice-id="${device.purchase ?.purchaseDeviceSenderToInventoryDeviceId}" data-alternativedevice-id="${device.inventory.acceptedId}"   data-category-id="${device.allData['category']}" data-request-id="${device.id}" data-button-id="view" title="View Delivery device">
-                                &#128065;
-                            </button>
 
                         </div>
                     </td>
@@ -1039,640 +1050,19 @@ $(document).ready(function() {
               // Assign the HTML to the row and append it to the table body
               row.innerHTML = htmlData;
               tableBody.appendChild(row);
-          });
-          $(document).on('click', '.deliverDeviceForPurchase', function() {
-           var requestId=$(this).data('request-id');
-           var deviceId=$(this).data('buyingdevice-id');
-           var category=$(this).data('category-id');
-              var selectedDevices = [];
+            }
+          }
+          );
+          $(document).on('click', '.approveDeliveryDevice', function() {
+              var requestId = $(this).data('request-id');
+              var deviceId = $(this).data('buyingdevice-id');
+              var category = $(this).data('category-id');
 
-                     print('universalColumns', function(universalColumns) {
-                         var categoriesHtml = '';
-                         if (universalColumns) {
-                             universalColumns.forEach(function(category) {
-                                 categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
-                             });
-                         }
-
-                         var htmlToAdd = `
-                             <div class="mb-9" style="margin-left: 0%; text-align: left;">
-                                 <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
-                                     <thead>
-                                         <tr>
-                                             <th scope="col" style="background-color: gray;">SN</th>
-                                             <th scope="col" style="background-color: gray; display: none;">Device Id</th>
-                                             <th scope="col" style="background-color: gray;">Category Name</th>
-                                             ${categoriesHtml}
-                                             <th scope="col" style="background-color: gray;">Description</th>
-                                               <th scope="col" style="background-color: gray;">Action</th>
-                                         </tr>
-                                     </thead>
-                                     <tbody id="listDeviceInformationBody"></tbody>
-                                 </table>
-                                 <div class="d-flex justify-content-center mb-2">
-                                 <button class="btn btn-success btn-sm  btnSave" data-request-id="${requestId}"  style="width: 10%; margin-top: 20px;">Send</button>
-                                 </div>
-                             </div>
-                         `;
-
-                         $('.modal-body').html(htmlToAdd);
-                         $('#publicModalLabel').text("Device Information");
-
-                         var rowsHtml = '';
-                             print('requestData', function(requestData){
-                              if(requestData){
-
-                                 const requestInfo = requestData.find(item => item.id === requestId);
-                                 // Assuming you already have `rowsHtml` to construct your HTML.
-                                  let ids = deviceId || []; // Ensure it's a valid array.deviceIds || []; // Ensure it's a valid array
-                                  print('allAddData', function(allAddData) {
-                                     if (allAddData) {
-                                         print('individualColumns', function(individualColumns) {
-                                             allAddData.forEach(function(data, index) {
-                                                 if (data.categoryName === category && data.userName==='inventory' && data.id ===deviceId) {
-                                                     rowsHtml += `<tr>
-                                                         <td>${data.visibleId}</td>
-                                                         <td style="display: none;">${data.id}</td>
-                                                         <td>${data.categoryName}</td>`;
-
-                                                     universalColumns.forEach(function(column) {
-                                                         rowsHtml += `<td>${data.allData[column.columnName]}</td>`;
-                                                     });
-
-                                                     rowsHtml += `<td>
-                                                         <ul style="list-style: none; padding-left: 0; text-align: center;">`;
-
-                                                     if (individualColumns) {
-                                                         individualColumns.forEach(function(individualColumn) {
-                                                             if (individualColumn.categoryName === category) {
-                                                                 rowsHtml += `<li>${individualColumn.columnName} : ${data.allData[individualColumn.columnName]}</li>`;
-                                                             }
-                                                         });
-                                                     }
-
-
-
-                                                     rowsHtml += `
-                                                         <td>
-                                                             <input
-                                                                  name="selectDevice"
-                                                                 type="checkbox"
-                                                                 data-device-id="${data.id}"
-                                                                 data-button-id="accepted"
-                                                                 style="background-color: green; transform: scale(1.5); width: 12px; height: 12px;"
-                                                                 title="Delivery Device"
-                                                                 ${ids.includes(data.id) ? 'checked' : ''}>
-                                                         </td>
-                                                     </tr>`;
-
-                                                 }
-                                             });
-
-                                             // Populate the table only if rowsHtml has content
-                                             if (rowsHtml) {
-                                                 $('#listDeviceInformationBody').html(rowsHtml);
-
-                                                 // Show modal only if rows were added
-                                                 showModal();
-                                             } else {
-                                                 alert("No data found to display in the modal.");
-                                             }
-                                         });
-                                     }
-                                 });
-                              }
-                             });
-
-                            $('.btnSave').click(function(event) {
-                                        event.preventDefault(); // Prevent the default action (form submission)
-                                         var requestId=$(this).data('request-id');
-
-                                        const checkboxes = document.querySelectorAll('input[name="selectDevice"]:checked');
-                                        const selectedRows = Array.from(checkboxes).map(checkbox => {
-                                            const row = checkbox.closest('tr'); // Get the parent row of the checkbox
-                                            const secondColumn = row.querySelector('td:nth-child(2)'); // Get the second column (assuming columns are indexed from 1)
-
-                                            if (secondColumn) {
-                                                const secondColumnValue = secondColumn.textContent.trim(); // Get the text content of the second column
-                                                return secondColumnValue;
-                                            } else {
-                                                return null;
-                                            }
-                                        });
-
-                                        if(selectedRows.length==0){
-                                          alert("Please select a device.");
-                                        }
-                                        else if(selectedRows.length==1){
-                                         // Show a confirmation alert
-                                         const userConfirmed = confirm("Do you want to proceed with the selected device?");
-                                         if (userConfirmed) {
-                                              hideModal();
-                                              sendDeliveryDevice(requestId,selectedRows);
-                                         } else {
-                                             console.log("User canceled.");
-                                             // Handle the cancel action here
-                                         }
-                                        }
-                                        else{
-                                         alert("Please select only one device.");
-                                        }
-
-                                    });
-
-                     });
-          });
-          $(document).on('click', '.deliverDeviceForAlternative', function() {
-                     var requestId=$(this).data('request-id');
-                     var deviceId=$(this).data('alternativedevice-id');
-                     var category=$(this).data('category-id');
-                        var selectedDevices = [];
-
-                               print('universalColumns', function(universalColumns) {
-                                   var categoriesHtml = '';
-                                   if (universalColumns) {
-                                       universalColumns.forEach(function(category) {
-                                           categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
-                                       });
-                                   }
-
-                                   var htmlToAdd = `
-                                       <div class="mb-9" style="margin-left: 0%; text-align: left;">
-                                           <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
-                                               <thead>
-                                                   <tr>
-                                                       <th scope="col" style="background-color: gray;">SN</th>
-                                                       <th scope="col" style="background-color: gray; display: none;">Device Id</th>
-                                                       <th scope="col" style="background-color: gray;">Category Name</th>
-                                                       ${categoriesHtml}
-                                                       <th scope="col" style="background-color: gray;">Description</th>
-                                                         <th scope="col" style="background-color: gray;">Action</th>
-                                                   </tr>
-                                               </thead>
-                                               <tbody id="listDeviceInformationBody"></tbody>
-                                           </table>
-                                           <div class="d-flex justify-content-center mb-2">
-                                           <button class="btn btn-success btn-sm  btnSave" data-request-id="${requestId}"  style="width: 10%; margin-top: 20px;">Send</button>
-                                           </div>
-                                       </div>
-                                   `;
-
-                                   $('.modal-body').html(htmlToAdd);
-                                   $('#publicModalLabel').text("Device Information");
-
-                                   var rowsHtml = '';
-                                       print('requestData', function(requestData){
-                                        if(requestData){
-
-                                           const requestInfo = requestData.find(item => item.id === requestId);
-                                           // Assuming you already have `rowsHtml` to construct your HTML.
-                                            let ids = deviceId || []; // Ensure it's a valid array.deviceIds || []; // Ensure it's a valid array
-                                            print('allAddData', function(allAddData) {
-                                               if (allAddData) {
-                                                   print('individualColumns', function(individualColumns) {
-                                                       allAddData.forEach(function(data, index) {
-                                                           if (data.categoryName === category && data.userName==='inventory' && data.id ===deviceId) {
-                                                               rowsHtml += `<tr>
-                                                                   <td>${data.visibleId}</td>
-                                                                   <td style="display: none;">${data.id}</td>
-                                                                   <td>${data.categoryName}</td>`;
-
-                                                               universalColumns.forEach(function(column) {
-                                                                   rowsHtml += `<td>${data.allData[column.columnName]}</td>`;
-                                                               });
-
-                                                               rowsHtml += `<td>
-                                                                   <ul style="list-style: none; padding-left: 0; text-align: center;">`;
-
-                                                               if (individualColumns) {
-                                                                   individualColumns.forEach(function(individualColumn) {
-                                                                       if (individualColumn.categoryName === category) {
-                                                                           rowsHtml += `<li>${individualColumn.columnName} : ${data.allData[individualColumn.columnName]}</li>`;
-                                                                       }
-                                                                   });
-                                                               }
-
-
-
-                                                               rowsHtml += `
-                                                                   <td>
-                                                                       <input
-                                                                            name="selectDevice"
-                                                                           type="checkbox"
-                                                                           data-device-id="${data.id}"
-                                                                           data-button-id="accepted"
-                                                                           style="background-color: green; transform: scale(1.5); width: 12px; height: 12px;"
-                                                                           title="Delivery Device"
-                                                                           ${ids.includes(data.id) ? 'checked' : ''}>
-                                                                   </td>
-                                                               </tr>`;
-
-                                                           }
-                                                       });
-
-                                                       // Populate the table only if rowsHtml has content
-                                                       if (rowsHtml) {
-                                                           $('#listDeviceInformationBody').html(rowsHtml);
-
-                                                           // Show modal only if rows were added
-                                                           showModal();
-                                                       } else {
-                                                           alert("No data found to display in the modal.");
-                                                       }
-                                                   });
-                                               }
-                                           });
-                                        }
-                                       });
-
-                                      $('.btnSave').click(function(event) {
-                                                  event.preventDefault(); // Prevent the default action (form submission)
-                                                   var requestId=$(this).data('request-id');
-
-                                                  const checkboxes = document.querySelectorAll('input[name="selectDevice"]:checked');
-                                                  const selectedRows = Array.from(checkboxes).map(checkbox => {
-                                                      const row = checkbox.closest('tr'); // Get the parent row of the checkbox
-                                                      const secondColumn = row.querySelector('td:nth-child(2)'); // Get the second column (assuming columns are indexed from 1)
-
-                                                      if (secondColumn) {
-                                                          const secondColumnValue = secondColumn.textContent.trim(); // Get the text content of the second column
-                                                          return secondColumnValue;
-                                                      } else {
-                                                          return null;
-                                                      }
-                                                  });
-
-                                                  if(selectedRows.length==0){
-                                                    alert("Please select a device.");
-                                                  }
-                                                  else if(selectedRows.length==1){
-                                                   // Show a confirmation alert
-                                                   const userConfirmed = confirm("Do you want to proceed with the selected device?");
-                                                   if (userConfirmed) {
-                                                        hideModal();
-                                                        sendDeliveryDevice(requestId,selectedRows);
-                                                   } else {
-                                                       console.log("User canceled.");
-                                                       // Handle the cancel action here
-                                                   }
-                                                  }
-                                                  else{
-                                                   alert("Please select only one device.");
-                                                  }
-
-                                              });
-
-                               });
-                    });
-          $(document).on('click', '.purchase', function() {
-           var requestId=$(this).data('request-id');
-              var htmlToAdd = `
-                <div class="mb-3" style="margin-right: 0%; text-align: right;">
-                    <button type="button" class="btn btn-primary" data-request-id="${requestId}" id="AcceptBtn">Yes</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                </div>
-            `;
-            $('.modal-body').html(htmlToAdd);
-            $('#publicModalLabel').text("Do you want to Purchase this Product ?");
-            $('#AcceptBtn').click(function() {
-
-                setRequestStatus(requestId, "Purchased");
-            });
-            showModal();
-           });
-           $(document).on('click', '.viewAlternativeDevice', function() {
-                                   var category = $(this).data('category-id');
-                                   var requestId=$(this).data('request-id');
-
-                                    var selectedDevices = [];
-
-                                    print('universalColumns', function(universalColumns) {
-                                        var categoriesHtml = '';
-                                        if (universalColumns) {
-                                            universalColumns.forEach(function(category) {
-                                                categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
-                                            });
-                                        }
-
-                                        var htmlToAdd = `
-                                            <div class="mb-9" style="margin-left: 0%; text-align: left;">
-                                                <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col" style="background-color: gray;">SN</th>
-                                                            <th scope="col" style="background-color: gray; display: none;">Device Id</th>
-                                                            <th scope="col" style="background-color: gray;">Category Name</th>
-                                                            ${categoriesHtml}
-                                                            <th scope="col" style="background-color: gray;">Description</th>
-                                                              <th scope="col" style="background-color: gray;">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="listDeviceInformationBody"></tbody>
-                                                </table>
-                                                <div class="d-flex justify-content-center mb-2">
-                                                <button class="btn btn-success btn-sm  btnSave" data-request-id="${requestId}"  style="width: 10%; margin-top: 20px;">Send</button>
-                                                </div>
-                                            </div>
-                                        `;
-
-                                        $('.modal-body').html(htmlToAdd);
-                                        $('#publicModalLabel').text("Device Information");
-
-                                        var rowsHtml = '';
-
-                                        print('allAddData', function(allAddData) {
-                                            if (allAddData) {
-                                                print('individualColumns', function(individualColumns) {
-                                                    allAddData.forEach(function(data, index) {
-                                                        if (data.categoryName === category && data.userName==='inventory' && data.bookingStatus !=='Booked') {
-                                                            rowsHtml += `<tr>
-                                                                <td>${data.visibleId}</td>
-                                                                <td style="display: none;">${data.id}</td>
-                                                                <td>${data.categoryName}</td>`;
-
-                                                            universalColumns.forEach(function(column) {
-                                                                rowsHtml += `<td>${data.allData[column.columnName]}</td>`;
-                                                            });
-
-                                                            rowsHtml += `<td>
-                                                                <ul style="list-style: none; padding-left: 0; text-align: center;">`;
-
-                                                            if (individualColumns) {
-                                                                individualColumns.forEach(function(individualColumn) {
-                                                                    if (individualColumn.categoryName === category) {
-                                                                        rowsHtml += `<li>${individualColumn.columnName} : ${data.allData[individualColumn.columnName]}</li>`;
-                                                                    }
-                                                                });
-                                                            }
-
-                                                            rowsHtml += `</ul></td>
-                                                            <td><input type="checkbox"  data-device-id="${data.id}" data-button-id="accepted" style="background-color: green; transform: scale(1.5); width: 12px; height: 12px;"  title="Delivery Device"></td>
-                                                            </tr>`;
-                                                        }
-                                                    });
-
-                                                    // Populate the table only if rowsHtml has content
-                                                    if (rowsHtml) {
-                                                        $('#listDeviceInformationBody').html(rowsHtml);
-
-                                                        // Show modal only if rows were added
-                                                        showModal();
-                                                    } else {
-                                                        alert("No data found to display in the modal.");
-                                                    }
-                                                });
-                                            }
-                                        });
-                                         $('.btnSave').click(function() {
-                                             var requestId=$(this).data('request-id');
-                                            addTableInformationAlternativeDeviceRequest(requestId)
-                                          });
-
-                                    });
-                                 });
-           $(document).on('click', '.chat', function() {
-             var category = $(this).data('category-id');
-             var deviceId;
-              deviceId=$(this).data('alternativedevice-id');
-              if(deviceId==null){
-               deviceId=$(this).data('buyingdevice-id');
+              // Add confirmation
+              if (confirm("Are you sure you want to approve delivery for this device?")) {
+                  approveFinalPurchaseDeviceDelivery(requestId, deviceId);
               }
-
-              var selectedDevices = [];
-
-              print('universalColumns', function(universalColumns) {
-                  var categoriesHtml = '';
-                  if (universalColumns) {
-                      universalColumns.forEach(function(category) {
-                          categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
-                      });
-                  }
-
-                  var htmlToAdd = `
-                      <div class="mb-9" style="margin-left: 0%; text-align: left;">
-                          <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
-                              <thead>
-                                  <tr>
-                                      <th scope="col" style="background-color: gray;">SN</th>
-                                      <th scope="col" style="background-color: gray; display: none;">Device Id</th>
-                                      <th scope="col" style="background-color: gray;">Category Name</th>
-                                      ${categoriesHtml}
-                                      <th scope="col" style="background-color: gray;">Description</th>
-
-                                  </tr>
-                              </thead>
-                              <tbody id="listDeviceInformationBody"></tbody>
-                          </table>
-                      </div>
-                  `;
-
-                  $('.modal-body').html(htmlToAdd);
-                  $('#publicModalLabel').text("Device Information");
-
-                  var rowsHtml = '';
-
-                  print('allAddData', function(allAddData) {
-                      if (allAddData) {
-                          print('individualColumns', function(individualColumns) {
-                              allAddData.forEach(function(data, index) {
-                                  if (data.categoryName === category && data.userName==='inventory' && data.id ===deviceId) {
-                                      rowsHtml += `<tr>
-                                          <td>${data.visibleId}</td>
-                                          <td style="display: none;">${data.id}</td>
-                                          <td>${data.categoryName}</td>`;
-
-                                      universalColumns.forEach(function(column) {
-                                          rowsHtml += `<td>${data.allData[column.columnName]}</td>`;
-                                      });
-
-                                      rowsHtml += `<td>
-                                          <ul style="list-style: none; padding-left: 0; text-align: center;">`;
-
-                                      if (individualColumns) {
-                                          individualColumns.forEach(function(individualColumn) {
-                                              if (individualColumn.categoryName === category) {
-                                                  rowsHtml += `<li>${individualColumn.columnName} : ${data.allData[individualColumn.columnName]}</li>`;
-                                              }
-                                          });
-                                      }
-
-                                      rowsHtml += `</ul></td>
-
-                                      </tr>`;
-                                  }
-                              });
-
-                              // Populate the table only if rowsHtml has content
-                              if (rowsHtml) {
-                                  $('#listDeviceInformationBody').html(rowsHtml);
-
-                                  // Show modal only if rows were added
-                                  showModal();
-                              } else {
-                                  alert("No data found to display in the modal.");
-                              }
-                          });
-                      }
-                  });
-              });
-           });
-           $(document).on('click', '.viewAvailability', function() {
-                         // var requestId = $(this).data('request-id');
-
-                         var category = $(this).data('category-id');
-                          var selectedDevices = [];
-
-                          print('universalColumns', function(universalColumns) {
-                              var categoriesHtml = '';
-                              if (universalColumns) {
-                                  universalColumns.forEach(function(category) {
-                                      categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
-                                  });
-                              }
-
-                              var htmlToAdd = `
-                                  <div class="mb-9" style="margin-left: 0%; text-align: left;">
-                                      <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
-                                          <thead>
-                                              <tr>
-                                                  <th scope="col" style="background-color: gray;">SN</th>
-                                                  <th scope="col" style="background-color: gray; display: none;">Device Id</th>
-                                                  <th scope="col" style="background-color: gray;">Category Name</th>
-                                                  ${categoriesHtml}
-                                                  <th scope="col" style="background-color: gray;">Description</th>
-                                              </tr>
-                                          </thead>
-                                          <tbody id="listDeviceInformationBody"></tbody>
-                                      </table>
-                                  </div>
-                              `;
-
-                              $('.modal-body').html(htmlToAdd);
-                              $('#publicModalLabel').text("Device Information");
-
-                              var rowsHtml = '';
-
-                              print('allAddData', function(allAddData) {
-                                  if (allAddData) {
-                                      print('individualColumns', function(individualColumns) {
-                                          allAddData.forEach(function(data, index) {
-                                              if (data.categoryName === category && data.userName==='inventory') {
-                                                  rowsHtml += `<tr>
-                                                      <td>${data.visibleId}</td>
-                                                      <td style="display: none;">${data.id}</td>
-                                                      <td>${data.categoryName}</td>`;
-
-                                                  universalColumns.forEach(function(column) {
-                                                      rowsHtml += `<td>${data.allData[column.columnName]}</td>`;
-                                                  });
-
-                                                  rowsHtml += `<td>
-                                                      <ul style="list-style: none; padding-left: 0; text-align: center;">`;
-
-                                                  if (individualColumns) {
-                                                      individualColumns.forEach(function(individualColumn) {
-                                                          if (individualColumn.categoryName === category) {
-                                                              rowsHtml += `<li>${individualColumn.columnName} : ${data.allData[individualColumn.columnName]}</li>`;
-                                                          }
-                                                      });
-                                                  }
-
-                                                  rowsHtml += `</ul></td></tr>`;
-                                              }
-                                          });
-
-                                          // Populate the table only if rowsHtml has content
-                                          if (rowsHtml) {
-                                              $('#listDeviceInformationBody').html(rowsHtml);
-
-                                              // Show modal only if rows were added
-                                              showModal();
-                                          } else {
-                                              alert("No data found to display in the modal.");
-                                          }
-                                      });
-                                  }
-                              });
-                          });
-                      });
-
-            $(document).on('click', '.viewInfo', function() {
-                var requestId = $(this).data('request-id');
-
-                // Fetch requestData
-                print('requestData', function(requestData) {
-                    if (requestData) {
-                        // Find the specific device using its ID
-                        const device = requestData.find(function(data1) {
-                            return data1.id === requestId;
-                        });
-
-                        // Array to store selected devices (if needed later)
-                        var selectedDevices = [];
-
-                        // Fetch universal columns for table headers
-                        print('requestColumns', function(universalColumns) {
-                            var categoriesHtml = '';
-
-                            if (universalColumns) {
-                                universalColumns.forEach(function(category) {
-                                    categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
-                                });
-                            }
-
-                            // Build the table structure
-                            var htmlToAdd = `
-                                <div class="mb-9" style="margin-left: 0%; text-align: left;">
-                                    <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" style="background-color: gray;">SN1</th>
-                                                <th scope="col" style="background-color: gray; display: none;">Device Id</th>
-                                                <th scope="col" style="background-color: gray;">Category Name</th>
-                                                ${categoriesHtml}
-
-                                            </tr>
-                                        </thead>
-                                        <tbody id="listDeviceInformationBody"></tbody>
-                                    </table>
-                                </div>
-                            `;
-
-                            // Populate modal body
-                            $('.modal-body').html(htmlToAdd);
-                            $('#publicModalLabel').text("Request Information");
-
-                            // Fetch columns to populate table rows
-                            print('requestColumns', function(requestColumns) {
-                                if (requestColumns && device) {
-                                    var rowsHtml = `
-                                        <tr>
-                                            <td>${device.visibleRequestId || ''}</td>
-                                            <td style="display: none;">${device.id || ''}</td>
-                                            <td>${device.allData['category'] || 'N/A'}</td>
-                                    `;
-
-                                    // Add dynamic columns
-                                    requestColumns.forEach(function(column) {
-                                        rowsHtml += `<td>${device.allData[column.columnName] || 'N/A'}</td>`;
-                                    });
-
-
-
-                                    // Add rows to the table
-                                    $('#listDeviceInformationBody').html(rowsHtml);
-                                }
-                            });
-
-                            // Display the modal
-                            showModal();
-                        });
-                    }
-                });
-            });
-
-
-
+          });
 
 
         },

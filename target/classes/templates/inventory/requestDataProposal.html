@@ -41,7 +41,7 @@
                         </th>
                         <th scope="col" style="background-color: gray;"> Status In Purchase</th>
                         <th scope="col" style="background-color: gray;">  Status In COO</th>
-                        <th scope="col" style="background-color: gray;">  Delivery Status </th>
+                        <th scope="col" style="background-color: gray;"> Purchase Device Delivery Status </th>
 
                         <th scope="col" style="background-color: gray;">Action</th>
                     </tr>
@@ -75,7 +75,7 @@
 
                         <td >
                             <div class="d-flex justify-content-center align-items-center action-button-container">
-                            <button class="btn btn-primary btn-sm text-white fas"   th:data-purchasedevice-id="${device.purchase?.purchaseDeviceSenderToInventoryDeviceId}" th:data-request-id="${device.id}" th:if="${device.purchase?.purchaseDeviceSenderToInventoryStatus=='Pending'}" th:data-button-id="deliver">
+                            <button class="btn btn-primary btn-sm text-white fas"   th:data-purchasedevice-id="${device.purchase?.purchaseDeviceSenderToInventoryDeviceId}" th:data-request-id="${device.id}" th:if="${device.purchase?.purchaseDeviceSenderToInventoryStatus=='Pending'}" th:data-button-id="deliver" title="Accept Device From Purchase">
                                 ✔</button>
                             </div>
 

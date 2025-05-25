@@ -1,6 +1,6 @@
 
 function saveIndividualColumnBtn(categoryName,columnName,dataType,requiredType) {
-
+          alert("Add")
           var individualColumnTableBody = $('#individualColumnTableBody');
           var totalRows = individualColumnTableBody.children('tr').length+1;
            console.log("Total Rows: " + totalRows);

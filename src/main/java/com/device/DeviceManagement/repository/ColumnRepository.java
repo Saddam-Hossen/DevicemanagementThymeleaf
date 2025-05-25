@@ -5,6 +5,7 @@ import com.device.DeviceManagement.model.Column;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ColumnRepository extends MongoRepository<Column, String> {
 
@@ -12,9 +13,9 @@ public interface ColumnRepository extends MongoRepository<Column, String> {
 
     Column findByColumnNameAndStatus(String columnName,String status);
     Column findByColumnNameAndColumnTypeAndStatus(String columnName,String columnType,String status);
-    Column findByCategoryNameAndColumnNameAndColumnTypeAndStatus(String categoryName,String columnName,String columnType,String status);
+    //Column findByCategoryNameAndColumnNameAndColumnTypeAndStatus(String categoryName,String columnName,String columnType,String status);
     List<Column> findByColumnTypeAndStatus(String columnType,String status);
-
+    Optional<Column> findByCategoryNameAndColumnNameAndColumnTypeAndStatus(String categoryName, String columnName, String columnType, String status);
     List<Column> findByColumnType(String columnType);
     List<Column> findByCategoryName(String categoryName);
     boolean existsByColumnNameAndCategoryNameAndStatus(String columnName,String categoryName,String status);

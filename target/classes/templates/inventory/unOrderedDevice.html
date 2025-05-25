@@ -13,11 +13,7 @@
         <div class="col-sm-12 firstDiv" >
             <div  class="leftDiv" >
                 <!-- Toggle Content Button -->
-                <div class="d-flex justify-content-center mb-2">
-                    <!--        <button class="btn btn-success btn-sm" onclick="addIndividualColumnToggle()" style="width: 10%;">Add</button>-->
-                    <button class="btn btn-success btn-sm" onclick="addDeviceInformationOfExtraDevice()" style="width: 15%; white-space: nowrap;">Add Device</button>
 
-                </div>
 
                 <table id="unOrderedDeviceTable" >
                     <thead id="tableHeaderAddData" >
@@ -34,10 +30,9 @@
                     </thead>
                     <tbody id="unOrderedDeviceBody">
                     <tr th:each="device, iterStat : ${allDeviceData}"
-                        th:if="${device.userName == departmentName and
+                        th:if="${device.userName == 'purchase' and
                         device.unOrderedDevice != null and
-                        (device.unOrderedDevice.COOUnOrderedDeviceAcceptedStatus == 'UnOrdered' or
-                         device.unOrderedDevice.COOUnOrderedDeviceAcceptedStatus == 'Ordered')}">
+                        (device.unOrderedDevice.unWantedSendDeviceToInventoryStatus == 'Pending' )}">
 
                         <td scope="row" th:text="${device.visibleId}">1</td>
                         <td th:text="${device.categoryName}">categoryName</td>
@@ -59,20 +54,14 @@
 
                         <td>
                             <div class="d-flex justify-content-center align-items-center action-button-container">
-                                <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2" th:data-device-id="${device.id}"></button>
-                                <button class="btn btn-sm  fas fa-trash text-danger small-button Delete ms-2" th:data-device-id="${device.id}"></button>
-                                <input type="checkbox"  th:data-device-id="${device.id}" th:data-button-id="accepted" style="background-color: green; transform: scale(1.5); width: 12px; height: 12px;"  title="Select For Export" th:if="${device.unOrderedDevice != null and device.unOrderedDevice.COOUnOrderedDeviceAcceptedStatus == 'Ordered'}">
-                                <button class="btn btn-primary btn-sm text-white fas  deliverUnOrdered" th:data-category-id="${device.allData['category']}" th:data-device-id="${device.id}"   title="Deliver Device" th:if="${device.unOrderedDevice != null and device.unOrderedDevice.extraDeviceExportingStatus == 'Exported'}">
-                                    &#xf0d1;
-                                </button>
+                                <button class="btn  btn-sm text-white receiveUnOrdered" th:data-device-id="${device.id}" style="background-color:green;"  title="Accept un ordered device">✔</button>
+
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-center mb-2">
-                    <button class="btn btn-success btn-sm" onclick="exportToModalOfSelectedRow()" style="width: 10%; margin-top: 20px;">Export</button>
-                </div>
+
             </div>
         </div>
         <div class="col-sm-0 secondDiv"  style="display:none;" >

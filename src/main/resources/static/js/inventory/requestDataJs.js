@@ -233,7 +233,7 @@ function printRejectCause(element) {
         showModal();
     }
 
-    function print(dataType, callback) {
+ function print(dataType, callback) {
             // Ensure callback is a function
             if (typeof callback !== 'function') {
                 console.error('Callback is not a function');
@@ -255,7 +255,7 @@ function printRejectCause(element) {
             });
         }
 
-        function columnValue(requestId, columnName, callback) {
+ function columnValue(requestId, columnName, callback) {
             print('requestData', function(allAddData) {
                 const deviceData = allAddData.find(item => item.id === requestId);
 
@@ -275,7 +275,7 @@ function printRejectCause(element) {
             });
         }
 
-         $(document).ready(function() {
+ $(document).ready(function() {
                     $('.hideButton').click(function() {
                         // Hide the second column
                         $('.secondDiv').hide();
@@ -300,7 +300,7 @@ function printRejectCause(element) {
                     });
                 });
 
-                 function printRowDataForCustomerCare(row) {
+ function printRowDataForCustomerCare(row) {
                              // Get all the cells of the clicked row
                              var cells = row.getElementsByTagName('td');
                              var rowData = [];
@@ -809,7 +809,7 @@ function printRejectCause(element) {
                              }
                          }
 
-                         function formatDate(inputDate) {
+ function formatDate(inputDate) {
                              // Split the input date into components
                              var parts = inputDate.split('-'); // parts[0] = '2024', parts[1] = '08', parts[2] = '20'
 
@@ -818,7 +818,7 @@ function printRejectCause(element) {
 
                              return formattedDate;
                          }
-                function formatDateTime(inputDateTime) {
+ function formatDateTime(inputDateTime) {
                     // Check if inputDateTime is undefined or null
                     if (!inputDateTime) {
                         console.error("inputDateTime is undefined or null");
@@ -852,7 +852,7 @@ function printRejectCause(element) {
                     return formattedDate;
                 }
 
-                function formatTime(inputDateTime) {
+function formatTime(inputDateTime) {
                     // Split the input datetime to separate date and time
                     var dateTimeParts = inputDateTime.split(' '); // ['2024-08-20', '15:02:26']
 
@@ -915,6 +915,7 @@ $(document).ready(function() {
               const categoryName = device.allData["category"] || "N/A";
               const sn = device.visibleRequestId || "N/A";
               console.log(bivagName);
+
              const availability = getAvailability(categoryName);
               // Create a new row
               const row = document.createElement("tr");
@@ -975,7 +976,8 @@ $(document).ready(function() {
 
           // Add new cells for `cooDeliveryAns` and `checkAvailability`
               htmlData += `
-                  <td>${device.inventory?.cooDeliveryAns || ' '}</td>
+               <td>${device.inventory?.cooDeliveryAns || 'Pending'}</td>
+                 <td>${device.inventory?.inventoryToCustomerCareDeviceSendingStatus || 'Pending'}</td>
                   <td>
                       <button class="btn btn-info btn-sm viewAvailability" data-category-id="${categoryName}" data-request-id="${device.id}" data-button-id="viewAlternative" title="View Available Same Accessories Category Devices" >
                           ${availability}

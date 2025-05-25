@@ -138,6 +138,47 @@ function addTableInformationOfDevice(categoryName,requestId) {
          }
      });
  }
+ function addTableInformationOfDevicePurchase(categoryName,requestId) {
+      // Serialize form data
+      var formData = $("#dynamicFormAddDevice").serialize();
+
+
+             var departmentElement = $(".departmentName"); // Target element with department data
+             var departmentName = departmentElement.data("departmentname"); // e.g., "it"
+             var departmentUserName = departmentElement.data("departmentuser-name"); // e.g., "saho"
+             var departmentUserId = departmentElement.data("departmentuser-id"); // e.g., "sahoid"
+
+      // Get the selected starting date, username, and userId
+      var startingDate = $('#calendar').val(); // Fetch value from the date input
+
+      var deviceType = $('#deviceType').val();
+
+
+      // Append the category name, department name, starting date, username, and userId to the form data
+      formData += '&categoryName=' + encodeURIComponent(categoryName);
+      formData += '&departmentName=' + encodeURIComponent(departmentName);
+      formData += '&userName=' + encodeURIComponent(departmentUserName);
+      formData += '&userId=' + encodeURIComponent(departmentUserId);
+      formData += '&deviceType=' + encodeURIComponent(deviceType);
+      formData += '&requestId=' + encodeURIComponent(requestId);
+
+      // Debugging: Print the collected data
+      console.log("Form Data:", formData);
+
+      // AJAX call to save data
+      $.ajax({
+          url: '/purchase/addDeviceInformationPurchase', // URL to your endpoint for saving data
+          type: 'POST',
+          data: formData, // Send serialized form data along with additional fields
+          success: function(response) {
+              alert(response);
+              location.reload(); // Refresh the page
+          },
+          error: function(xhr, status, error) {
+              console.error("Error saving data: " + error);
+          }
+      });
+  }
 function listRequest(requestId,deviceIds) {
     // AJAX code
     $.ajax({
@@ -267,7 +308,7 @@ function saveTableInformationOfDevice(requestId,categoryName){
              });
  }
 $(document).ready(function() {
-    $('#requestInventoryTable tbody tr').click(function(event) {
+    $('#requestPurchaseTable tbody tr').click(function(event) {
         var $row = $(this); // Store the clicked row element
         var button = $(event.target).closest('button');
          var buttonPTag = $(event.target).closest('td');
@@ -285,7 +326,6 @@ $(document).ready(function() {
         console.log(`Request ID: ${requestId}`);
         // Check if the button has a specific class
 if(buttonId ==="deliverPurchase"){
-alert("hfbgdf")
         var selectedDevices = [];
 
         print('universalColumns', function(universalColumns) {
@@ -499,20 +539,27 @@ alert("hfbgdf")
 
 
         }
-        else if (buttonId === "accepted"){
-
+        else if (buttonId === "addDevice"){
          var departmentElement = $(".departmentName"); // Assuming you set a unique ID for the `<a>` element
          var departmentName = departmentElement.data("departmentuser-name");
 
              var htmlToAdd = `
                 <div class="mb-3" style="margin-left: 0%; text-align: left;">
-                    <div class="dropdown">
-                        <label for="deviceInputFieldAdd" class="form-label">Category Name</label>
-                        <input type="text" value="${text}"class="form-control dropdown-toggle custom-width" id="deviceInputFieldAdd" data-bs-toggle="dropdown" placeholder="Category" aria-expanded="false">
-                        <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownTextFieldPopupBox" id="deviceInputAddUlList">
-                           <div id="listItemAddDevice"></div>
-                        </ul>
-                    </div>
+                   <div class="dropdown">
+                       <label for="deviceInputFieldAdd" class="form-label">Category Name</label>
+                       <input
+                           type="text"
+                           value="${text}"
+                           class="form-control custom-width"
+                           id="deviceInputFieldAdd"
+                           placeholder="Category"
+                           aria-expanded="false"
+                           readonly
+
+                       >
+
+                   </div>
+
                 </div>
 
 
@@ -543,20 +590,10 @@ alert("hfbgdf")
 
             // Add the HTML code to the modal body using jQuery
             $('.modal-body').html(htmlToAdd);
-            $('#publicModalLabel').text("Add Old Device Information")
+            $('#publicModalLabel').text("Add Device Information")
 
-             print('categories', function(categories) {
-                   if (categories) {
-                       // Generate HTML for categories
-                       var categoriesHtml = '';
-                       categories.forEach(function(category) {
-                           categoriesHtml += `<li><a class="dropdown-item deviceInputEachItem" href="#" th:text="${category.categoryName}">${category.categoryName}</a></li>`;
-                       });
+            $('#universalDiv').empty();
 
-                       // Insert evaluated Thymeleaf expression
-                       $('#listItemAddDevice').html(categoriesHtml);
-                   }
-               });
              print('universalColumns', function(universalColumns) {
                if (universalColumns) {
                    // Generate HTML for categories
@@ -644,18 +681,19 @@ alert("hfbgdf")
 
                   if (categoriesHtml && !categoriesHtml.includes('customDropDownList')) {
                       // Only update if there's no custom dropdown list pending
-                        console.log(" check "+categoriesHtml);
+                      //  console.log(" check "+categoriesHtml);
                       $('#universalDiv').html(categoriesHtml);
                   }
                }
            });
+           $('#deviceDiv').empty();
            // Show all Individual column according to category
+
              print('individualColumns', function(individualColumns) {
                        if (individualColumns) {
                        var categoriesHtml = '';
                            individualColumns.forEach(function(column) {
                                if (text === column.categoryName) {
-                                   console.log(column.columnName);
                                    switch (column.dataType) {
                                          case 'text':
                                              categoriesHtml += `<div class="mb-3"><label>${column.columnName} (${column.dataType})</label><input type="text" class="form-control" placeholder="Text" name="${column.columnName}"></div>`;
@@ -744,11 +782,12 @@ alert("hfbgdf")
              $('#saveEditBtn').click(function() {
                  var categoryName=$('#deviceInputFieldAdd').val();
                       var requestId=$(this).data('request-id');
-                  addTableInformationOfDevice(categoryName,requestId);
+                  addTableInformationOfDevicePurchase(categoryName,requestId);
                 });
 
           showModal();
          }
+
          else if (buttonId === "chat") {
 
            var htmlToAdd = `
@@ -1581,7 +1620,7 @@ $(document).ready(function() {
 
             var allData = data['serviceRequests'];
             var allAddData = data['allAddData'];
-            const tableBody = document.getElementById("requestInventoryTableBody");
+            const tableBody = document.getElementById("requestPurchaseTableBody");
 
             // Function to check availability count
             function getAvailability(categoryName) {
@@ -1936,10 +1975,8 @@ $(document).ready(function() {
                            <div class="mb-3" style="margin-left: 0%; text-align: left;">
                                <div class="dropdown">
                                    <label for="deviceInputFieldAdd" class="form-label">Category Name</label>
-                                   <input type="text" value="${text}"class="form-control dropdown-toggle custom-width" id="deviceInputFieldAdd" data-bs-toggle="dropdown" placeholder="Category" aria-expanded="false">
-                                   <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownTextFieldPopupBox" id="deviceInputAddUlList">
-                                      <div id="listItemAddDevice"></div>
-                                   </ul>
+                                   <input type="text" value="${text}"class="form-control dropdown-toggle custom-width" id="deviceInputFieldAdd" data-bs-toggle="dropdown" placeholder="Category" aria-expanded="false" readonly>
+
                                </div>
                            </div>
 
@@ -1973,18 +2010,7 @@ $(document).ready(function() {
                        $('.modal-body').html(htmlToAdd);
                        $('#publicModalLabel').text("Add Old Device Information")
 
-                        print('categories', function(categories) {
-                              if (categories) {
-                                  // Generate HTML for categories
-                                  var categoriesHtml = '';
-                                  categories.forEach(function(category) {
-                                      categoriesHtml += `<li><a class="dropdown-item deviceInputEachItem" href="#" th:text="${category.categoryName}">${category.categoryName}</a></li>`;
-                                  });
 
-                                  // Insert evaluated Thymeleaf expression
-                                  $('#listItemAddDevice').html(categoriesHtml);
-                              }
-                          });
                         print('universalColumns', function(universalColumns) {
                           if (universalColumns) {
                               // Generate HTML for categories

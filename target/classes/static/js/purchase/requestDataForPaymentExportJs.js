@@ -94,7 +94,7 @@ function confirmExport(){
              success: function (response) {
                 // alert(response); // Display success response
                  confirmExport1(); // pdf download
-                 //location.reload(); // Refresh the page
+                 location.reload(); // Refresh the page
              },
              error: function (xhr, status, error) {
                  alert("Error: " + error); // Display error response

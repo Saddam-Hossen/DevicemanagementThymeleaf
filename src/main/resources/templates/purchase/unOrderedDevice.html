@@ -62,7 +62,7 @@
                                 <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2" th:data-device-id="${device.id}"></button>
                                 <button class="btn btn-sm  fas fa-trash text-danger small-button Delete ms-2" th:data-device-id="${device.id}"></button>
                                 <input type="checkbox"  th:data-device-id="${device.id}" th:data-button-id="accepted" style="background-color: green; transform: scale(1.5); width: 12px; height: 12px;"  title="Select For Export" th:if="${device.unOrderedDevice != null and device.unOrderedDevice.COOUnOrderedDeviceAcceptedStatus == 'Ordered'}">
-                                <button class="btn btn-primary btn-sm text-white fas  deliverPurchase" th:data-category-id="${device.allData['category']}" th:data-device-id="${device.id}"   title="Deliver Device" th:if="${device.unOrderedDevice != null and device.unOrderedDevice.extraDeviceExportingStatus == 'Exported'}">
+                                <button class="btn btn-primary btn-sm text-white fas  deliverUnOrdered" th:data-category-id="${device.allData['category']}" th:data-device-id="${device.id}"   title="Deliver Device" th:if="${device.unOrderedDevice != null and device.unOrderedDevice.extraDeviceExportingStatus == 'Exported'}">
                                     &#xf0d1;
                                 </button>
                             </div>

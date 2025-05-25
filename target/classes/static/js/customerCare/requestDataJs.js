@@ -1017,14 +1017,17 @@ $(document).ready(function() {
                  <td>${device.customerCare?.customerCareToDepartmentDeviceSendingStatus || " "}</td>
 
               `;
+               htmlData += `
+                     <td>${device.inventory?.cooDeliveryAns || "Pending"}</td>
+                    `;
 
             // Action buttons column
                 htmlData += `
                     <td>
                         <div class="d-flex justify-content-center align-items-center action-button-container">
 
-                             ${ device.inventory ?.inventoryToCustomerCareDeviceSendingStatus ==='Pending' ? `
-                              <button class="btn  btn-sm text-white Accept" data-category-id="${device.allData['category']}" data-alternativedevice-id="${device.inventory?.acceptedId}" data-buyingdevice-id="${device.purchase?.purchaseDeviceSenderToInventoryDeviceId}" data-request-id="${device.id}" data-button-id="accepted" style="background-color:green;" >✔</button>
+                             ${ device.inventory ?.inventoryToCustomerCareDeviceSendingStatus ==='Pending' && (device.inventory ?.cooDeliveryAns ==='Accepted' || device.inventory ?.cooDeliveryAns ==='Approved') ? `
+                              <button class="btn  btn-sm text-white Accept" data-category-id="${device.allData['category']}" data-alternativedevice-id="${device.inventory?.acceptedId}" data-buyingdevice-id="${device.purchase?.purchaseDeviceSenderToInventoryDeviceId}" data-request-id="${device.id}" data-button-id="accepted" style="background-color:green;" title="Accept Device">✔</button>
 
                           ` : ""}
 

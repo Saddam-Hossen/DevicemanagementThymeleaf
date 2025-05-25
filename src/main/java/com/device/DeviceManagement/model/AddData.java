@@ -323,6 +323,11 @@ public class AddData {
         private String extraDeviceExportingTime;
         private String extraDeviceExportingManName;
         private String extraDeviceExportingStatus;
+        private String unWantedSendDeviceToInventoryStatus;
+        private String unWantedSendDeviceToInventoryTime;
+        private String unWantedSendDeviceToInventoryManInfo;
+        private String unWantedReceiveDeviceInventoryManInfo;
+        private String UnWantedReceiveDeviceInventoryTime;
 
         public UnOrderedDevice() {
         }
@@ -447,6 +452,46 @@ public class AddData {
             this.extraDeviceExportingStatus = extraDeviceExportingStatus;
         }
 
+        public String getUnWantedSendDeviceToInventoryStatus() {
+            return unWantedSendDeviceToInventoryStatus;
+        }
+
+        public void setUnWantedSendDeviceToInventoryStatus(String unWantedSendDeviceToInventoryStatus) {
+            this.unWantedSendDeviceToInventoryStatus = unWantedSendDeviceToInventoryStatus;
+        }
+
+        public String getUnWantedSendDeviceToInventoryTime() {
+            return unWantedSendDeviceToInventoryTime;
+        }
+
+        public void setUnWantedSendDeviceToInventoryTime(String unWantedSendDeviceToInventoryTime) {
+            this.unWantedSendDeviceToInventoryTime = unWantedSendDeviceToInventoryTime;
+        }
+
+        public String getUnWantedSendDeviceToInventoryManInfo() {
+            return unWantedSendDeviceToInventoryManInfo;
+        }
+
+        public void setUnWantedSendDeviceToInventoryManInfo(String unWantedSendDeviceToInventoryManInfo) {
+            this.unWantedSendDeviceToInventoryManInfo = unWantedSendDeviceToInventoryManInfo;
+        }
+
+        public String getUnWantedReceiveDeviceInventoryManInfo() {
+            return unWantedReceiveDeviceInventoryManInfo;
+        }
+
+        public void setUnWantedReceiveDeviceInventoryManInfo(String unWantedReceiveDeviceInventoryManInfo) {
+            this.unWantedReceiveDeviceInventoryManInfo = unWantedReceiveDeviceInventoryManInfo;
+        }
+
+        public String getUnWantedReceiveDeviceInventoryTime() {
+            return UnWantedReceiveDeviceInventoryTime;
+        }
+
+        public void setUnWantedReceiveDeviceInventoryTime(String unWantedReceiveDeviceInventoryTime) {
+            UnWantedReceiveDeviceInventoryTime = unWantedReceiveDeviceInventoryTime;
+        }
+
         @Override
         public String toString() {
             return "UnOrderedDevice{" +
@@ -465,6 +510,11 @@ public class AddData {
                     ", extraDeviceExportingTime='" + extraDeviceExportingTime + '\'' +
                     ", extraDeviceExportingManName='" + extraDeviceExportingManName + '\'' +
                     ", extraDeviceExportingStatus='" + extraDeviceExportingStatus + '\'' +
+                    ", unWantedSendDeviceToInventoryStatus='" + unWantedSendDeviceToInventoryStatus + '\'' +
+                    ", unWantedSendDeviceToInventoryTime='" + unWantedSendDeviceToInventoryTime + '\'' +
+                    ", unWantedSendDeviceToInventoryManInfo='" + unWantedSendDeviceToInventoryManInfo + '\'' +
+                    ", unWantedReceiveDeviceInventoryManInfo='" + unWantedReceiveDeviceInventoryManInfo + '\'' +
+                    ", UnWantedReceiveDeviceInventoryTime='" + UnWantedReceiveDeviceInventoryTime + '\'' +
                     '}';
         }
     }

@@ -523,7 +523,7 @@ $(document).ready(function() {
 
                          if (categoriesHtml && !categoriesHtml.includes('customDropDownList')) {
                              // Only update if there's no custom dropdown list pending
-                               console.log(" check "+categoriesHtml);
+                             //  console.log(" check "+categoriesHtml);
                              $('#universalDivEdit').html(categoriesHtml);
                          }
                       }

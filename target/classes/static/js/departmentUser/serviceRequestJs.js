@@ -145,14 +145,14 @@ $(document).ready(function() {
      receiveDeviceFromCustomerCare(deviceId,serviceId,"Device received")
 
     }
-    else  if(buttonId==="viewAlternative"){
+  else  if(buttonId==="viewAlternative"){
 
                          var selectedDevices = [];
                           print('universalColumns', function(universalColumns) {
                          var categoriesHtml = '';
                          if (universalColumns) {
                              universalColumns.forEach(function(category) {
-                                 categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
+                                 categoriesHtml += `<th scope="col" style="background-color: gray;color:white">${category.columnName}</th>`;
                              });
                          }
 
@@ -161,11 +161,11 @@ $(document).ready(function() {
                                  <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
                                      <thead>
                                          <tr>
-                                             <th scope="col" style="background-color: gray;">SN1</th>
+                                             <th scope="col" style="background-color: gray;color:white">SN1</th>
                                               <th scope="col" style="background-color: gray;display: none;">Device Id</th>
-                                             <th scope="col" style="background-color: gray;">Category Name</th>
+                                             <th scope="col" style="background-color: gray;color:white">Category Name</th>
                                              ${categoriesHtml}
-                                             <th scope="col" style="background-color: gray;">Description</th>
+                                             <th scope="col" style="background-color: gray;color:white">Description</th>
 
                                          </tr>
                                      </thead>
@@ -234,7 +234,7 @@ $(document).ready(function() {
 
 
         }
-      else if (button.hasClass("Delete")) {
+  else if (button.hasClass("Delete")) {
       const deviceId = button.data('deviceId'); // Get device ID from data-device-id attribute
 
       if (!deviceId) {
@@ -267,7 +267,8 @@ $(document).ready(function() {
       } else {
         console.log("Delete canceled.");
       }
-    } else {
+    }
+    else {
       // Perform actions for other buttons, if needed
       console.log(`Other button clicked: ${buttonText}`);
     }
@@ -329,7 +330,7 @@ function selectionAndInputDeviceEdit(deviceId){
 }
 function selectionAndInputDevice(){
 // Event delegation for dynamically added items
-       $(document).on('click', '.deviceInputEachItem', function(event) {
+ $(document).on('click', '.deviceInputEachItem', function(event) {
            var text = $(this).text();
            $('#deviceInputFieldAdd').val(text);
             var categoriesHtml = '';
@@ -425,7 +426,7 @@ function selectionAndInputDevice(){
 
 
         // Filter items based on input
-            $(document).on('keyup', '#deviceInputFieldAdd', function() {
+$(document).on('keyup', '#deviceInputFieldAdd', function() {
                 var filter = $(this).val().toUpperCase();
                 $('#deviceInputAddUlList li').each(function() {
                     var text = $(this).text().toUpperCase();

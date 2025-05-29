@@ -23,27 +23,28 @@
                     </ul>
                 </div>
                 <div class="d-flex justify-content-center mb-2">
-                    <button class="btn btn-success btn-sm" onclick="addUerToggle111()" style="width: 10%;">Add</button>
+                    <button class="btn btn-success btn-sm" onclick="addUerToggle111()" >Add</button>
                 </div>
                 <!-- Toggle Content Button -->
                 <!-- Category Table -->
-                <table id="requestInventoryProposalTable" class="table table-gray table-bordered table-hover">
+                <div class="responsive-table-wrapper">
+                <table id="requestInventoryProposalTable" >
                     <thead>
                     <tr>
-                        <th scope="col" style="background-color: gray;">SN</th>
-                        <th scope="col" style="background-color: gray;">Bivag Name</th>
-                        <th scope="col" style="background-color: gray;">Category Name</th>
+                        <th scope="col" style="background-color: gray;color:white">SN</th>
+                        <th scope="col" style="background-color: gray;color:white">Bivag Name</th>
+                        <th scope="col" style="background-color: gray;color:white">Category Name</th>
                         <!-- Dynamically generated headers from universalColumns -->
                         <th th:each="column : ${requestColumns}"
                             th:if="${column.visibleType} == 'yes'"
                             th:text="${column.columnName}"
-                            style="background-color: gray;">
+                            style="background-color: gray;color:white">
                         </th>
-                        <th scope="col" style="background-color: gray;"> Status In Purchase</th>
-                        <th scope="col" style="background-color: gray;">  Status In COO</th>
-                        <th scope="col" style="background-color: gray;"> Purchase Device Delivery Status </th>
+                        <th scope="col" style="background-color: gray;color:white"> Status In Purchase</th>
+                        <th scope="col" style="background-color: gray;color:white">  Status In COO</th>
+                        <th scope="col" style="background-color: gray;color:white"> Purchase Device Delivery Status </th>
 
-                        <th scope="col" style="background-color: gray;">Action</th>
+                        <th scope="col" style="background-color: gray;color:white">Action</th>
                     </tr>
                     </thead>
                     <tbody id="requestInventoryProposalTableBody">
@@ -86,6 +87,7 @@
                     </tbody>
 
                 </table>
+                </div>
             </div>
         </div>
         <div class="col-sm-3 secondDiv"   >

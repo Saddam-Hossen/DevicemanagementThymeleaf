@@ -1050,7 +1050,7 @@ $(document).ready(function() {
                          var categoriesHtml = '';
                          if (universalColumns) {
                              universalColumns.forEach(function(category) {
-                                 categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
+                                 categoriesHtml += `<th scope="col" style="background-color: gray;color:white">${category.columnName}</th>`;
                              });
                          }
 
@@ -1059,12 +1059,12 @@ $(document).ready(function() {
                                  <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
                                      <thead>
                                          <tr>
-                                             <th scope="col" style="background-color: gray;">SN</th>
-                                             <th scope="col" style="background-color: gray; display: none;">Device Id</th>
-                                             <th scope="col" style="background-color: gray;">Category Name</th>
+                                             <th scope="col" style="background-color: gray; color:white">SN</th>
+                                             <th scope="col" style="background-color: gray; display: none;color:white">Device Id</th>
+                                             <th scope="col" style="background-color: gray;color:white">Category Name</th>
                                              ${categoriesHtml}
-                                             <th scope="col" style="background-color: gray;">Description</th>
-                                               <th scope="col" style="background-color: gray;">Action</th>
+                                             <th scope="col" style="background-color: gray;color:white">Description</th>
+                                               <th scope="col" style="background-color: gray;color:white">Action</th>
                                          </tr>
                                      </thead>
                                      <tbody id="listDeviceInformationBody"></tbody>
@@ -1192,7 +1192,7 @@ $(document).ready(function() {
                                    var categoriesHtml = '';
                                    if (universalColumns) {
                                        universalColumns.forEach(function(category) {
-                                           categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
+                                           categoriesHtml += `<th scope="col" style="background-color: gray;color:white">${category.columnName}</th>`;
                                        });
                                    }
 
@@ -1201,12 +1201,12 @@ $(document).ready(function() {
                                            <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
                                                <thead>
                                                    <tr>
-                                                       <th scope="col" style="background-color: gray;">SN</th>
-                                                       <th scope="col" style="background-color: gray; display: none;">Device Id</th>
-                                                       <th scope="col" style="background-color: gray;">Category Name</th>
+                                                       <th scope="col" style="background-color: gray;color:white">SN</th>
+                                                       <th scope="col" style="background-color: gray; display: none;color:white">Device Id</th>
+                                                       <th scope="col" style="background-color: gray;color:white">Category Name</th>
                                                        ${categoriesHtml}
-                                                       <th scope="col" style="background-color: gray;">Description</th>
-                                                         <th scope="col" style="background-color: gray;">Action</th>
+                                                       <th scope="col" style="background-color: gray;color:white">Description</th>
+                                                         <th scope="col" style="background-color: gray;color:white">Action</th>
                                                    </tr>
                                                </thead>
                                                <tbody id="listDeviceInformationBody"></tbody>
@@ -1350,7 +1350,7 @@ $(document).ready(function() {
                                         var categoriesHtml = '';
                                         if (universalColumns) {
                                             universalColumns.forEach(function(category) {
-                                                categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
+                                                categoriesHtml += `<th scope="col" style="background-color: gray;color:white">${category.columnName}</th>`;
                                             });
                                         }
 
@@ -1359,12 +1359,12 @@ $(document).ready(function() {
                                                 <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col" style="background-color: gray;">SN</th>
-                                                            <th scope="col" style="background-color: gray; display: none;">Device Id</th>
-                                                            <th scope="col" style="background-color: gray;">Category Name</th>
+                                                            <th scope="col" style="background-color: gray;color:white">SN</th>
+                                                            <th scope="col" style="background-color: gray; display: none;color:white">Device Id</th>
+                                                            <th scope="col" style="background-color: gray;color:white">Category Name</th>
                                                             ${categoriesHtml}
-                                                            <th scope="col" style="background-color: gray;">Description</th>
-                                                              <th scope="col" style="background-color: gray;">Action</th>
+                                                            <th scope="col" style="background-color: gray;color:white">Description</th>
+                                                              <th scope="col" style="background-color: gray;color:white">Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody id="listDeviceInformationBody"></tbody>
@@ -1444,7 +1444,7 @@ $(document).ready(function() {
                   var categoriesHtml = '';
                   if (universalColumns) {
                       universalColumns.forEach(function(category) {
-                          categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
+                          categoriesHtml += `<th scope="col" style="background-color: gray;color:white">${category.columnName}</th>`;
                       });
                   }
 
@@ -1453,11 +1453,11 @@ $(document).ready(function() {
                           <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
                               <thead>
                                   <tr>
-                                      <th scope="col" style="background-color: gray;">SN</th>
-                                      <th scope="col" style="background-color: gray; display: none;">Device Id</th>
-                                      <th scope="col" style="background-color: gray;">Category Name</th>
+                                      <th scope="col" style="background-color: gray;color:white">SN</th>
+                                      <th scope="col" style="background-color: gray; display: none;color:white">Device Id</th>
+                                      <th scope="col" style="background-color: gray;color:white">Category Name</th>
                                       ${categoriesHtml}
-                                      <th scope="col" style="background-color: gray;">Description</th>
+                                      <th scope="col" style="background-color: gray;color:white">Description</th>
 
                                   </tr>
                               </thead>
@@ -1526,7 +1526,7 @@ $(document).ready(function() {
                               var categoriesHtml = '';
                               if (universalColumns) {
                                   universalColumns.forEach(function(category) {
-                                      categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
+                                      categoriesHtml += `<th scope="col" style="background-color: gray;color:white">${category.columnName}</th>`;
                                   });
                               }
 
@@ -1535,11 +1535,11 @@ $(document).ready(function() {
                                       <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
                                           <thead>
                                               <tr>
-                                                  <th scope="col" style="background-color: gray;">SN</th>
-                                                  <th scope="col" style="background-color: gray; display: none;">Device Id</th>
-                                                  <th scope="col" style="background-color: gray;">Category Name</th>
+                                                  <th scope="col" style="background-color: gray;color:white">SN</th>
+                                                  <th scope="col" style="background-color: gray; display: none;color:white">Device Id</th>
+                                                  <th scope="col" style="background-color: gray;color:white">Category Name</th>
                                                   ${categoriesHtml}
-                                                  <th scope="col" style="background-color: gray;">Description</th>
+                                                  <th scope="col" style="background-color: gray;color:white">Description</th>
                                               </tr>
                                           </thead>
                                           <tbody id="listDeviceInformationBody"></tbody>
@@ -1616,7 +1616,7 @@ $(document).ready(function() {
 
                             if (universalColumns) {
                                 universalColumns.forEach(function(category) {
-                                    categoriesHtml += `<th scope="col" style="background-color: gray;">${category.columnName}</th>`;
+                                    categoriesHtml += `<th scope="col" style="background-color: gray;color:white">${category.columnName}</th>`;
                                 });
                             }
 
@@ -1626,9 +1626,9 @@ $(document).ready(function() {
                                     <table id="deviceInformationTable" class="table table-gray table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th scope="col" style="background-color: gray;">SN1</th>
-                                                <th scope="col" style="background-color: gray; display: none;">Device Id</th>
-                                                <th scope="col" style="background-color: gray;">Category Name</th>
+                                                <th scope="col" style="background-color: gray;color:white">SN</th>
+                                                <th scope="col" style="background-color: gray; display: none;color:white">Device Id</th>
+                                                <th scope="col" style="background-color: gray;color:white">Category Name</th>
                                                 ${categoriesHtml}
 
                                             </tr>

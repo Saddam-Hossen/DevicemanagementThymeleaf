@@ -1047,7 +1047,7 @@ public class purchase {
                 Table infoTable = new Table(2).useAllAvailableWidth();
 
                 Cell priceCell = new Cell()
-                        .add(new Paragraph("Total Price: $" + String.format("%.2f", totalPrice)).setBold())
+                        .add(new Paragraph("Total Price: " + String.format("%.2f", totalPrice)).setBold())
                         .setBorder(Border.NO_BORDER)
                         .setTextAlignment(TextAlignment.LEFT);
 
@@ -1230,7 +1230,7 @@ public class purchase {
                 Table infoTable = new Table(2).useAllAvailableWidth();
 
                 Cell priceCell = new Cell()
-                        .add(new Paragraph("Total Price: $" + String.format("%.2f", totalPrice)).setBold())
+                        .add(new Paragraph("Total Price: " + String.format("%.2f", totalPrice)).setBold())
                         .setBorder(Border.NO_BORDER)
                         .setTextAlignment(TextAlignment.LEFT);
 

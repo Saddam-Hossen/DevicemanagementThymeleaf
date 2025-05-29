@@ -1,0 +1,99 @@
+
+
+/* ===== Table Scrollable Wrapper ===== */
+.responsive-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.responsive-table-wrapper table {
+    width: 100%;
+    min-width: 600px; /* Ensure horizontal scroll on small screens */
+    border-collapse: collapse;
+}
+
+.responsive-table-wrapper th,
+.responsive-table-wrapper td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    white-space: nowrap; /* Prevent text wrapping */
+    text-align: center;
+}
+
+/* ===== Form Layout Defaults ===== */
+form, .form-control, .form-select {
+    width: 100%;
+    max-width: 100%;
+}
+
+label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+input[type="text"], input[type="date"], select {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* ===== Buttons Default ===== */
+
+
+.offcanvas-start {
+      max-width: 240px; /* Adjust the width as needed */
+
+    }
+    .sideoffcanvus{
+     margin-top: 58px; /* Adjust the top margin as needed */
+    }
+
+/* ===== Responsive Utilities ===== */
+
+/* Small Devices (Phones) */
+@media (max-width: 576px) {
+
+    .form-control, .form-select {
+        font-size: 14px;
+    }
+
+    .form-label {
+        font-size: 14px;
+    }
+
+    #userForm {
+        padding: 10px;
+    }
+
+    .responsive-table-wrapper table {
+        min-width: 500px; /* Slightly smaller min-width for phones */
+    }
+     .sideoffcanvus{
+         margin-top: 137px; /* Adjust the top margin as needed */
+        }
+
+}
+
+/* Medium Devices (Tablets) */
+@media (min-width: 577px) and (max-width: 992px) {
+
+
+    #userForm {
+        padding: 15px;
+    }
+}
+
+
+/* Large Devices (Desktops) */
+@media (min-width: 993px) {
+
+
+    #userForm {
+        padding: 20px;
+    }
+}
+

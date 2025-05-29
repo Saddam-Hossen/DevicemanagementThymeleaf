@@ -20,6 +20,7 @@ $(document).ready(function () {
     // Offcanvas event handling
     var offcanvas = document.querySelector('.sideoffcanvus');
     var mainBody = document.querySelector('.mainBody');
+    const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvas);
 // Function to hide offcanvas when mainBody is clicked
     $(mainBody).click(function () {
         if ($(window).width() <= 768) { // Check if it's a mobile view
@@ -28,7 +29,7 @@ $(document).ready(function () {
     });
     function adjustMainBodyMargin() {
         if ($(window).width() > 768) { // Laptop/Desktop
-            $(".mainBody").css("margin-left", "260px"); // Adjust for larger screens
+            $(".mainBody").css("margin-left", "0px"); // Adjust for larger screens
         } else { // Android/Mobile
             $(".mainBody").css("margin-left", "0"); // Keep default for mobile
         }
@@ -41,7 +42,15 @@ $(document).ready(function () {
     $(offcanvas).on('hidden.bs.offcanvas', function () {
         $(".mainBody").css("margin-left", "0"); // Reset for all screen sizes
     });
+ // Click outside offcanvas to close it
+    document.addEventListener('click', function (event) {
+        const isClickInside = offcanvas.contains(event.target);
+        const isToggler = event.target.closest('[data-bs-toggle="offcanvas"]');
 
+        if (!isClickInside && !isToggler && offcanvas.classList.contains('show')) {
+            bsOffcanvas.hide();
+        }
+    });
     // Section visibility handling
     var sectionContainer = document.querySelector('.container.mb-4');
     var numberOfChildren = sectionContainer.childElementCount;

@@ -15,20 +15,20 @@
                 <!-- Toggle Content Button -->
                 <div class="d-flex justify-content-center mb-2">
                     <!--        <button class="btn btn-success btn-sm" onclick="addIndividualColumnToggle()" style="width: 10%;">Add</button>-->
-                    <button class="btn btn-success btn-sm" onclick="addDeviceInformation()" style="width: 15%; white-space: nowrap;">Add Old Device</button>
+                    <button class="btn btn-success btn-sm" onclick="addDeviceInformation()" style=" white-space: nowrap;">Add Old Device</button>
 
                 </div>
-
+                <div class="responsive-table-wrapper">
                 <table id="deviceInformationTable" >
                     <thead id="tableHeaderAddData" >
                     <tr  >
-                        <th scope="col" style="background-color: gray;">SN</th>
-                        <th scope="col" style="background-color: gray;">Category Name</th>
+                        <th scope="col" style="background-color: gray;color:white">SN</th>
+                        <th scope="col" style="background-color: gray;color:white">Category Name</th>
                         <!-- Dynamically generated headers from universalColumns -->
-                        <th th:each="column : ${universalColumns}" th:text="${column.columnName}" style="background-color: gray;"></th>
-                        <th scope="col" style="background-color: gray;">Description</th>
-                        <th scope="col" style="background-color: gray;">Components</th>
-                        <th scope="col" style="background-color: gray;">Action</th>
+                        <th th:each="column : ${universalColumns}" th:text="${column.columnName}" style="background-color: gray;color:white"></th>
+                        <th scope="col" style="background-color: gray;color:white">Description</th>
+                        <th scope="col" style="background-color: gray;color:white">Components</th>
+                        <th scope="col" style="background-color: gray;color:white">Action</th>
                     </tr>
                     </thead>
                     <tbody id="deviceInformationBody">
@@ -59,6 +59,7 @@
                     </tr>
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
         <div class="col-sm-0 secondDiv"  style="display:none;" >

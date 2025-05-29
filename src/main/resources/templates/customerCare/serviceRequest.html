@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-sm-12 firstDiv" >
             <div  class="leftDiv" >
-
+                <div class="responsive-table-wrapper">
                 <table id="serviceInformationTable" >
                     <thead id="tableHeaderAddData" >
                     <tr  >
@@ -35,7 +35,7 @@
                         <td th:text="${device.categoryName}">categoryName</td>
 
                         <td>
-                            <ol style=" padding-left: 0;text-align: left;"  >
+                            <ol style=" padding-left: 10;text-align: left;"  >
                                 <li th:each="problem : ${device.allProblem}" th:text="${problem.name}">Problem Name</li>
                             </ol>
                         </td>
@@ -70,6 +70,7 @@
                     </tr>
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
         <div class="col-sm-0 secondDiv"  style="display:none;" >

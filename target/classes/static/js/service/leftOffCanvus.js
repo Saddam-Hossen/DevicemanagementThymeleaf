@@ -3,18 +3,26 @@
     document.addEventListener('DOMContentLoaded', function () {
             var offcanvas = document.querySelector('.sideoffcanvus');
             var mainBody = document.querySelector('.mainBody');
-
+            const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvas);
             offcanvas.addEventListener('shown.bs.offcanvas', function () {
 
                 // Set margin for the mainBody div when offcanvas is shown
-                mainBody.style.marginLeft = '260px '; // Adjust the margin as needed
+                mainBody.style.marginLeft = '0px '; // Adjust the margin as needed
             });
 
             offcanvas.addEventListener('hidden.bs.offcanvas', function () {
                 // Reset margin for the mainBody div when offcanvas is hidden
                 mainBody.style.marginLeft = '0';
             });
+             // Click outside offcanvas to close it
+                document.addEventListener('click', function (event) {
+                    const isClickInside = offcanvas.contains(event.target);
+                    const isToggler = event.target.closest('[data-bs-toggle="offcanvas"]');
 
+                    if (!isClickInside && !isToggler && offcanvas.classList.contains('show')) {
+                        bsOffcanvas.hide();
+                    }
+                });
              var sectionContainer = document.querySelector('.container.mb-4');
              // Count the number of child elements in the section
              var numberOfChildren = sectionContainer.childElementCount;

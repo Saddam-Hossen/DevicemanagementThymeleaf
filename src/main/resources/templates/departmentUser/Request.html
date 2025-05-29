@@ -17,18 +17,18 @@
                 <div class="d-flex justify-content-center mb-2">
                     <button class="btn btn-success btn-sm" onclick="addRequest()" style="width: 10%;">Add</button>
                 </div>
-
+                <div class="responsive-table-wrapper">
                 <!-- Category Table -->
-                <table id="requestTable" class="table table-gray table-bordered table-hover">
+                <table id="requestTable" >
                     <thead>
                     <tr>
-                        <th scope="col" style="background-color: gray;">SN</th>
-                        <th scope="col" style="background-color: gray;">Category</th>
+                        <th scope="col" style="background-color: gray;color:white">SN</th>
+                        <th scope="col" style="background-color: gray;color:white">Category</th>
                         <!-- Dynamically generated headers from universalColumns -->
-                        <th th:each="column : ${requestColumns}" th:text="${column.columnName}" style="background-color: gray;"></th>
-                        <th scope="col" style="background-color: gray;">Request Status in Coo</th>
-                        <th scope="col" style="background-color: gray;">Device Received Status</th>
-                        <th scope="col" style="background-color: gray;">Action</th>
+                        <th th:each="column : ${requestColumns}" th:text="${column.columnName}" style="background-color: gray;color:white"></th>
+                        <th scope="col" style="background-color: gray;color:white">Request Status in COO</th>
+                        <th scope="col" style="background-color: gray;color:white">Device Received Status</th>
+                        <th scope="col" style="background-color: gray;color:white">Action</th>
                     </tr>
                     </thead>
                     <tbody id="requestTableBody">
@@ -66,6 +66,7 @@
                     </tbody>
 
                 </table>
+                </div>
             </div>
         </div>
         <div class="col-sm-3 secondDiv"   >

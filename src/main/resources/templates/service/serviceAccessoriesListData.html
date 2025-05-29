@@ -24,8 +24,8 @@
                         <li th:each="category : ${data}"><a class="dropdown-item individualTopSelection" href="#" th:text="${category.categoryName}"></a></li>
                     </ul>
                 </div>
-
-                <table id="serviceAccessoriesListDataTable" style="width: 100%; border-collapse: collapse;">
+                <div class="responsive-table-wrapper">
+                <table id="serviceAccessoriesListDataTable" >
                     <thead>
                     <tr>
                         <th scope="col" style="background-color: gray; width: 5%;">SN</th>
@@ -47,7 +47,7 @@
 
                     </tbody>
                 </table>
-
+                </div>
 
             </div>
         </div>

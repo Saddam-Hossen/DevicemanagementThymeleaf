@@ -4,73 +4,74 @@
 
 </style>
 <body>
-<div  th:fragment="leftOffCanvas">
-
-    <div class="offcanvas offcanvas-start show sideoffcanvus" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel" style="background-color:#1d4961" >
-        <div class="offcanvas-body ">
+<div th:fragment="leftOffCanvas">
+    <div class="offcanvas offcanvas-start show sideoffcanvus" data-bs-scroll="true" data-bs-backdrop="false"
+         tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel"
+         style="background-color:#1d4961">
+        <div class="offcanvas-body">
+            <div class="d-flex flex-column align-items-center justify-content-center" style="margin-left:50px">
+                <img th:src="@{/img/sn.jpg}" alt="User Image"
+                     class="rounded-circle"
+                     style="width: 80px; height: 80px; object-fit: cover; border: 3px solid white;">
+                <div class="text-white mt-2 fw-bold" th:text="${departmentName}">COO</div>
+                <div class="text-white mt-2 mb-2 fw-bold" th:text="${userId}">User ID</div>
+            </div>
             <ul class="list-group">
                 <li class="list-group-item leftListBgColor" onclick="toggleList(this)">Device
-                    <i class="fas fa-chevron-down float-end"></i> <!-- Dropdown icon -->
-                    <!-- First nested ul list -->
+                    <i class="fas fa-chevron-down float-end"></i>
                     <ul class="list-group nested-list">
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'deviceList')">Device List</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'deviceInformation')">Add Device</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'deviceList')">Device List</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'deviceInformation')">Add Device</li>
                     </ul>
                 </li>
-                <li class="list-group-item leftListBgColor" onclick="toggleList(this)">Category
-                    <i class="fas fa-chevron-down float-end"></i> <!-- Dropdown icon -->
-                    <!-- First nested ul list -->
-                    <ul class="list-group nested-list">
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'DeviceCategory')">Category</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'universalColumn')">Universal Column</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'individualColumn')">Individual Column</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'dropdownList')">DropDown List</li>
 
+                <li class="list-group-item leftListBgColor" onclick="toggleList(this)">Category
+                    <i class="fas fa-chevron-down float-end"></i>
+                    <ul class="list-group nested-list">
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'DeviceCategory')">Category</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'universalColumn')">Universal Column</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'individualColumn')">Individual Column</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'dropdownList')">DropDown List</li>
                     </ul>
                 </li>
+
                 <li class="list-group-item leftListBgColor" onclick="toggleList(this)">User
-                    <i class="fas fa-chevron-down float-end"></i> <!-- Dropdown icon -->
-                    <!-- First nested ul list -->
+                    <i class="fas fa-chevron-down float-end"></i>
                     <ul class="list-group nested-list">
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'addUser')">User</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'internalUser')">Internal User</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'Designation')">Designation</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'addUser')">User</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'internalUser')">Internal User</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'Designation')">Designation</li>
                     </ul>
                 </li>
 
                 <li class="list-group-item leftListBgColor" onclick="toggleList(this)">Device Request
-                    <i class="fas fa-chevron-down float-end"></i> <!-- Dropdown icon -->
-                    <!-- Second nested ul list -->
+                    <i class="fas fa-chevron-down float-end"></i>
                     <ul class="list-group nested-list">
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'requestColumn')">Create Request Form</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'requestData')">Request Data from User</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'purchaseRequestData')">Purchase Request from Purchase</li>
-<!--                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'requestDataForPayment')">Payment Request</li>-->
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'listRequestData')">Alternative Product List Request from Inventory</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'customerCareRequestData')">CustomerCare RequestList</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'unOrderedDevice')"> UnOrdered Device</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'deliveryPurchaseDevice')"> Deliver Purchase Device</li>
-
-
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'requestColumn')">Create Request Form</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'requestData')">Request Data from User</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'purchaseRequestData')">Purchase Request from Purchase</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'listRequestData')">Alternative Product List Request from Inventory</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'customerCareRequestData')">CustomerCare RequestList</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'unOrderedDevice')">UnOrdered Device</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'deliveryPurchaseDevice')">Deliver Purchase Device</li>
                     </ul>
                 </li>
 
                 <li class="list-group-item leftListBgColor" onclick="toggleList(this)">Service
-                    <i class="fas fa-chevron-down float-end"></i> <!-- Dropdown icon -->
-                    <!-- Third nested ul list -->
+                    <i class="fas fa-chevron-down float-end"></i>
                     <ul class="list-group nested-list">
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'serviceRequest')">Service Request</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'serviceProposalData')">Service Proposal</li>
-                        <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'serviceReportData')">Service Report</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'serviceRequest')">Service Request</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'serviceProposalData')">Service Proposal</li>
+                        <li class="list-group-item leftListBgColor" onclick="event.stopPropagation(); toggleListItem(this,'serviceReportData')">Service Report</li>
                     </ul>
                 </li>
-            </ul>
 
+                <li class="list-group-item leftListBgColor" onclick="location.href='/login/login'">
+                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </li>
+            </ul>
         </div>
     </div>
-
-
-
 </div>
 
 </body>

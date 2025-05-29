@@ -61,17 +61,48 @@ $(document).ready(function () {
     }
 
     // Toggle nested list visibility
-    window.toggleList = function (item) {
-        $(".nested-list").hide(); // Hide all nested lists
-        $(item).find(".nested-list").show(); // Show only the clicked list
-    };
+   window.toggleList = function (item) {
+           const $nested = $(item).find(".nested-list");
+           const $icon = $(item).find("i.fas");
 
-    // Toggle sections based on menu selection
-    window.toggleListItem = function (item, pageName) {
-        $(".container.mb-4").children().each(function () {
-            $(this).toggle($(this).attr("data-page") === pageName);
+           // If this list is already open, close it
+           if ($nested.is(":visible")) {
+               $nested.slideUp(); // Hide submenu with animation
+               $icon.removeClass("fa-chevron-up").addClass("fa-chevron-down"); // Icon down
+           } else {
+               // Close all others
+               $(".nested-list").slideUp();
+               $(".fas.fa-chevron-up").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+
+               // Open current
+               $nested.slideDown();
+               $icon.removeClass("fa-chevron-down").addClass("fa-chevron-up"); // Icon up
+           }
+       };
+     $(function() {
+      // Hide all pages by default
+      $(".container.mb-4 > div").hide();
+
+      // Get last active page from localStorage
+      var lastPage = localStorage.getItem("lastActivePage");
+
+      if (lastPage) {
+        // Show last active page only
+        $(".container.mb-4 > div").each(function () {
+          $(this).toggle($(this).attr("data-page") === lastPage);
         });
-    };
+      } else {
+        // Optionally show the first page by default
+        $(".container.mb-4 > div").first().show();
+      }
+    });
+    // Updated toggleListItem saves to localStorage and toggles visibility
+        window.toggleListItem = function (item, pageName) {
+          localStorage.setItem("lastActivePage", pageName);
+          $(".container.mb-4 > div").each(function () {
+            $(this).toggle($(this).attr("data-page") === pageName);
+          });
+        };
 
     // Adjust styles on window resize
     $(window).resize(adjustMainBodyMargin);

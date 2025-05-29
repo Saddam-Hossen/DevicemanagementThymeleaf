@@ -18,11 +18,21 @@
     </div>-->
     <div class="offcanvas offcanvas-start show sideoffcanvus" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel" style="background-color:#1d4961" >
         <div class="offcanvas-body ">
+            <div class=" d-flex flex-column align-items-center justify-content-center " style="margin-left:50px">
+                <img th:src="@{/img/sn.jpg}" alt="User Image"
+                     class="rounded-circle"
+                     style="width: 80px; height: 80px; object-fit: cover; border: 3px solid white;">
+                <div class="text-white mt-2 fw-bold" th:text="${departmentName}">COO</div>
+                <div class="text-white mt-2 mb-2 fw-bold" th:text="${userId}">User ID</div>
+            </div>
             <ul class="list-group">
                 <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'deviceInOutList')">Device In-Out List</li>
                 <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'servicingList')">Servicing List</li>
                 <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'cooFeedback')">COO FeedBack</li>
                 <li class="list-group-item leftListBgColor" onclick="toggleListItem(this,'serviceAccessoriesListData')">Service Accessories List</li>
+                <li class="list-group-item leftListBgColor" onclick="location.href='/login/login'">
+                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </li>
                <!-- <li class="list-group-item leftListBgColor" onclick="toggleList(this)">User
                     <i class="fas fa-chevron-down float-end"></i> &lt;!&ndash; Dropdown icon &ndash;&gt;
                     &lt;!&ndash; First nested ul list &ndash;&gt;

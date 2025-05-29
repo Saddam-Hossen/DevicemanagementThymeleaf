@@ -454,3 +454,17 @@ img {
     padding: 12px 8px; /* Adjust the vertical padding */
      font-size: 16px; /* Adjust the font size as needed */
 }
+
+.nested-list {
+    display: none;
+    padding-left: 20px;
+}
+
+.nested-list.show {
+    display: block;
+}
+
+.rotate {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}

@@ -983,6 +983,9 @@ $(document).ready(function() {
                           ${availability}
                       </button>
                   </td>
+               <td>${device.presentTime ? formatDateTimeToAmPm(device.presentTime) : "N/A"}</td>
+
+
               `;
 
             // Action buttons column
@@ -1040,6 +1043,9 @@ $(document).ready(function() {
               row.innerHTML = htmlData;
               tableBody.appendChild(row);
           });
+          //const myTable = document.getElementById("requestInventoryTable");  // or more specific selector if you want
+          const myTable = document.querySelector("table");  // or more specific selector if you want
+          sortAndFormatTable(myTable);
           $(document).on('click', '.deliverDeviceForPurchase', function() {
            var requestId=$(this).data('request-id');
            var deviceId=$(this).data('buyingdevice-id');

@@ -42,6 +42,7 @@
                         </th>
 
                         <th scope="col" style="background-color: gray;color:white">  Status In COO</th>
+                        <th scope="col" style="background-color: gray;color:white"> Request Time</th>
 
                         <th scope="col" style="background-color: gray;color:white">Action</th>
                     </tr>
@@ -67,7 +68,8 @@
 
                         <td th:text="${device.inventory != null && device.inventory.inventoryToAlternativeDeviceRequestStatus != null ? device.inventory.inventoryToAlternativeDeviceRequestStatus : ' '}">
                         </td>
-
+                        <td th:text="${device.inventory != null && device.inventory.inventoryToAlternativeDeviceRequestTime != null ? device.inventory.inventoryToAlternativeDeviceRequestTime : ' '}">
+                        </td>
 
                         <td >
                             <div class="d-flex justify-content-center align-items-center action-button-container">

@@ -43,7 +43,7 @@
                         <th scope="col" style="background-color: gray;color:white"> Status In Purchase</th>
                         <th scope="col" style="background-color: gray;color:white">  Status In COO</th>
                         <th scope="col" style="background-color: gray;color:white"> Purchase Device Delivery Status </th>
-
+                        <th scope="col" style="background-color: gray;color:white">Request Time</th>
                         <th scope="col" style="background-color: gray;color:white">Action</th>
                     </tr>
                     </thead>
@@ -72,6 +72,8 @@
                         </td>
 
                         <td th:text="${device.purchase != null && device.purchase.purchaseDeviceSenderToInventoryStatus != null ? device.purchase.purchaseDeviceSenderToInventoryStatus : ' '}">
+                        </td>
+                        <td th:text="${device.purchase != null && device.purchase.RequestTime != null ? device.purchase.RequestTime : ' '}">
                         </td>
 
                         <td >

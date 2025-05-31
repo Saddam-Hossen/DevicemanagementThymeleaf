@@ -110,3 +110,78 @@ $(document).ready(function () {
 
 
 });
+
+
+function formatDateTimeToAmPm(datetimeStr) {
+     const [datePart, timePart] = datetimeStr.split(" ");
+     const date = new Date(`${datePart}T${timePart}`);
+     let hours = date.getHours();
+     const minutes = date.getMinutes();
+     const seconds = date.getSeconds();
+     const ampm = hours >= 12 ? 'PM' : 'AM';
+     hours = hours % 12 || 12; // Convert hour '0' to '12'
+     const formattedTime = [
+       hours.toString().padStart(2, '0'),
+       minutes.toString().padStart(2, '0')
+
+     ].join(':');
+     return `${datePart} ${formattedTime} ${ampm}`;
+   }
+ function sortAndFormatTable(table) {
+     const tbody = table.querySelector("tbody");
+     if (!tbody) return;
+
+     const rows = Array.from(tbody.querySelectorAll("tr"));
+     if (rows.length === 0) return;
+
+     const colCount = table.querySelector("thead tr").cells.length;
+     const lastColIndex = colCount - 2;
+
+     rows.sort((a, b) => {
+       const aText = a.cells[lastColIndex]?.innerText.trim() || "";
+       const bText = b.cells[lastColIndex]?.innerText.trim() || "";
+
+       const dateA = new Date(aText);
+       const dateB = new Date(bText);
+
+       return dateB - dateA; // descending
+     });
+
+     tbody.innerHTML = "";
+     rows.forEach(row => {
+       const raw = row.cells[lastColIndex]?.innerText;
+       if(raw) {
+         row.cells[lastColIndex].innerText = formatDateTimeToAmPm(raw);
+       }
+       tbody.appendChild(row);
+     });
+   }
+    // update direct table without js using
+   function globallyFormatAndSortTables() {
+       const tables = document.querySelectorAll("table");
+       tables.forEach(table => {
+         const tbody = table.querySelector("tbody");
+         if (!tbody) return;
+
+         const rows = Array.from(tbody.querySelectorAll("tr"));
+         if (rows.length === 0) return;
+
+         const timeColIndex = table.rows[0].cells.length - 2;
+
+         rows.sort((a, b) => {
+           const aDate = new Date(a.cells[timeColIndex].textContent.trim().replace(" ", "T"));
+           const bDate = new Date(b.cells[timeColIndex].textContent.trim().replace(" ", "T"));
+           return bDate - aDate;
+         });
+
+         tbody.innerHTML = "";
+         rows.forEach(row => {
+           const cell = row.cells[timeColIndex];
+           const original = cell.textContent.trim();
+           cell.textContent = formatDateTimeToAmPm(original);
+           tbody.appendChild(row);
+         });
+       });
+     }
+
+     window.addEventListener("DOMContentLoaded", globallyFormatAndSortTables);

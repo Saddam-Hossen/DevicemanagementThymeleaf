@@ -828,6 +828,11 @@ $(document).ready(function() {
                                        ${solution.inventoryToServiceCenterDeviceStatus != null ? solution.inventoryToServiceCenterDeviceStatus : ' '}
                                 </td>  <!-- Corrected text binding for this column -->
                                <td>
+                                   ${device.customerCareSendDeviceToServiceTime !== null ?  formatDateTimeToAmPm(device.customerCareSendDeviceToServiceTime ): ""}
+
+                                </td>
+
+                               <td>
 
                                   <div class="d-flex justify-content-center align-items-center action-button-container">
                                                ${ solution.deviceManageType ==='Purchased' && availability !== "Unavailable" && solution.inventoryToServiceCenterDeviceStatus !=='Accepted' ? `
@@ -870,6 +875,10 @@ $(document).ready(function() {
                    });
                });
            });
+            const myTable = document.querySelector("table");  // or more specific selector if you want
+          // const myTable= document.getElementById("serviceAccessoriesPendingDataTable");
+            sortAndFormatTable(myTable);
+          // globallyFormatAndSortTables();
  // Add event listener for the availability button click
             $(document).on('click', '.view-button-selected-device', function() {
                                 var category = $(this).data('category');

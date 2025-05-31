@@ -1394,6 +1394,8 @@ $(document).ready(function() {
                                ${cooAnswer}
                              </td>
                              <td>${solution.purchaseDeviceExportStatus ?? 'Not Exported'}</td>
+                            
+                                <td>${solution.inventoryForPurchaseRequestTime ? formatDateTimeToAmPm(solution.inventoryForPurchaseRequestTime) : 'N/A'}</td>
                                <td>
 
                                   <div class="d-flex justify-content-center align-items-center action-button-container">
@@ -1416,6 +1418,7 @@ $(document).ready(function() {
                    });
                });
            });
+            sortAndFormatAllTables();
             $(document).on('click', '.chat-buttonForService', function() {
 
                   var serviceId = $(this).data('service-id');

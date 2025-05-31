@@ -35,11 +35,10 @@
                         <th scope="col" style="background-color: gray; color:white">SN</th>
                         <th scope="col" style="background-color: gray; color:white">Bivag Name</th>
                         <th scope="col" style="background-color: gray; color:white">Category Name</th>
-                        <!-- Dynamically generated headers from universalColumns -->
                         <th scope="col" style="background-color: gray; color:white">Description</th>
 
                         <th scope="col" style="background-color: gray; color:white"> Request Status</th>
-
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray; color:white">Action</th>
                     </tr>
                     </thead>
@@ -74,7 +73,7 @@
                             </span>
                             <span th:unless="${device.requestMode == 'Denied'}" th:text="${device.requestMode}"></span>
                         </td>
-
+                        <td th:text="${device.presentTime}">userPassword</td>
                         <td>
 
                             <div class="d-flex justify-content-center align-items-center action-button-container">

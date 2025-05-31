@@ -151,37 +151,70 @@ function formatDateTimeToAmPm(datetimeStr) {
      rows.forEach(row => {
        const raw = row.cells[lastColIndex]?.innerText;
        if(raw) {
-         row.cells[lastColIndex].innerText = formatDateTimeToAmPm(raw);
+         row.cells[lastColIndex].innerText = formatToAmPm(raw);
        }
        tbody.appendChild(row);
      });
    }
     // update direct table without js using
-   function globallyFormatAndSortTables() {
-       const tables = document.querySelectorAll("table");
-       tables.forEach(table => {
-         const tbody = table.querySelector("tbody");
-         if (!tbody) return;
+  function formatToAmPm(dateStr) {
+    const date = new Date(dateStr.replace(" ", "T"));
+    if (isNaN(date)) return dateStr;
 
-         const rows = Array.from(tbody.querySelectorAll("tr"));
-         if (rows.length === 0) return;
+    const yyyy = date.getFullYear();
+    const MM = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
 
-         const timeColIndex = table.rows[0].cells.length - 2;
+    let hh = date.getHours();
+    const mm = String(date.getMinutes()).padStart(2, '0');
+    const ampm = hh >= 12 ? 'PM' : 'AM';
+    hh = hh % 12 || 12;
+    const hhStr = String(hh).padStart(2, '0');
 
-         rows.sort((a, b) => {
-           const aDate = new Date(a.cells[timeColIndex].textContent.trim().replace(" ", "T"));
-           const bDate = new Date(b.cells[timeColIndex].textContent.trim().replace(" ", "T"));
-           return bDate - aDate;
-         });
+    return `${yyyy}-${MM}-${dd} ${hhStr}:${mm} ${ampm}`;
+  }
 
-         tbody.innerHTML = "";
-         rows.forEach(row => {
-           const cell = row.cells[timeColIndex];
-           const original = cell.textContent.trim();
-           cell.textContent = formatDateTimeToAmPm(original);
-           tbody.appendChild(row);
-         });
-       });
-     }
+  function sortAndFormatAllTables() {
+    const tables = document.querySelectorAll("table");
+    tables.forEach(sortAndFormatTable);
+  }
 
-     window.addEventListener("DOMContentLoaded", globallyFormatAndSortTables);
+  function globallyFormatAndSortTables() {
+    const tables = document.querySelectorAll("table");
+    tables.forEach(table => {
+      const tbody = table.querySelector("tbody");
+      if (!tbody) return;
+
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+      if (rows.length === 0) return;
+
+      const timeColIndex = table.rows[0].cells.length - 2;
+
+      const validRows = rows.filter(row => row.cells.length > timeColIndex);
+
+      validRows.sort((a, b) => {
+        const aCell = a.cells[timeColIndex];
+        const bCell = b.cells[timeColIndex];
+        if (!aCell || !bCell) return 0;
+
+        const aText = aCell.textContent.trim().replace(" ", " "); // handles weird space
+        const bText = bCell.textContent.trim().replace(" ", " ");
+
+        const aDate = new Date(aText.replace(" ", "T"));
+        const bDate = new Date(bText.replace(" ", "T"));
+
+        return bDate - aDate; // Latest first
+      });
+
+      // Clear tbody and re-insert sorted + formatted rows
+      tbody.innerHTML = "";
+      validRows.forEach(row => {
+        const cell = row.cells[timeColIndex];
+        const raw = cell.textContent.trim().replace(" ", " ");
+        cell.textContent = formatDateTimeToAmPm(raw);
+        tbody.appendChild(row);
+      });
+    });
+  }
+
+  window.addEventListener("DOMContentLoaded", globallyFormatAndSortTables);

@@ -875,9 +875,10 @@ $(document).ready(function() {
                    });
                });
            });
-            const myTable = document.querySelector("table");  // or more specific selector if you want
+           // const myTable = document.querySelector("table");  // or more specific selector if you want
           // const myTable= document.getElementById("serviceAccessoriesPendingDataTable");
-            sortAndFormatTable(myTable);
+           // sortAndFormatTable(myTable);
+            sortAndFormatAllTables() ;
           // globallyFormatAndSortTables();
  // Add event listener for the availability button click
             $(document).on('click', '.view-button-selected-device', function() {

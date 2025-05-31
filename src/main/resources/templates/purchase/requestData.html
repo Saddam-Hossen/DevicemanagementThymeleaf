@@ -11,7 +11,7 @@
         <p> > Device Purchase Request </p>
     </div>
     <div class="row">
-        <div class="col-sm-9 firstDiv" >
+        <div class="col-sm-10 firstDiv" >
             <div  class="leftDiv" >
                 <div style="text-align: right;">
                     <button class="btn btn-sm text-black small-button showButton"  style="display:none;"> < </button>
@@ -41,7 +41,7 @@
                         <th scope="col" style="background-color: gray; color:white"> Status In Purchase</th>
                         <th scope="col" style="background-color: gray; color:white"> Proposal Status In COO</th>
                         <th scope="col" style="background-color: gray; color:white"> Purchase Device Status In COO</th>
-
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray; color:white">Action</th>
                     </tr>
                     </thead>
@@ -81,6 +81,9 @@
                         <td th:if="${device.requestMode == 'Accepted' && device.inventory.inventoryStatus == 'Purchased'}"
                             th:text="${device.purchase != null && device.purchase.cooPurchaseAcceptedAns != null ? device.purchase.cooPurchaseAcceptedAns : ' '}">
                         </td>
+                        <td th:if="${device.requestMode == 'Accepted' && device.inventory.inventoryStatus == 'Purchased'}"
+                            th:text="${device.purchase.RequestTime != null ? device.purchase.RequestTime : ' '}">
+                        </td>
 
 
                         <td th:if="${device.requestMode == 'Accepted' && device.inventory.inventoryStatus=='Purchased'}">
@@ -108,7 +111,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-3 secondDiv"   >
+        <div class="col-sm-2 secondDiv"   >
             <div  class="rightDiv" >
                 <div style="text-align: right;">
                     <button class="btn btn-sm text-black small-button hideButton" style="display:inline-block">X</button>

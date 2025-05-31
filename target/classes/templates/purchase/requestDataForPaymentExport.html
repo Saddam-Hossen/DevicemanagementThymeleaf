@@ -41,6 +41,7 @@
 
                         <th scope="col" style="background-color: gray; color:white">Proposal Status In COO</th>
                         <th scope="col" style="background-color: gray; color:white">Export Status</th>
+                        <th scope="col" style="background-color: gray; color:white">Create Time</th>
                         <th scope="col" style="background-color: gray; color:white">Action</th>
                     </tr>
                     </thead>
@@ -81,6 +82,9 @@
                         </td>
                         <td
                             th:text="${device.purchase != null && device.purchase?.purchaseDeviceExportStatus != null ? device.purchase?.purchaseDeviceExportStatus : 'No Exported'}">
+                        </td>
+                        <td th:if="${device.requestMode == 'Accepted' && device.inventory.inventoryStatus == 'Purchased'}"
+                            th:text="${device.purchase.RequestTime != null ? device.purchase.RequestTime : ' '}">
                         </td>
                         <td >
                             <div class="d-flex justify-content-center align-items-center action-button-container">

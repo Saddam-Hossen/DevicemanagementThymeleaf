@@ -1680,6 +1680,7 @@ $(document).ready(function() {
                                <td>${solution.purchaseProposalToCooProposalStatus ? solution.purchaseProposalToCooProposalStatus : ''}</td>
                                 <td>${solution.purchaseProposalToCooAns ? solution.purchaseProposalToCooAns : ''}</td>
                                <td></td>
+                               <td>${solution.inventoryForPurchaseRequestTime ? formatDateTimeToAmPm(solution.inventoryForPurchaseRequestTime) : 'N/A'}</td>
                                <td>
                                  <div class="d-flex justify-content-center align-items-center action-button-container">
                                        ${solution.deviceBuyingStatus === 'Bought' && solution.purchaseDeviceSenderToInventoryStatus !=='Accepted' && solution.purchaseDeviceExportStatus ==='Exported' ? `
@@ -1731,6 +1732,7 @@ $(document).ready(function() {
                    });
                });
            });
+           sortAndFormatAllTables();
    $(document).on('click', '.deliverForService', function(){
    var deviceId = $(this).data('buyingdevice-id');
    var category = $(this).data('category-id');

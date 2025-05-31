@@ -489,7 +489,7 @@ function printRejectCause(element) {
                                 status=" ";
                                 }
 
-                                 console.log("inventoryToServiceCenterDeviceStatus:", solution.inventoryToServiceCenterDeviceStatus);
+                               //  console.log("inventoryToServiceCenterDeviceStatus:", solution.inventoryToServiceCenterDeviceStatus);
 
                                 // Determine availability
                                 const availability = getAvailability(solution.category);
@@ -506,7 +506,7 @@ function printRejectCause(element) {
                                      <td>
                                      ${solution.purchaseProposalToCooAns}
                                      </td>
-
+                                     <td>${solution.purchaseProposalToCooTime ? formatDateTimeToAmPm(solution.purchaseProposalToCooTime) : " "}</td>
                                     <td>
 
                                        <div class="d-flex justify-content-center align-items-center action-button-container">
@@ -538,6 +538,8 @@ function printRejectCause(element) {
                         });
                     });
                 });
+                //const myTable = document.querySelector("table");  // or more specific selector if you want
+                //sortAndFormatTable(myTable);
                 $(document).on('click', '.view-selectedLinkPurchase', function() {
                             var details = $(this).data('details-id');
                             var budget = $(this).data('budget-id');

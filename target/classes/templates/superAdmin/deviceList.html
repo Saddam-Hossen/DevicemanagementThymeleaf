@@ -23,7 +23,9 @@
                         <th scope="col" style="background-color: gray;">Category Name</th>
                         <!-- Dynamically generated headers from universalColumns -->
                         <th th:each="column : ${universalColumns}" th:text="${column.columnName}" style="background-color: gray;"></th>
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray;">Description</th>
+
                     </tr>
                     </thead>
                     <tbody id="deviceListBody">
@@ -31,6 +33,7 @@
                         <td scope="row" th:text="${device.visibleId}">1</td>
                         <td th:text="${device.categoryName}">categoryName</td>
                         <td th:each="universalColumn : ${universalColumns}" th:text="${device.allData[universalColumn.columnName]}"></td>
+                        <td th:text="${device.presentTime}">userPassword</td>
                         <td>
                             <ul style="list-style: none; padding-left: 0;text-align: center;" >
                                 <li th:each="individualColumn : ${individualColumns}"

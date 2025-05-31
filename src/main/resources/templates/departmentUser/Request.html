@@ -28,6 +28,7 @@
                         <th th:each="column : ${requestColumns}" th:text="${column.columnName}" style="background-color: gray;color:white"></th>
                         <th scope="col" style="background-color: gray;color:white">Request Status in COO</th>
                         <th scope="col" style="background-color: gray;color:white">Device Received Status</th>
+                        <th scope="col" style="background-color: gray;color:white">Create Time</th>
                         <th scope="col" style="background-color: gray;color:white">Action</th>
                     </tr>
                     </thead>
@@ -53,6 +54,7 @@
                         </td>
                         <td th:text="${device != null && device.customerCare?.customerCareToDepartmentDeviceSendingStatus != null ? device.customerCare?.customerCareToDepartmentDeviceSendingStatus : ' '}">
                         </td>
+                        <td th:text="${device.presentTime}">userPassword</td>
                         <td th:if="${device.departmentName == departmentUserName}">
 
                             <div class="d-flex justify-content-center align-items-center action-button-container">

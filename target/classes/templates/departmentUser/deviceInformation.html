@@ -28,6 +28,7 @@
                         <th th:each="column : ${universalColumns}" th:text="${column.columnName}" style="background-color: gray;color:white"></th>
                         <th scope="col" style="background-color: gray;color:white">Description</th>
                         <th scope="col" style="background-color: gray;color:white">Components</th>
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray;color:white">Action</th>
                     </tr>
                     </thead>
@@ -44,11 +45,13 @@
                             </ul>
 
                         </td>
+
                         <td>
                             <button class="btn btn-info btn-sm componentsView" th:data-device-id="${device.id}" th:data-button-id="componentsView" title="View child">
                                 View   &#128065;
                             </button>
                         </td>
+                        <td th:text="${device.presentTime}">userPassword</td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center action-button-container">
                                 <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2" th:data-device-id="${device.id}"></button>

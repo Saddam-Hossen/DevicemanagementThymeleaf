@@ -28,6 +28,7 @@
                         <th scope="col" style="background-color: gray;">List Name</th>
                         <!-- Dynamically generated headers from universalColumns -->
                         <th scope="col" style="background-color: gray;">List</th>
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray;">Action</th>
                     </tr>
                     </thead>
@@ -41,7 +42,7 @@
                                 <li th:each="name : ${device.allData}" th:text="${name}">List Value</li>
                             </ol>
                         </td>
-
+                        <td th:text="${device.presentTime}">userPassword</td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center action-button-container">
                                 <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2" th:data-list-id="${device.id}"></button>

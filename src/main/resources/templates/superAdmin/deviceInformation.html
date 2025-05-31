@@ -27,6 +27,7 @@
                         <!-- Dynamically generated headers from universalColumns -->
                         <th th:each="column : ${universalColumns}" th:text="${column.columnName}" style="background-color: gray;"></th>
                         <th scope="col" style="background-color: gray;">Description</th>
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray;">Action</th>
                     </tr>
                     </thead>
@@ -43,6 +44,7 @@
                             </ul>
 
                         </td>
+                        <td th:text="${device.presentTime}">userPassword</td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center action-button-container">
                                 <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2" th:data-device-id="${device.id}"></button>

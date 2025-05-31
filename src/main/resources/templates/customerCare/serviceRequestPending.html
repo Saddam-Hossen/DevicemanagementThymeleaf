@@ -25,6 +25,7 @@
                         <th scope="col" style="background-color: gray;">Device Information</th>
                         <th scope="col" style="background-color: gray;">Request Status</th>
                         <th scope="col" style="background-color: gray;">Receive Device Date</th>
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray;">Action</th>
                     </tr>
                     </thead>
@@ -54,6 +55,7 @@
                             <span th:if="${device.customerCareServiceRequestStatus == 'Accepted'}" th:text="${device.proposalReceivingDateTime}" >10/11/2024</span>
                             <span th:unless="${device.customerCareServiceRequestStatus == 'Accepted'}"></span>
                         </td>
+                        <td th:text="${device.presentTime}">userPassword</td>
                         <td>
 
                             <div class="d-flex justify-content-center align-items-center action-button-container">

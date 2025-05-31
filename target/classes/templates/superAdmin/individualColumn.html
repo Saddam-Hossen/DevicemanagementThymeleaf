@@ -37,6 +37,7 @@
                         <th scope="col" style="background-color: gray;">Column Name</th>
                         <th scope="col" style="background-color: gray;">Data Type</th>
                         <th scope="col" style="background-color: gray;">Required Type</th>
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray;">Action</th>
                     </tr>
                     </thead>
@@ -47,6 +48,7 @@
                         <td th:text="${column.columnName}">columnName</td>
                         <td th:text="${column.dataType}">columnName</td>
                         <td th:text="${column.requiredType}">columnName</td>
+                        <td th:text="${column.presentTime}">userPassword</td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center action-button-container">
                                 <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2"></button>

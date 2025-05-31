@@ -36,6 +36,7 @@
                     <tr>
                         <th scope="col" style="background-color: gray;">SN</th>
                         <th scope="col" style="background-color: gray;">Category Name</th>
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray;">Action</th>
                     </tr>
                     </thead>
@@ -43,6 +44,7 @@
                     <tr th:each="category, iterStat : ${data}">
                         <td  th:text="${iterStat.count}">1</td>
                         <td th:text="${category.categoryName}">Category Name</td>
+                        <td th:text="${category.presentTime}">userPassword</td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center action-button-container">
                                 <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2"></button>

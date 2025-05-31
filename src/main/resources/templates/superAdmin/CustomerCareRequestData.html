@@ -45,6 +45,7 @@
                     <th scope="col" style="background-color: gray;">Feedback</th>
                     <th scope="col" style="background-color: gray;">Status In COO</th>
                     <th scope="col" style="background-color: gray;">Available Product</th>
+                    <th scope="col" style="background-color: gray;">Request Time</th>
                     <th scope="col" style="background-color: gray;">Action</th>
                 </tr>
                 </thead>
@@ -89,6 +90,8 @@
                     <td th:text="${device.inventory != null && device.inventory.cooDeliveryAns != null ? device.inventory.cooDeliveryAns : 'Pending'}">
                     </td>
                     <td th:text="${device.inventory != null && device.inventory.checkAvailability != null ? device.inventory.checkAvailability : 'No'}">
+                    </td>
+                    <td th:text="${device.inventory != null && device.inventory.requestTime != null ? device.inventory.requestTime : 'No'}">
                     </td>
                     <td>
                         <div class="action-button-container">

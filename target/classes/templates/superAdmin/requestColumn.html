@@ -72,6 +72,7 @@
                         <th scope="col" style="background-color: gray;">Data Type</th>
                         <th scope="col" style="background-color: gray;">Required Type</th>
                         <th scope="col" style="background-color: gray;">Visible</th>
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray;">Action</th>
                     </tr>
                     </thead>
@@ -82,6 +83,7 @@
                         <td th:text="${column.dataType}"> userName</td>
                         <td th:text="${column.requiredType}">userId</td>
                         <td th:text="${column.visibleType}">userId</td>
+                        <td th:text="${column.presentTime}">userPassword</td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center action-button-container">
                                 <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2" th:data-request-id="${column.id}"></button>

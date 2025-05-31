@@ -46,6 +46,7 @@
                         <th scope="col" style="background-color: gray;">User Name</th>
                         <th scope="col" style="background-color: gray;">User Id</th>
                         <th scope="col" style="background-color: gray;">User Password</th>
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray;">Action</th>
                     </tr>
                     </thead>
@@ -55,6 +56,7 @@
                         <td th:text="${user.userName}"> userName</td>
                         <td th:text="${user.userId}">userId</td>
                         <td th:text="${user.userPassword}">userPassword</td>
+                        <td th:text="${user.presentTime}">userPassword</td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center action-button-container">
                                 <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2"></button>

@@ -29,6 +29,7 @@
                         <th scope="col" style="background-color: gray;">Description</th>
                         <th scope="col" style="background-color: gray;">Components</th>
                         <th scope="col" style="background-color: gray;">Status In COO</th>
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray;">Action</th>
                     </tr>
                     </thead>
@@ -56,7 +57,7 @@
                             </button>
                         </td>
                         <td th:text="${device.unOrderedDevice != null and device.unOrderedDevice.COOUnOrderedDeviceAcceptedStatus == 'Ordered' ? 'Approved' : 'Pending'}"></td>
-
+                        <td th:text="${device.presentTime}">userPassword</td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center action-button-container">
                                 <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2" th:data-device-id="${device.id}"></button>

@@ -28,6 +28,7 @@
                         <th th:each="column : ${universalColumns}" th:text="${column.columnName}" style="background-color: gray;"></th>
                         <th scope="col" style="background-color: gray;">Description</th>
                         <th scope="col" style="background-color: gray;">Status</th>
+                        <th scope="col" style="background-color: gray;">Create Time</th>
                         <th scope="col" style="background-color: gray;">Action</th>
                     </tr>
                     </thead>
@@ -53,6 +54,7 @@
                             </ul>
                         </td>
                         <td th:text="${device.purchase.cooPurchaseAcceptedAns}">No</td>
+                        <td th:text="${device.presentTime}">No</td>
                         <!-- Action Buttons -->
                         <td>
                             <div class="action-button-container">

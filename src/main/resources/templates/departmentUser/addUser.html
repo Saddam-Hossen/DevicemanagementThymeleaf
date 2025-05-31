@@ -50,6 +50,7 @@
             <th scope="col" style="background-color: gray;color:white">User Id</th>
             <th scope="col" style="background-color: gray;color:white">User Join Date</th>
             <th scope="col" style="background-color: gray;color:white">User Designation</th>
+            <th scope="col" style="background-color: gray;">Create Time</th>
             <th scope="col" style="background-color: gray;color:white">Action</th>
         </tr>
         </thead>
@@ -60,6 +61,7 @@
             <td th:text="${user.userId}">userId</td>
             <td th:text="${user.userJoinDate}">userPassword</td>
             <td th:text="${user.userDesignation}">userPassword</td>
+            <td th:text="${user.presentTime}">userPassword</td>
             <td>
                 <div class="d-flex justify-content-center align-items-center action-button-container">
                     <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2" th:data-user-Id="${user.id}" th:data-button-id="Edit"></button>

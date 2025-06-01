@@ -860,7 +860,7 @@ $(document).ready(function() {
                                    </button>
                                </td>
                                <td>
-                                    ${solution.serviceCenterToInventoryAccessoriesRequestTime !== null ?  formatDateTimeToAmPm(solution.serviceCenterToInventoryAccessoriesRequestTime ): ""}
+                                    ${solution.inventoryToServiceCenterDeviceTime !== null ?  formatDateTimeToAmPm(solution.inventoryToServiceCenterDeviceTime ): ""}
 
                                  </td>
                                 <td>

@@ -859,6 +859,10 @@ $(document).ready(function() {
                                        ${availability}
                                    </button>
                                </td>
+                               <td>
+                                    ${solution.serviceCenterToInventoryAccessoriesRequestTime !== null ?  formatDateTimeToAmPm(solution.serviceCenterToInventoryAccessoriesRequestTime ): ""}
+
+                                 </td>
                                 <td>
                                  ${solution.deliveryDate !== null ? solution.deliveryDate : ""}
 
@@ -877,6 +881,7 @@ $(document).ready(function() {
                    });
                });
            });
+            sortAndFormatAllTables() ;
     $(document).on('click', '.deliver', function(){
             var serviceId = $(this).data('service-id');
             var category = $(this).data('category');

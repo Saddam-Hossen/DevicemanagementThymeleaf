@@ -1394,7 +1394,7 @@ $(document).ready(function() {
                                ${cooAnswer}
                              </td>
                              <td>${solution.purchaseDeviceExportStatus ?? 'Not Exported'}</td>
-                            
+
                                 <td>${solution.inventoryForPurchaseRequestTime ? formatDateTimeToAmPm(solution.inventoryForPurchaseRequestTime) : 'N/A'}</td>
                                <td>
 

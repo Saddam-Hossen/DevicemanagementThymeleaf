@@ -1028,6 +1028,7 @@ $(document).ready(function() {
                           ${availability}
                       </button>
                   </td>
+                   <td>${device.presentTime ? formatDateTimeToAmPm(device.presentTime) : "N/A"}</td>
               `;
 
             // Action buttons column

@@ -875,6 +875,11 @@ $(document).ready(function() {
                                        ${solution.purchaseDeviceSenderToInventoryStatus != null ? solution.purchaseDeviceSenderToInventoryStatus : ' '}
                                 </td>  <!-- Corrected text binding for this column -->
                                <td>
+                                 ${solution.serviceCenterToInventoryAccessoriesRequestTime !== null ?  formatDateTimeToAmPm(solution.serviceCenterToInventoryAccessoriesRequestTime ): ""}
+
+                              </td>
+
+                               <td>
 
                                   <div class="d-flex justify-content-center align-items-center action-button-container">
                                              ${ solution.purchaseDeviceSenderToInventoryStatus ==='Pending' ? `
@@ -897,6 +902,7 @@ $(document).ready(function() {
                    });
                });
            });
+            sortAndFormatAllTables() ;
     $(document).on('click', '.deliver', function(){
             var serviceId = $(this).data('service-id');
             var category = $(this).data('category');

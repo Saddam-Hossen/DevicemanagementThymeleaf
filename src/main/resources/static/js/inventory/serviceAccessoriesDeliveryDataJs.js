@@ -786,6 +786,10 @@ $(document).ready(function() {
                                        ${solution.inventoryToServiceCenterDeviceStatus != null ? solution.inventoryToServiceCenterDeviceStatus : ' '}
                                 </td>  <!-- Corrected text binding for this column -->
                                <td>
+                               <td>
+                                        ${solution.serviceCenterToInventoryAccessoriesRequestTime !== null ?  formatDateTimeToAmPm(solution.serviceCenterToInventoryAccessoriesRequestTime ): ""}
+
+                                     </td>
 
                                   <div class="d-flex justify-content-center align-items-center action-button-container">
                                              ${availability !== "Unavailable" && solution.inventoryToServiceCenterDeviceStatus !=='Accepted' ? `

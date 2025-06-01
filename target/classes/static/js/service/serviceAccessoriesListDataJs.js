@@ -790,6 +790,7 @@ $(document).ready(function() {
                                   <td>
                                           ${solution.inventoryToServiceCenterDeviceStatus != null ? solution.inventoryToServiceCenterDeviceStatus : ' '}
                                    </td>  <!-- Corrected text binding for this column -->
+                                 <td>${device.presentTime ? formatDateTimeToAmPm(device.presentTime) : "N/A"}</td>
                                   <td>
 
                                      <div class="d-flex justify-content-center align-items-center action-button-container">
@@ -819,7 +820,7 @@ $(document).ready(function() {
 
                });
            });
-
+         sortAndFormatAllTables();
  // Add event listener for the availability button click
             $(document).on('click', '.delivery-button', function() {
                                 var category = $(this).data('category');

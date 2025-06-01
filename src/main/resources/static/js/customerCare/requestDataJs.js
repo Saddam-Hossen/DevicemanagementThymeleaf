@@ -1019,6 +1019,7 @@ $(document).ready(function() {
               `;
                htmlData += `
                      <td>${device.inventory?.cooDeliveryAns || "Pending"}</td>
+                    <td>${device.presentTime ? formatDateTimeToAmPm(device.presentTime) : "N/A"}</td>
                     `;
 
             // Action buttons column
@@ -1050,6 +1051,7 @@ $(document).ready(function() {
               row.innerHTML = htmlData;
               tableBody.appendChild(row);
           });
+          sortAndFormatAllTables();
 
           $(document).on('click', '.Accept', function() {
                                var requestId=$(this).data('request-id');

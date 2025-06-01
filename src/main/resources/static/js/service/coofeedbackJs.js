@@ -1001,7 +1001,7 @@ $(document).ready(function() {
                                     <input type="text" name="inputComment" id="inputComment" placeholder="Enter Comment" class="form-control" value="${solution.comment}">
                                 </td>
 
-
+                               <td>${device.presentTime ? formatDateTimeToAmPm(device.presentTime) : "N/A"}</td>
                                <td>
 
                                   <div class="d-flex justify-content-center align-items-center action-button-container">
@@ -1035,6 +1035,7 @@ $(document).ready(function() {
                    });
                });
            });
+           sortAndFormatAllTables();
  // Add event listener for the availability button click
             $(document).on('click', '.view-button-selected-device', function() {
                                 var category = $(this).data('category');

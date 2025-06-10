@@ -1,3 +1,4 @@
+/*
 package com.device.DeviceManagement.Config;
 
 import org.apache.kafka.clients.admin.NewTopic;
@@ -22,3 +23,4 @@ public class KafkaConfig {
                 .build();
     }
 }
+*/

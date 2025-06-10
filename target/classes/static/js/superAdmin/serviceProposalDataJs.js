@@ -334,30 +334,6 @@ window.initServiceProposalGeneral = function () {
 };
 
 
- $(document).ready(function() {
-            $('.hideButton').click(function() {
-                // Hide the second column
-                $('.secondDiv').hide();
-
-                // Show the showButton and set display to inline-block
-                $('.showButton').css('display', 'inline-block');
-
-                // Change the class of the first column to make it full-width
-                $('.firstDiv').removeClass('col-sm-9').addClass('col-sm-12');
-            });
-
-            $('.showButton').click(function() {
-                // Show the second column
-                $('.secondDiv').show();
-
-                // Hide the showButton again
-                $('.showButton').hide();
-
-                // Revert the class of the first column back to original
-                $('.firstDiv').removeClass('col-sm-12').addClass('col-sm-9');
-                $('.secondDiv').addClass('col-sm-3');
-            });
-        });
 
  function printRowDataForCustomerCare(row) {
                                      // Get all the cells of the clicked row

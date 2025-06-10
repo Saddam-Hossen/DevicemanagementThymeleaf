@@ -1,3 +1,4 @@
+/*
 package com.device.DeviceManagement.Config;
 // File: src/main/java/com/example/kafkaorder/util/PartitionUpdater.java
 import org.apache.kafka.clients.admin.AdminClient;
@@ -24,4 +25,4 @@ public class PartitionUpdater {
             e.printStackTrace();
         }
     }
-}
+}*/

@@ -3,7 +3,7 @@ package com.device.DeviceManagement.controller.login;
 
 import com.device.DeviceManagement.controller.service.*;
 import com.device.DeviceManagement.model.*;
-import com.device.DeviceManagement.producer.KafkaProducer;
+//import com.device.DeviceManagement.producer.KafkaProducer;
 import com.device.DeviceManagement.repository.*;
 import com.device.DeviceManagement.service.RedisRateLimiter;
 import jakarta.servlet.http.Cookie;
@@ -32,11 +32,11 @@ public class Login {
             "date", "month", "week", "time", "datetime-local", "color", "file",
             "checkbox", "radio", "button", "submit", "reset", "textarea"
     );
-    @Autowired
+    /*@Autowired
     private final KafkaProducer kafkaProducer;
     public Login(KafkaProducer kafkaProducer) {
         this.kafkaProducer = kafkaProducer;
-    }
+    }*/
     @Autowired
     private RequestColumnRepository requestColumnRepository;
 
@@ -296,11 +296,11 @@ public class Login {
                 model.addAttribute("requestData",requestData);
                 model.addAttribute("designations",designations);
                 model.addAttribute("dropDownLists",dropDownLists);
-                try {
-                   // kafkaProducer.sendMessage("This is an error message");
+               /* try {
+                   kafkaProducer.sendMessage("This is an error message");
                 } catch (Exception e) {
                     e.printStackTrace(); // or log properly
-                }
+                }*/
 
                 return "superAdmin/home"; // This will return the index.html Thymeleaf template
 

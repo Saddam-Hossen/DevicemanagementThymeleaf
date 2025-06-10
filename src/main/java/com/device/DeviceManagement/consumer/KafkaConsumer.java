@@ -1,3 +1,4 @@
+/*
 package com.device.DeviceManagement.consumer;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -18,3 +19,4 @@ public class KafkaConsumer {
         System.out.println("✅ Message processed successfully!");
     }
 }
+*/

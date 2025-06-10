@@ -1,5 +1,6 @@
 package com.device.DeviceManagement.controller.purchase;
 
+import com.device.DeviceManagement.controller.service.*;
 import com.device.DeviceManagement.model.*;
 import com.device.DeviceManagement.repository.*;
 import com.itextpdf.io.image.ImageData;
@@ -69,6 +70,32 @@ public class purchase {
     private InternalUserRepository internalUserRepository;
    // private static final Logger logger = LoggerFactory.getLogger(purchase.class);
 
+
+    @Autowired
+    private CategoriesService categoriesService;
+    @Autowired
+    private IndividualColumnsService individualColumnsService;
+    @Autowired
+    private UniversalColumnsService universalColumnsService;
+    @Autowired
+    private AddDataService addDataService;
+    @Autowired
+    private BranchUserService branchUserService;
+    @Autowired
+    private InternalUserService internalUserService;
+    @Autowired
+    private DesignationService designationService;
+    @Autowired
+    private  DropDownListService dropDownListService;
+    @Autowired
+    private  RequestColumnService requestColumnService;
+    @Autowired
+    private RequestDataService requestDataService;
+    @Autowired
+    private  ServiceRequestService serviceRequestService;
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/addPurchaseProposal")
     public ResponseEntity<String> addPurchaseProposal(@RequestParam Map<String, String> formData) {
         try {
@@ -121,6 +148,7 @@ public class purchase {
                 requestData.setInventory(requestData.getInventory());
                 // Save the updated RequestData document
                 requestDataRepository.save(requestData);
+                requestDataService.update();
                 // Return success message
                 return ResponseEntity.ok("Purchase proposal saved successfully!");
             } else {
@@ -202,7 +230,7 @@ public class purchase {
                 serviceRequestRepository.save(requestData);
             }
 
-
+             serviceRequestService.update();
             return ResponseEntity.ok("Purchase proposal saved successfully!");
         } catch (Exception e) {
 
@@ -226,6 +254,7 @@ public class purchase {
 
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
+            requestDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
         }
@@ -260,6 +289,7 @@ public class purchase {
 
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
+            requestDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
         }
@@ -306,7 +336,7 @@ public class purchase {
 
                 // generate new
                 addDataRepository.save(new AddData(deviceId,device,device.getUserName(),categoryName,formattedDateTime,currentDate,allParams,"1"));
-
+                addDataService.update();
 
                 return ResponseEntity.ok("Device Data Updated successfully");
             } else {
@@ -385,6 +415,7 @@ public class purchase {
 
             // Persist changes
             serviceRequestRepository.save(requestData);
+            serviceRequestService.update();
 
             return ResponseEntity.ok("Data saved successfully");
 
@@ -450,6 +481,7 @@ public class purchase {
             // servicePriceService.savePrice(serviceId, solutionCategory, solutionName, problemName, price);
 
             // Return success response
+            serviceRequestService.update();
             return ResponseEntity.ok("Data saved successfully!");
 
         } catch (Exception ex) {
@@ -468,9 +500,7 @@ public class purchase {
     public ResponseEntity<String> addPurchaseList(@RequestBody PurchaseRequestDTO purchaseRequest) {
         try {
             // Extract department information
-            System.out.println("Department Name: " + purchaseRequest.getDepartmentName());
-            System.out.println("Department User Name: " + purchaseRequest.getDepartmentUserName());
-            System.out.println("Department User ID: " + purchaseRequest.getDepartmentUserId());
+
 
             List<String> requests=purchaseRequest.getRequests();
             if(!requests.isEmpty()){
@@ -533,6 +563,9 @@ public class purchase {
 
             // Perform necessary logic (e.g., saving to a database)
 
+            requestDataService.update();
+            serviceRequestService.update();
+
             return ResponseEntity.ok("Purchase list added successfully!");
         } catch (Exception e) {
             e.printStackTrace();
@@ -543,10 +576,7 @@ public class purchase {
     @ResponseBody
     public ResponseEntity<String> addPurchaseListExport(@RequestBody PurchaseRequestDTO purchaseRequest) {
         try {
-            // Extract department information
-            System.out.println("Department Name: " + purchaseRequest.getDepartmentName());
-            System.out.println("Department User Name: " + purchaseRequest.getDepartmentUserName());
-            System.out.println("Department User ID: " + purchaseRequest.getDepartmentUserId());
+
 
             List<String> requests=purchaseRequest.getRequests();
             if(!requests.isEmpty()){
@@ -605,6 +635,8 @@ public class purchase {
             }
 
             // Perform necessary logic (e.g., saving to a database)
+            requestDataService.update();
+            serviceRequestService.update();
 
             return ResponseEntity.ok("Purchase list added successfully!");
         } catch (Exception e) {
@@ -680,7 +712,8 @@ public class purchase {
 
         try {
 
-
+          addDataService.update();
+          requestDataService.update();
             return ResponseEntity.ok("Data saved successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error saving data: " + e.getMessage());
@@ -729,6 +762,7 @@ public class purchase {
         adddata.setDeviceUsers(list);
 
         addDataRepository.save(adddata);
+        addDataService.update();
 
         try {
 
@@ -793,7 +827,8 @@ public class purchase {
      requestDataRepository.save(data);
         try {
 
-
+             addDataService.update();
+             requestDataService.update();
             return ResponseEntity.ok("Data saved successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error saving data: " + e.getMessage());
@@ -883,7 +918,8 @@ public class purchase {
 
         try {
 
-
+          addDataService.update();
+          serviceRequestService.update();
             return ResponseEntity.ok("Data saved successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error saving data: " + e.getMessage());
@@ -903,11 +939,8 @@ public class purchase {
         String departmentUserName = (String) payload.get("departmentUserName");
         String departmentUserId = (String) payload.get("departmentUserId");
 
-        System.out.println("Received requestId: " + requestId);
-
         // Generate current date and time
         String presentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        System.out.println("Generated presentDateTime: " + presentDateTime);
 
         // Find the RequestData document by requestId and status
         Optional<RequestData> optionalRequestData = requestDataRepository.findDevicesIDS(requestId, "1");
@@ -924,7 +957,7 @@ public class purchase {
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
 
-
+             requestDataService.update();
 
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
@@ -982,6 +1015,7 @@ public class purchase {
             });
             // Persist changes
             serviceRequestRepository.save(requestData);
+            serviceRequestService.update();
         }
 
 
@@ -1175,6 +1209,7 @@ public class purchase {
 
             }
         });
+        addDataService.update();
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 
             PdfWriter writer = new PdfWriter(baos);

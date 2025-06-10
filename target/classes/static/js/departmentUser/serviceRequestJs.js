@@ -66,7 +66,7 @@ function  receiveDeviceFromCustomerCare(deviceId,serviceId,status){
 
 }
 
-$(document).ready(function() {
+window.initServiceRequestGeneral = function () {
   $('#serviceInformationTable tbody tr').click(function(event) {
     const $row = $(this); // Store the clicked row element
    var categoryName = $row.find('td:nth-child(3)').text();
@@ -273,7 +273,7 @@ $(document).ready(function() {
       console.log(`Other button clicked: ${buttonText}`);
     }
   });
-});
+};
 
 function columnValue1(deviceId, columnName, callback) {
     print('allAddData', function(allAddData) {

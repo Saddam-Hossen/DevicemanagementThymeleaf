@@ -5,13 +5,14 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 @Document(collection = "ServiceRequest")
-public class ServiceRequest {
-
+public class ServiceRequest implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     private String id;
 
@@ -550,7 +551,8 @@ public class ServiceRequest {
 
     @Setter
     @Getter
-    public static class problems {
+    public static class problems implements Serializable {
+        private static final long serialVersionUID = 1L;
         @Id
         private String id;
         private String name;
@@ -602,7 +604,8 @@ public class ServiceRequest {
         }
         @Setter
         @Getter
-        public static class ProposalSolutionItem {
+        public static class ProposalSolutionItem implements Serializable {
+            private static final long serialVersionUID = 1L;
             private String name;
             private String value;
             private String category;
@@ -1150,7 +1153,8 @@ public class ServiceRequest {
     }
     @Setter
     @Getter
-    public static class Solution {
+    public static class Solution implements Serializable {
+        private static final long serialVersionUID = 1L;
         @Id
         private String id;
         private String name;
@@ -1202,7 +1206,8 @@ public class ServiceRequest {
         }
         @Setter
         @Getter
-        public static class ProposalSolutionItem {
+        public static class ProposalSolutionItem implements Serializable {
+            private static final long serialVersionUID = 1L;
             private String name;
             private String value;
             private String category;

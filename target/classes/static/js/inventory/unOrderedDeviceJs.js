@@ -264,7 +264,7 @@ function addDeviceInformationOfExtraDevice(){
 
 }
 
-$(document).ready(function() {
+window.initUnOrderedDeviceGeneral = function () {
   $('#unOrderedDeviceTable tbody tr').click(function(event) {
     const $row = $(this); // Store the clicked row element
    var categoryName = $row.find('td:nth-child(2)').text();
@@ -855,31 +855,8 @@ $(document).ready(function() {
       console.log(`Other button clicked: ${buttonText}`);
     }
   });
-});
+};
 
-function columnValue1(deviceId, columnName, callback) {
-    print('allAddData', function(allAddData) {
-        const deviceData = allAddData.find(item => item.id === deviceId);
-
-        if (deviceData) {
-            const columnData = deviceData.allData;
-
-            if (columnData && columnData.hasOwnProperty(columnName)) {
-                callback(columnData[columnName]);
-            } else {
-                console.warn(`Column "${columnName}" not found in device data.`);
-                callback(undefined);
-            }
-        } else {
-            console.warn(`No data found for Device ID ${deviceId}`);
-            callback(undefined);
-        }
-    });
-}
-
-function showModal(){
-$('#publicModal').modal('show');
-}
 
 function selectionAndInputDeviceEdit(deviceId){
 
@@ -1107,46 +1084,7 @@ function myFunctionThatHandlesCase(column, text,formId) {
             });
     });
 }
-function print(dataType, callback) {
-    // Ensure callback is a function
-    if (typeof callback !== 'function') {
-        console.error('Callback is not a function');
-        return;
-    }
 
-    $.ajax({
-        url: '/superAdmin/allData',
-        type: 'POST',
-        dataType: 'json',
-        success: function(data) {
-            console.log(data);
-            // Execute the callback with the requested dataType
-            callback(data[dataType]);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
-
-function print1(dataType) {
-    return new Promise(function(resolve, reject) {
-        $.ajax({
-            url: '/superAdmin/allData',
-            type: 'POST',
-            dataType: 'json',
-            success: function(data) {
-                console.log(data);
-                // Resolve the Promise with the requested dataType
-                resolve(data[dataType]);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching data:', error);
-                reject(error); // Reject the Promise if there's an error
-            }
-        });
-    });
-}
 
 
 function exportToModalOfSelectedRow() {

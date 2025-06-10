@@ -1,5 +1,6 @@
 package com.device.DeviceManagement.controller.inventory;
 
+import com.device.DeviceManagement.controller.service.*;
 import com.device.DeviceManagement.model.*;
 import com.device.DeviceManagement.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,32 @@ public class Inventory {
     @Autowired
     private InternalUserRepository internalUserRepository;
 
+
+    @Autowired
+    private CategoriesService categoriesService;
+    @Autowired
+    private IndividualColumnsService individualColumnsService;
+    @Autowired
+    private UniversalColumnsService universalColumnsService;
+    @Autowired
+    private AddDataService addDataService;
+    @Autowired
+    private BranchUserService branchUserService;
+    @Autowired
+    private InternalUserService internalUserService;
+    @Autowired
+    private DesignationService designationService;
+    @Autowired
+    private  DropDownListService dropDownListService;
+    @Autowired
+    private  RequestColumnService requestColumnService;
+    @Autowired
+    private RequestDataService requestDataService;
+    @Autowired
+    private  ServiceRequestService serviceRequestService;
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/addListRequest")
     public ResponseEntity<String> processSelectedRows(@RequestBody Map<String, Object> payload) {
         // Extract requestId and deviceIds from the payload
@@ -48,12 +75,9 @@ public class Inventory {
         String departmentUserName = (String) payload.get("departmentUserName");
         String departmentUserId = (String) payload.get("departmentUserId");
 
-        System.out.println("Received requestId: " + requestId);
-        System.out.println("Received deviceIds: " + deviceIds);
 
         // Generate current date and time
         String presentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        System.out.println("Generated presentDateTime: " + presentDateTime);
 
         // Find the RequestData document by requestId and status
         Optional<RequestData> optionalRequestData = requestDataRepository.findDevicesIDS(requestId, "1");
@@ -72,7 +96,7 @@ public class Inventory {
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
 
-
+           requestDataService.update();
 
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
@@ -104,6 +128,7 @@ public class Inventory {
 
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
+            requestDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
         }
@@ -132,7 +157,7 @@ public class Inventory {
                 requestDataRepository.save(data); // Save the updated category
 
 
-
+                requestDataService.update();
                 return ResponseEntity.ok("Request data Updated successfully");
             } else {
                 return ResponseEntity.notFound().build();
@@ -164,6 +189,7 @@ public class Inventory {
 
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
+            requestDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
         }
@@ -190,10 +216,7 @@ public class Inventory {
             String problemName = parts[0];
             String serviceId = parts[1];
 
-            System.out.println("problemName: " + problemName);
-            System.out.println("Service" +
-                    " ID: " + serviceId);
-            System.out.println("Form Data: " + formData);
+
 
             Optional<ServiceRequest> optionalRequestData = serviceRequestRepository.findDevicesIDS(serviceId, "1");
             if (optionalRequestData.isPresent()) {
@@ -225,6 +248,7 @@ public class Inventory {
                 });
                 // Persist changes if needed
                 serviceRequestRepository.save(requestData1);
+                serviceRequestService.update();
             }
 
             // Here, you can handle each form data based on formId and proposalId
@@ -242,11 +266,7 @@ public class Inventory {
             @RequestParam String solutionName,
             @RequestParam String date) {
 
-        // Log or process received data
-        System.out.println("Received Service ID: " + serviceId);
-        System.out.println("Received Problem Name: " + problemName);
-        System.out.println("Received Solution Name: " + solutionName);
-        System.out.println("Received Date: " + date);
+
         Optional<ServiceRequest> optionalRequestData = serviceRequestRepository.findDevicesIDS(serviceId, "1");
 
         if (optionalRequestData.isPresent()) {
@@ -264,6 +284,7 @@ public class Inventory {
             });
             // Save the updated RequestData document
             serviceRequestRepository.save(requestData);
+            serviceRequestService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + serviceId + " not found.");
         }
@@ -288,11 +309,7 @@ public class Inventory {
 
     ) {
 
-        // Log or process received data
-        System.out.println("Received Service ID: " + serviceId);
-        System.out.println("Received Problem Name: " + problemName);
-        System.out.println("Received Solution Name: " + solutionName);
-        System.out.println("Received Date: " + deviceId);
+
         Optional<ServiceRequest> optionalRequestData = serviceRequestRepository.findDevicesIDS(serviceId, "1");
 
         if (optionalRequestData.isPresent()) {
@@ -312,6 +329,7 @@ public class Inventory {
             });
             // Save the updated RequestData document
             serviceRequestRepository.save(requestData);
+            serviceRequestService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + serviceId + " not found.");
         }
@@ -348,7 +366,6 @@ public class Inventory {
         String deviceType = allParams.get("deviceType");
         allParams.remove("deviceType");
 
-        System.out.println(allParams);
 
         LocalDateTime now = LocalDateTime.now();
         String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -366,6 +383,7 @@ public class Inventory {
         adddata.setDeviceUsers(list);
 
         addDataRepository.save(adddata);
+        addDataService.update();
 
         try {
 
@@ -419,6 +437,7 @@ public class Inventory {
                         });
                         // Persist changes
                         serviceRequestRepository.save(requestData);
+                        serviceRequestService.update();
                     }
                 });
             }
@@ -440,12 +459,10 @@ public class Inventory {
         String departmentUserName = (String) payload.get("departmentUserName");
         String departmentUserId = (String) payload.get("departmentUserId");
 
-        System.out.println("Received requestId: " + requestId);
-        System.out.println("Received deviceIds: " + deviceIds);
+
 
         // Generate current date and time
         String presentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        System.out.println("Generated presentDateTime: " + presentDateTime);
 
         // Find the RequestData document by requestId and status
         Optional<RequestData> optionalRequestData = requestDataRepository.findDevicesIDS(requestId, "1");
@@ -465,6 +482,7 @@ public class Inventory {
 
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
+            requestDataService.update();
 
 
 
@@ -525,6 +543,9 @@ public class Inventory {
             list.add(new AddData.DeviceUser(departmentName,departmentUserName,departmentUserId,getCurrentDateTime(),"1"));
 
             addDataRepository.save(deviceRequestData);
+
+            requestDataService.update();
+            addDataService.update();
 
 
         } else {
@@ -601,7 +622,8 @@ public class Inventory {
             addDataRepository.save(deviceRequestData);
         }
 
-
+         serviceRequestService.update();
+        addDataService.update();
         return ResponseEntity.ok("Selected rows processed successfully");
     }
     @PostMapping("/sendDeliveryDeviceInventoryToCustomerCare")
@@ -641,7 +663,7 @@ public class Inventory {
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
         }
-
+        requestDataService.update();
         return ResponseEntity.ok("Selected rows processed successfully");
     }
 
@@ -658,7 +680,6 @@ public class Inventory {
 
         // Generate current date and time
         String presentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        System.out.println("Generated presentDateTime: " + presentDateTime);
 
         // Find the RequestData document by requestId and status
         AddData deviceRequestData = addDataRepository.findByIdAndStatus(deviceId, "1");
@@ -683,6 +704,8 @@ public class Inventory {
             list.add(new AddData.DeviceUser(departmentName,departmentUserName,departmentUserId,getCurrentDateTime(),"1"));
 
             addDataRepository.save(deviceRequestData);
+
+            addDataService.update();
 
 
         } else {

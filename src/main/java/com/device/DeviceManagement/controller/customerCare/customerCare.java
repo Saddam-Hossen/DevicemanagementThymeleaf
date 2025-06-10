@@ -1,5 +1,6 @@
 package com.device.DeviceManagement.controller.customerCare;
 
+import com.device.DeviceManagement.controller.service.*;
 import com.device.DeviceManagement.model.AddData;
 import com.device.DeviceManagement.model.RequestData;
 import com.device.DeviceManagement.model.ServiceRequest;
@@ -43,6 +44,32 @@ public class customerCare {
     @Autowired
     private  ServiceRequestRepository serviceRequestRepository;
 
+
+    @Autowired
+    private CategoriesService categoriesService;
+    @Autowired
+    private IndividualColumnsService individualColumnsService;
+    @Autowired
+    private UniversalColumnsService universalColumnsService;
+    @Autowired
+    private AddDataService addDataService;
+    @Autowired
+    private BranchUserService branchUserService;
+    @Autowired
+    private InternalUserService internalUserService;
+    @Autowired
+    private DesignationService designationService;
+    @Autowired
+    private  DropDownListService dropDownListService;
+    @Autowired
+    private  RequestColumnService requestColumnService;
+    @Autowired
+    private RequestDataService requestDataService;
+    @Autowired
+    private  ServiceRequestService serviceRequestService;
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/approveCustomerCareRequestStatus")
     @ResponseBody
     public ResponseEntity<String> deliverRequestStatus(@RequestParam String requestId, @RequestParam String status) {
@@ -60,6 +87,7 @@ public class customerCare {
 
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
+            requestDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
         }
@@ -86,6 +114,7 @@ public class customerCare {
             requestData.setCustomerCare(customerCare);
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
+            requestDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
         }
@@ -138,6 +167,8 @@ public class customerCare {
             addDataRepository.save(deviceRequestData);
             // Save the updated document
             serviceRequestRepository.save(requestData);
+            serviceRequestService.update();
+            addDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with serviceId " + serviceId + " not found.");
         }
@@ -183,6 +214,9 @@ public class customerCare {
 
             // Save the updated RequestData document
             serviceRequestRepository.save(requestData);
+            serviceRequestService.update();
+            addDataService.update();
+
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + serviceId + " not found.");
         }
@@ -246,6 +280,9 @@ public class customerCare {
 
             // Save the updated RequestData document
             serviceRequestRepository.save(requestData);
+            serviceRequestService.update();
+            addDataService.update();
+
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + serviceId + " not found.");
         }
@@ -309,6 +346,8 @@ public class customerCare {
 
             // Save the updated RequestData document
             serviceRequestRepository.save(requestData);
+            serviceRequestService.update();
+            addDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + serviceId + " not found.");
         }
@@ -370,6 +409,8 @@ public class customerCare {
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
         }
+        requestDataService.update();
+        addDataService.update();
 
         return ResponseEntity.ok("Selected rows processed successfully");
     }
@@ -407,7 +448,7 @@ public class customerCare {
 
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
-
+           requestDataService.update();
 
 
         } else {

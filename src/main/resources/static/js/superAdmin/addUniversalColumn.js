@@ -65,7 +65,7 @@ function  editUniversalColumnBtn($row){
                }
            });
 }
-$(document).ready(function() {
+ window.initAddUniversalColumnGeneral = function () {
     $('#universalColumnTable tbody tr').click(function(event) {
        var $row = $(this); // Store the clicked row element
         var columnName = $row.find('td:nth-child(2)').text(); // Extract category name from the second column
@@ -158,7 +158,7 @@ $(document).ready(function() {
             console.log("Other action here");
         }
     });
-});
+};
 
 function addUniversalColumnToggle() {
         var content = document.getElementById("universalColumnForm");
@@ -170,17 +170,8 @@ function addUniversalColumnToggle() {
         }
     }
 
-     function closeToggle(id) {
+ function closeToggle(id) {
             var element = document.getElementById(id);
             element.style.display = "none";
               $("#universalColumnName").val(" ");
-        }
-
-
-
-        function hideModal(){
-        $('#publicModal').modal('hide');
-             $('#publicModal').on('hidden.bs.modal', function () {
-                   $('.modal-backdrop').remove(); // Ensure backdrop is removed
-              });
         }

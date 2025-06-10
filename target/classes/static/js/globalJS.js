@@ -51,17 +51,8 @@ $(document).ready(function () {
             bsOffcanvas.hide();
         }
     });
-    // Section visibility handling
-    var sectionContainer = document.querySelector('.container.mb-4');
-    var numberOfChildren = sectionContainer.childElementCount;
-    console.log('Number of children in <section class="container mb-4">:', numberOfChildren);
 
-    for (var i = 0; i < numberOfChildren; i++) {
-        sectionContainer.children[i].style.display = (i === 0) ? 'block' : 'none';
-    }
-
-    // Toggle nested list visibility
-   window.toggleList = function (item) {
+window.toggleList = function (item) {
            const $nested = $(item).find(".nested-list");
            const $icon = $(item).find("i.fas");
 
@@ -79,34 +70,7 @@ $(document).ready(function () {
                $icon.removeClass("fa-chevron-down").addClass("fa-chevron-up"); // Icon up
            }
        };
-     $(function() {
-      // Hide all pages by default
-      $(".container.mb-4 > div").hide();
-
-      // Get last active page from localStorage
-      var lastPage = localStorage.getItem("lastActivePage");
-
-      if (lastPage) {
-        // Show last active page only
-        $(".container.mb-4 > div").each(function () {
-          $(this).toggle($(this).attr("data-page") === lastPage);
-        });
-      } else {
-        // Optionally show the first page by default
-        $(".container.mb-4 > div").first().show();
-      }
-    });
-    // Updated toggleListItem saves to localStorage and toggles visibility
-        window.toggleListItem = function (item, pageName) {
-          localStorage.setItem("lastActivePage", pageName);
-          $(".container.mb-4 > div").each(function () {
-            $(this).toggle($(this).attr("data-page") === pageName);
-          });
-        };
-
-    // Adjust styles on window resize
-    $(window).resize(adjustMainBodyMargin);
-
+$(window).resize(adjustMainBodyMargin);
 
 
 });
@@ -218,3 +182,217 @@ function formatDateTimeToAmPm(datetimeStr) {
   }
 
   window.addEventListener("DOMContentLoaded", globallyFormatAndSortTables);
+
+  function showModal(){
+  $('#publicModal').modal('show');
+  }
+  function hideModal(){
+       $('#publicModal').modal('hide');
+       $('#publicModal').on('hidden.bs.modal', function () {
+             $('.modal-backdrop').remove(); // Ensure backdrop is removed
+        });
+  }
+function print(dataType, callback) {
+      // Ensure callback is a function
+      if (typeof callback !== 'function') {
+          console.error('Callback is not a function');
+          return;
+      }
+
+      $.ajax({
+          url: '/superAdmin/allData1',
+          type: 'POST',
+          dataType: 'json',
+           data: { dataType: dataType }, // send dataType in POST body
+          success: function(data) {
+             // console.log(data);
+              // Execute the callback with the requested dataType
+              callback(data[dataType]);
+          },
+          error: function(xhr, status, error) {
+              console.error('Error fetching data:', error);
+          }
+      });
+  }
+function print1(dataType) {
+      return new Promise(function(resolve, reject) {
+          $.ajax({
+              url: '/superAdmin/allData1',
+              type: 'POST',
+              dataType: 'json',
+              data: { dataType: dataType }, // send dataType in POST body
+              success: function(data) {
+                //  console.log(data);
+                  // Resolve the Promise with the requested dataType
+                  resolve(data[dataType]);
+              },
+              error: function(xhr, status, error) {
+                  console.error('Error fetching data:', error);
+                  reject(error); // Reject the Promise if there's an error
+              }
+          });
+      });
+  }
+
+function printRejectCause(element) {
+        var rejectCause = element.getAttribute("data-reject-cause");
+
+ var htmlToAdd = `
+        <div class="mb-3" style="margin-left: 0%; text-align: left;">
+           <h1>${rejectCause}
+           </h1>
+        </div>
+           <div class="mb-3" style="margin-right: 0%; text-align: right;">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+           </div>
+       `;
+
+       // Add the HTML code to the modal body using jQuery
+        $('.modal-body').html(htmlToAdd);
+       // edit individual column header
+        $('#publicModalLabel').text("Rejected Cause:");
+
+         $('#DeniedBtn').click(function() {
+
+                 setRequestStatus(requestId,"Denied");
+          });
+
+        showModal();
+    }
+
+function columnValue(requestId, columnName, callback) {
+            print('requestData', function(allAddData) {
+                const deviceData = allAddData.find(item => item.id === requestId);
+
+                if (deviceData) {
+                    const columnData = deviceData.allData;
+
+                    if (columnData && columnData.hasOwnProperty(columnName)) {
+                        callback(columnData[columnName]);
+                    } else {
+                        console.warn(`Column "${columnName}" not found in request data.`);
+                        callback(undefined);
+                    }
+                } else {
+                    console.warn(`No data found for Device ID ${requestId}`);
+                    callback(undefined);
+                }
+            });
+        }
+function columnValue1(deviceId, columnName, callback) {
+            print('allAddData', function(allAddData) {
+                const deviceData = allAddData.find(item => item.id === deviceId);
+
+                if (deviceData) {
+                    const columnData = deviceData.allData;
+
+                    if (columnData && columnData.hasOwnProperty(columnName)) {
+                        callback(columnData[columnName]);
+                    } else {
+                        console.warn(`Column "${columnName}" not found in device data.`);
+                        callback(undefined);
+                    }
+                } else {
+                    console.warn(`No data found for Device ID ${deviceId}`);
+                    callback(undefined);
+                }
+            });
+        }
+function formatDate(inputDate) {
+                                     // Split the input date into components
+                                     var parts = inputDate.split('-'); // parts[0] = '2024', parts[1] = '08', parts[2] = '20'
+
+                                     // Reformat the date to 'DD/MM/YY'
+                                     var formattedDate = parts[2] + '/' + parts[1] + '/' + parts[0].slice(2); // '20/08/24'
+
+                                     return formattedDate;
+                                 }
+function formatDateTime(inputDateTime) {
+                            // Check if inputDateTime is undefined or null
+                            if (!inputDateTime) {
+                                console.error("inputDateTime is undefined or null");
+                                return ""; // or return a default value
+                            }
+
+                            // Split the input datetime into date and time components
+                            var dateTimeParts = inputDateTime.split(' '); // ['2024-08-20', '15:02:26']
+
+                            // Check if the split was successful
+                            if (dateTimeParts.length !== 2) {
+                                console.error("inputDateTime format is incorrect, expected 'YYYY-MM-DD HH:MM:SS'");
+                                return ""; // or handle the error as needed
+                            }
+
+                            // Extract the date part
+                            var datePart = dateTimeParts[0]; // '2024-08-20'
+
+                            // Split the date into components
+                            var dateComponents = datePart.split('-'); // ['2024', '08', '20']
+
+                            // Check if the date split was successful
+                            if (dateComponents.length !== 3) {
+                                console.error("Date part of inputDateTime is incorrect, expected 'YYYY-MM-DD'");
+                                return ""; // or handle the error as needed
+                            }
+
+                            // Reformat the date to 'DD/MM/YY'
+                            var formattedDate = dateComponents[2] + '/' + dateComponents[1] + '/' + dateComponents[0].slice(2); // '20/08/24'
+
+                            return formattedDate;
+                        }
+
+function formatTime(inputDateTime) {
+                            // Split the input datetime to separate date and time
+                            var dateTimeParts = inputDateTime.split(' '); // ['2024-08-20', '15:02:26']
+
+                            // Extract the time part
+                            var timePart = dateTimeParts[1]; // '15:02:26'
+
+                            // Split the time into components
+                            var timeComponents = timePart.split(':'); // ['15', '02', '26']
+
+                            // Convert hour from 24-hour format to 12-hour format
+                            var hour = parseInt(timeComponents[0], 10); // Convert '15' to 15
+                            var minutes = timeComponents[1]; // '02'
+                            var period = 'AM';
+
+                            // Determine AM or PM period and adjust hour accordingly
+                            if (hour >= 12) {
+                                period = 'PM';
+                                if (hour > 12) {
+                                    hour -= 12; // Convert 13-23 hours to 1-11 PM
+                                }
+                            } else if (hour === 0) {
+                                hour = 12; // Midnight case, show as 12 AM
+                            }
+
+                            // Format time string as 'H:MM AM/PM'
+                            var formattedTime = hour + ':' + minutes + ' ' + period;
+
+                            return formattedTime;
+                        }
+
+window.initGlobalDivToggle = function () {
+        $('.hideButton').click(function() {
+        // Hide the second column
+        $('.secondDiv').hide();
+
+        // Show the showButton and set display to inline-block
+        $('.showButton').css('display', 'inline-block');
+
+        // Change the class of the first column to make it full-width
+        $('.firstDiv').removeClass('col-sm-9').addClass('col-sm-12');
+        });
+
+        $('.showButton').click(function() {
+        // Show the second column
+        $('.secondDiv').show();
+
+        // Hide the showButton again
+        $('.showButton').hide();
+
+        // Revert the class of the first column back to original
+        $('.firstDiv').removeClass('col-sm-12').addClass('col-sm-9');
+        $('.secondDiv').addClass('col-sm-3');
+        });
+};

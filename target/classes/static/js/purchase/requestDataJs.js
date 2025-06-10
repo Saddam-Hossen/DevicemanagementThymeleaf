@@ -307,7 +307,7 @@ function saveTableInformationOfDevice(requestId,categoryName){
                  }
              });
  }
-$(document).ready(function() {
+window.initRequestDataGeneral = function () {
     $('#requestPurchaseTable tbody tr').click(function(event) {
         var $row = $(this); // Store the clicked row element
         var button = $(event.target).closest('button');
@@ -925,82 +925,7 @@ if(buttonId ==="deliverPurchase"){
                     showModal();
         }
     });
-});
-
-
-function showModal(){
-$('#publicModal').modal('show');
-}
-function hideModal(){
-$('#publicModal').modal('hide');
-}
-function printRejectCause(element) {
-        var rejectCause = element.getAttribute("data-reject-cause");
-
- var htmlToAdd = `
-        <div class="mb-3" style="margin-left: 0%; text-align: left;">
-           <h1>${rejectCause}
-           </h1>
-        </div>
-           <div class="mb-3" style="margin-right: 0%; text-align: right;">
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-           </div>
-       `;
-
-       // Add the HTML code to the modal body using jQuery
-        $('.modal-body').html(htmlToAdd);
-       // edit individual column header
-        $('#publicModalLabel').text("Rejected Cause:");
-
-         $('#DeniedBtn').click(function() {
-
-                 setRequestStatus(requestId,"Denied");
-          });
-
-        showModal();
-    }
-
-function print(dataType, callback) {
-            // Ensure callback is a function
-            if (typeof callback !== 'function') {
-                console.error('Callback is not a function');
-                return;
-            }
-
-            $.ajax({
-                url: '/superAdmin/allData',
-                type: 'POST',
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    // Execute the callback with the requested dataType
-                    callback(data[dataType]);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching data:', error);
-                }
-            });
-        }
-
-function columnValue(requestId, columnName, callback) {
-            print('requestData', function(allAddData) {
-                const deviceData = allAddData.find(item => item.id === requestId);
-
-                if (deviceData) {
-                    const columnData = deviceData.allData;
-
-                    if (columnData && columnData.hasOwnProperty(columnName)) {
-                        callback(columnData[columnName]);
-                    } else {
-                        console.warn(`Column "${columnName}" not found in request data.`);
-                        callback(undefined);
-                    }
-                } else {
-                    console.warn(`No data found for Device ID ${requestId}`);
-                    callback(undefined);
-                }
-            });
-        }
+};
 
 $(document).ready(function() {
             $('.hideButton').click(function() {
@@ -1536,80 +1461,7 @@ function printRowDataForCustomerCare(row) {
                                      }
                                  }
 
-function formatDate(inputDate) {
-                                     // Split the input date into components
-                                     var parts = inputDate.split('-'); // parts[0] = '2024', parts[1] = '08', parts[2] = '20'
-
-                                     // Reformat the date to 'DD/MM/YY'
-                                     var formattedDate = parts[2] + '/' + parts[1] + '/' + parts[0].slice(2); // '20/08/24'
-
-                                     return formattedDate;
-                                 }
-function formatDateTime(inputDateTime) {
-                            // Check if inputDateTime is undefined or null
-                            if (!inputDateTime) {
-                                console.error("inputDateTime is undefined or null");
-                                return ""; // or return a default value
-                            }
-
-                            // Split the input datetime into date and time components
-                            var dateTimeParts = inputDateTime.split(' '); // ['2024-08-20', '15:02:26']
-
-                            // Check if the split was successful
-                            if (dateTimeParts.length !== 2) {
-                                console.error("inputDateTime format is incorrect, expected 'YYYY-MM-DD HH:MM:SS'");
-                                return ""; // or handle the error as needed
-                            }
-
-                            // Extract the date part
-                            var datePart = dateTimeParts[0]; // '2024-08-20'
-
-                            // Split the date into components
-                            var dateComponents = datePart.split('-'); // ['2024', '08', '20']
-
-                            // Check if the date split was successful
-                            if (dateComponents.length !== 3) {
-                                console.error("Date part of inputDateTime is incorrect, expected 'YYYY-MM-DD'");
-                                return ""; // or handle the error as needed
-                            }
-
-                            // Reformat the date to 'DD/MM/YY'
-                            var formattedDate = dateComponents[2] + '/' + dateComponents[1] + '/' + dateComponents[0].slice(2); // '20/08/24'
-
-                            return formattedDate;
-                        }
-
-function formatTime(inputDateTime) {
-                            // Split the input datetime to separate date and time
-                            var dateTimeParts = inputDateTime.split(' '); // ['2024-08-20', '15:02:26']
-
-                            // Extract the time part
-                            var timePart = dateTimeParts[1]; // '15:02:26'
-
-                            // Split the time into components
-                            var timeComponents = timePart.split(':'); // ['15', '02', '26']
-
-                            // Convert hour from 24-hour format to 12-hour format
-                            var hour = parseInt(timeComponents[0], 10); // Convert '15' to 15
-                            var minutes = timeComponents[1]; // '02'
-                            var period = 'AM';
-
-                            // Determine AM or PM period and adjust hour accordingly
-                            if (hour >= 12) {
-                                period = 'PM';
-                                if (hour > 12) {
-                                    hour -= 12; // Convert 13-23 hours to 1-11 PM
-                                }
-                            } else if (hour === 0) {
-                                hour = 12; // Midnight case, show as 12 AM
-                            }
-
-                            // Format time string as 'H:MM AM/PM'
-                            var formattedTime = hour + ':' + minutes + ' ' + period;
-
-                            return formattedTime;
-                        }
-$(document).ready(function() {
+window.initRequestDataPurchaseTable = function () {     // Perform a single AJAX call
     // Perform a single AJAX call
     $.ajax({
         url: '/superAdmin/allData',
@@ -1644,26 +1496,21 @@ $(document).ready(function() {
 
                // Loop through each problem in the allProblem array for the device
                device.allProblem.forEach(function(problem) {
-                   console.log("Problem Name:", problem.name);
-                   console.log("Proposal Solutions:");
+                  // console.log("Problem Name:", problem.name);
+                   //console.log("Proposal Solutions:");
 
                    // Loop through each proposalSolution in the problem
                    problem.proposalSolution.forEach(function(solution) {
                        if (solution.inventoryToServiceCenterDeviceStatus !== "Accepted" && solution.inventoryToServiceCenterDeviceStatus !== "Pending") {
                            const row = document.createElement("tr");
 
-                           console.log("Name:", solution.name);
-                           console.log("Value:", solution.value);
-                           console.log("Category:", solution.category);
-                           console.log("Price:", solution.price);
-                           console.log("Action:", solution.action);
-                           console.log("Comment:", solution.comment);
+
                            var status=solution.purchaseManInfoOfPriceStatus;
                            if(status==null){
                            status=" ";
                            }
 
-                            console.log("inventoryToServiceCenterDeviceStatus:", solution.inventoryToServiceCenterDeviceStatus);
+                           // console.log("inventoryToServiceCenterDeviceStatus:", solution.inventoryToServiceCenterDeviceStatus);
 
                            // Determine availability
                            const availability = getAvailability(solution.category);
@@ -2493,7 +2340,7 @@ $(document).ready(function() {
             console.error('Error fetching data:', error);
         }
     });
-});
+};
 
 function myFunctionThatHandlesCase(column, text,formId) {
     return new Promise((resolve, reject) => {
@@ -2560,22 +2407,4 @@ function myFunctionThatHandlesCase(column, text,formId) {
     });
 }
 
-function print1(dataType) {
-    return new Promise(function(resolve, reject) {
-        $.ajax({
-            url: '/superAdmin/allData',
-            type: 'POST',
-            dataType: 'json',
-            success: function(data) {
-                console.log(data);
-                // Resolve the Promise with the requested dataType
-                resolve(data[dataType]);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching data:', error);
-                reject(error); // Reject the Promise if there's an error
-            }
-        });
-    });
-}
 

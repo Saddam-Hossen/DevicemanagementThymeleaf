@@ -2,9 +2,11 @@ package com.device.DeviceManagement.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Designation")
-public class Designation {
+import java.io.Serializable;
 
+@Document(collection = "Designation")
+public class Designation implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     private String id;
 

@@ -63,7 +63,7 @@ function editUserBtn($row, userIdData) {
     });
 }
 
-$(document).ready(function() {
+window.initAddUserGeneral = function () {
     $('#branchUserTable tbody tr').click(function(event) {
         var $row = $(this);
         var userName = $row.find('td:nth-child(2)').text();

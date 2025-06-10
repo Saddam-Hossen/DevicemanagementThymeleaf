@@ -7,13 +7,15 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 @Document(collection = "AddData")
-public class AddData {
+public class AddData implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     private String id;
@@ -306,7 +308,8 @@ public class AddData {
     }
     @Setter
     @Getter
-    public static class UnOrderedDevice {
+    public static class UnOrderedDevice implements Serializable {
+        private static final long serialVersionUID = 1L;
         @Id
         private String id;
         private String COOUnOrderedDeviceAcceptingTime;
@@ -521,7 +524,8 @@ public class AddData {
 
     @Setter
     @Getter
-    public static class ParentDevices {
+    public static class ParentDevices implements Serializable {
+        private static final long serialVersionUID = 1L;
         @Id
         private String id;
         private String source;
@@ -559,7 +563,8 @@ public class AddData {
 
         @Setter
         @Getter
-        public static class UsingTimeOfParentDevice {
+        public static class UsingTimeOfParentDevice implements Serializable {
+            private static final long serialVersionUID = 1L;
             private String startingDate;
             private String EndingDate;
             private String status;
@@ -597,7 +602,8 @@ public class AddData {
     }
     @Setter
     @Getter
-    public static class ChildDevices {
+    public static class ChildDevices implements Serializable {
+        private static final long serialVersionUID = 1L;
         @Id
         private String id;
         private String deviceId;
@@ -625,7 +631,8 @@ public class AddData {
 
         @Setter
         @Getter
-        public static class UsingTimeOfChildDevice {
+        public static class UsingTimeOfChildDevice implements Serializable {
+            private static final long serialVersionUID = 1L;
             private String startingDate;
             private String EndingDate;
             private String status;
@@ -664,7 +671,8 @@ public class AddData {
 
     @Setter
     @Getter
-    public static class DeviceUser {
+    public static class DeviceUser implements Serializable {
+        private static final long serialVersionUID = 1L;
         @Id
         private String id;
         private String departmentName;

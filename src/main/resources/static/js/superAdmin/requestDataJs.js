@@ -75,7 +75,7 @@ function setRequestStatusData(requestId,status){
             }
 
 }
-$(document).ready(function() {
+window.initRequestDataGeneral = function () {
     $('#requestTable tbody tr').click(function(event) {
         var $row = $(this); // Store the clicked row element
         var buttonPressed = $(event.target).closest('button').text().trim();; // Get the HTML inside the button
@@ -344,36 +344,7 @@ $(document).ready(function() {
 
         }
     });
-});
-
-function showModal(){
-$('#publicModal').modal('show');
-}
-function printRejectCause(element) {
-        var rejectCause = element.getAttribute("data-reject-cause");
-
- var htmlToAdd = `
-        <div class="mb-3" style="margin-left: 0%; text-align: left;">
-           <h1>${rejectCause}
-           </h1>
-        </div>
-           <div class="mb-3" style="margin-right: 0%; text-align: right;">
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-           </div>
-       `;
-
-       // Add the HTML code to the modal body using jQuery
-        $('.modal-body').html(htmlToAdd);
-       // edit individual column header
-        $('#publicModalLabel').text("Rejected Cause:");
-
-         $('#DeniedBtn').click(function() {
-
-                 setRequestStatus(requestId,"Denied");
-          });
-
-        showModal();
-    }
+};
 
 function printRowData(row) {
                 // Get all the cells of the clicked row

@@ -9,13 +9,15 @@
 <body style="background-color:#fff5ec;">
 <nav th:include="customerCare/topMenuBar:: topMenuBarDepartmentUser"></nav>
 <div style="padding-top:5em"  class="mainBody">
-    <section class="container mb-4   ">
-
+   <!-- <section class="container mb-4   ">
+&lt;!&ndash;
         <div th:include="customerCare/deviceInformation :: deviceInformation" data-page="deviceInformation"></div>
         <div th:include="customerCare/requestData :: requestData" data-page="requestData"></div>
         <div th:include="customerCare/serviceRequestPending :: serviceRequestPending" data-page="serviceRequestPending"></div>
-        <div th:include="customerCare/serviceRequest :: serviceRequest" data-page="serviceRequest"></div>
-    </section>
+        <div th:include="customerCare/serviceRequest :: serviceRequest" data-page="serviceRequest"></div>&ndash;&gt;
+    </section>-->
+    <div id="customerCareContainer" class="container mb-4" >
+    </div>
 
 </div>
 <div th:include="customerCare/leftOffCanvas :: leftOffCanvas"></div>

@@ -201,79 +201,6 @@ function sendDeliveryDevice(requestId,deviceId){
 }
 
 
-function showModal(){
-$('#publicModal').modal('show');
-}
-function hideModal(){
-$('#publicModal').modal('hide');
-}
-function printRejectCause(element) {
-        var rejectCause = element.getAttribute("data-reject-cause");
-
- var htmlToAdd = `
-        <div class="mb-3" style="margin-left: 0%; text-align: left;">
-           <h1>${rejectCause}
-           </h1>
-        </div>
-           <div class="mb-3" style="margin-right: 0%; text-align: right;">
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-           </div>
-       `;
-
-       // Add the HTML code to the modal body using jQuery
-        $('.modal-body').html(htmlToAdd);
-       // edit individual column header
-        $('#publicModalLabel').text("Rejected Cause:");
-
-         $('#DeniedBtn').click(function() {
-
-                 setRequestStatus(requestId,"Denied");
-          });
-
-        showModal();
-    }
-
- function print(dataType, callback) {
-            // Ensure callback is a function
-            if (typeof callback !== 'function') {
-                console.error('Callback is not a function');
-                return;
-            }
-
-            $.ajax({
-                url: '/superAdmin/allData',
-                type: 'POST',
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    // Execute the callback with the requested dataType
-                    callback(data[dataType]);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching data:', error);
-                }
-            });
-        }
-
- function columnValue(requestId, columnName, callback) {
-            print('requestData', function(allAddData) {
-                const deviceData = allAddData.find(item => item.id === requestId);
-
-                if (deviceData) {
-                    const columnData = deviceData.allData;
-
-                    if (columnData && columnData.hasOwnProperty(columnName)) {
-                        callback(columnData[columnName]);
-                    } else {
-                        console.warn(`Column "${columnName}" not found in request data.`);
-                        callback(undefined);
-                    }
-                } else {
-                    console.warn(`No data found for Device ID ${requestId}`);
-                    callback(undefined);
-                }
-            });
-        }
 
  $(document).ready(function() {
                     $('.hideButton').click(function() {
@@ -882,7 +809,7 @@ function formatTime(inputDateTime) {
 
                     return formattedTime;
                 }
-$(document).ready(function() {
+window.initRequestDataTable = function () {    // Perform a single AJAX call
     // Perform a single AJAX call
     $.ajax({
         url: '/superAdmin/allData',
@@ -1686,4 +1613,4 @@ $(document).ready(function() {
             console.error('Error fetching data:', error);
         }
     });
-});
+};

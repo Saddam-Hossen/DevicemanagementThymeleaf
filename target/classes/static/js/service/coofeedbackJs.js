@@ -88,7 +88,7 @@ var departmentElement = $(".departmentName"); // Assuming you set a unique ID fo
 }
 
 
-$(document).ready(function() {
+window.initCooFeedbackGeneral = function () {
   $('#cooFeedbackTable tbody tr').click(function(event) {
     const $row = $(this); // Store the clicked row element
    var categoryName = $row.find('td:nth-child(3)').text();
@@ -721,31 +721,7 @@ $(document).ready(function() {
       console.log(`Other button clicked: ${buttonText}`);
     }
   });
-});
-
-function columnValue1(deviceId, columnName, callback) {
-    print('allAddData', function(allAddData) {
-        const deviceData = allAddData.find(item => item.id === deviceId);
-
-        if (deviceData) {
-            const columnData = deviceData.allData;
-
-            if (columnData && columnData.hasOwnProperty(columnName)) {
-                callback(columnData[columnName]);
-            } else {
-                console.warn(`Column "${columnName}" not found in device data.`);
-                callback(undefined);
-            }
-        } else {
-            console.warn(`No data found for Device ID ${deviceId}`);
-            callback(undefined);
-        }
-    });
-}
-
-function showModal(){
-$('#publicModal').modal('show');
-}
+};
 
 function selectionAndInputDeviceEdit(deviceId){
 // Event delegation for dynamically added items
@@ -909,7 +885,7 @@ function print(dataType, callback) {
         }
     });
 }
-$(document).ready(function() {
+window.initCooFeedbackTable = function () {    // Perform a single AJAX call
     // Perform a single AJAX call
     $.ajax({
         url: '/superAdmin/allData',
@@ -1308,6 +1284,6 @@ $(document).ready(function() {
             console.error('Error fetching data:', error);
         }
     });
-});
+};
 
 

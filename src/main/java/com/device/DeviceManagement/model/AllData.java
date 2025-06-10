@@ -1,6 +1,8 @@
 package com.device.DeviceManagement.model;
+import java.io.Serializable;
 import java.util.List;
-public class AllData {
+public class AllData  implements Serializable {
+    private static final long serialVersionUID = 1L;
     private List<Category> categories;
     private List<Column> universalColumns;
     private List<Column> individualColumns;
@@ -12,6 +14,7 @@ public class AllData {
     private  List<DropDownList> dropDownLists;
     private List<Designation> designations;
     private List<BranchUser> userAccountData;
+    private List<InternalUser> internalUsers;
 
     public List<BranchUser> getUserAccountData() {
         return userAccountData;
@@ -100,5 +103,13 @@ public class AllData {
 
     public void setAllUser(List<User> allUser) {
         this.allUser = allUser;
+    }
+
+    public List<InternalUser> getInternalUsers() {
+        return internalUsers;
+    }
+
+    public void setInternalUsers(List<InternalUser> internalUsers) {
+        this.internalUsers = internalUsers;
     }
 }

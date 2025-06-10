@@ -67,6 +67,31 @@ public class Service {
     @Autowired
     private  ServiceRequestRepository serviceRequestRepository;
 
+    @Autowired
+    private CategoriesService categoriesService;
+    @Autowired
+    private IndividualColumnsService individualColumnsService;
+    @Autowired
+    private UniversalColumnsService universalColumnsService;
+    @Autowired
+    private AddDataService addDataService;
+    @Autowired
+    private BranchUserService branchUserService;
+    @Autowired
+    private InternalUserService internalUserService;
+    @Autowired
+    private DesignationService designationService;
+    @Autowired
+    private  DropDownListService dropDownListService;
+    @Autowired
+    private  RequestColumnService requestColumnService;
+    @Autowired
+    private RequestDataService requestDataService;
+    @Autowired
+    private  ServiceRequestService serviceRequestService;
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/approveCustomerCareRequestStatus")
     @ResponseBody
     public ResponseEntity<String> deliverRequestStatus(@RequestParam String requestId, @RequestParam String status) {
@@ -84,6 +109,8 @@ public class Service {
 
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
+            requestDataService.update();
+
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
         }
@@ -110,6 +137,7 @@ public class Service {
             requestData.setCustomerCare(customerCare);
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
+            requestDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
         }
@@ -155,6 +183,8 @@ public class Service {
             addDataRepository.save(deviceRequestData);
             // Save the updated RequestData document
             serviceRequestRepository.save(requestData);
+            serviceRequestService.update();
+            addDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + serviceId + " not found.");
         }
@@ -219,6 +249,8 @@ public class Service {
 
             // Save the updated RequestData document
             serviceRequestRepository.save(requestData);
+            serviceRequestService.update();
+            addDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + serviceId + " not found.");
         }
@@ -254,6 +286,7 @@ public class Service {
                     });
             // Save the updated RequestData document
             serviceRequestRepository.save(requestData);
+            serviceRequestService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + serviceId + " not found.");
         }
@@ -275,11 +308,7 @@ public class Service {
         // have to change service device owner info
 
 
-        // Log or process received data
-        System.out.println("Received Service ID: " + serviceId);
-        System.out.println("Received Problem Name: " + problemName);
-        System.out.println("Received Solution Name: " + solutionName);
-        System.out.println("status: " + status);
+
         Optional<ServiceRequest> optionalRequestData = serviceRequestRepository.findDevicesIDS(serviceId, "1");
 
         if (optionalRequestData.isPresent()) {
@@ -322,6 +351,8 @@ public class Service {
         // Update delivery date in the database or perform other necessary actions
 
         // Return a success message
+        serviceRequestService.update();
+        addDataService.update();
         return ResponseEntity.ok("Device was received successfully.");
     }
     @PostMapping("/addProblemSolutionOfService")
@@ -344,9 +375,6 @@ public class Service {
         allParams.remove("departmentName");
         allParams.remove("departmentUserName");
         allParams.remove("departmentUserId");
-
-
-        System.out.println("Received data: " + allParams);
 
         // Find the ServiceRequest document by requestId and status
         Optional<ServiceRequest> optionalRequestData = serviceRequestRepository.findDevicesIDS(serviceId, "1");
@@ -414,6 +442,7 @@ public class Service {
 
             // Save the updated requestData object to the database
            serviceRequestRepository.save(requestData);
+           serviceRequestService.update();
 
             return ResponseEntity.ok("Data saved successfully");
 
@@ -559,6 +588,8 @@ public class Service {
 
 
             serviceRequestRepository.save(requestData);
+            addDataService.update();
+            serviceRequestService.update();
 
             return ResponseEntity.ok("Data saved successfully");
 
@@ -700,6 +731,8 @@ public class Service {
 
 
             serviceRequestRepository.save(requestData);
+            addDataService.update();
+            serviceRequestService.update();
 
             return ResponseEntity.ok("Data saved successfully");
 
@@ -793,7 +826,7 @@ public class Service {
         } else {
             System.out.println("No devices found with status '1'.");
         }
-
+        addDataService.update();
         try {
             // Return last device ID if available
             if (lastDeviceId != null) {
@@ -850,7 +883,7 @@ public class Service {
 
 
         try {
-
+            serviceRequestService.update();
             return ResponseEntity.ok("Data saved successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error saving data: " + e.getMessage());
@@ -908,6 +941,7 @@ public class Service {
                 });
                 // Persist changes
                 serviceRequestRepository.save(requestData);
+                serviceRequestService.update();
             }
 
 
@@ -1021,6 +1055,8 @@ public class Service {
 
             // Return the PDF file as a response
             byte[] pdfBytes = outputStream.toByteArray();
+            addDataService.update();
+            serviceRequestService.update();
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=service_report.pdf")
                     .contentType(org.springframework.http.MediaType.APPLICATION_PDF)

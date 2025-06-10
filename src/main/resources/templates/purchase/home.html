@@ -9,7 +9,7 @@
 <body>
 <nav th:include="purchase/topMenuBar:: topMenuBarDepartmentUser"></nav>
 <div style="padding-top:5em"  class="mainBody">
-    <section class="container mb-4   ">
+   <!-- <section class="container mb-4   ">
         <div th:include="purchase/deviceInformation :: deviceInformation" data-page="deviceInformation"></div>
         <div th:include="purchase/unOrderedDevice :: unOrderedDevice" data-page="unOrderedDevice"></div>
         <div th:include="purchase/requestData :: requestData" data-page="requestData"></div>
@@ -17,7 +17,9 @@
         <div th:include="purchase/requestDataForPaymentExport :: requestDataForPaymentExport" data-page="requestDataForPaymentExport"></div>
         <div th:include="purchase/servicePriceData :: servicePriceData" data-page="servicePriceData"></div>
         <div th:include="purchase/servicePurchaseData :: servicePurchaseData" data-page="servicePurchaseData"></div>
-    </section>
+    </section>-->
+    <div id="purchaseContainer" class="container mb-4" >
+    </div>
 
 </div>
 <div th:include="purchase/leftOffCanvas :: leftOffCanvas"></div>

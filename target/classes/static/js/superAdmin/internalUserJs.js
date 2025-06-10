@@ -85,7 +85,7 @@ function editInternalUserBtn($row) {
           });
 
 }
-$(document).ready(function() {
+ window.initInternalUserGeneral = function () {
     $('#internalUserTable tbody tr').click(function(event) {
         var $row = $(this); // Store the clicked row element
         var branchName = $row.find('td:nth-child(2)').text();
@@ -169,9 +169,7 @@ $(document).ready(function() {
     });
 
 
-});
-
-
+};
 function addInternalUser(){
                var htmlToAdd = `
                 <div class="mb-3" style="margin-left: 0%; text-align: left;">
@@ -242,15 +240,6 @@ function selectionAndInputHandler(){
 
 
 }
-function showModal(){
-$('#publicModal').modal('show');
-}
-function hideModal(){
-$('#publicModal').modal('hide');
-     $('#publicModal').on('hidden.bs.modal', function () {
-           $('.modal-backdrop').remove(); // Ensure backdrop is removed
-      });
-}
 function addListItem(){
        print('allUser', function(allUser) {
                if (allUser) {
@@ -266,10 +255,8 @@ function addListItem(){
                }
            });
 }
-
-
-          // top search bar
-      $(document).ready(function() {
+         // top search bar
+$(document).ready(function() {
           // Handle item selection
           $('.internalUserItemTop').on('click', function() {
               var text = $(this).text().trim().toLowerCase();
@@ -312,28 +299,3 @@ function addListItem(){
               });
           });
       });
-
-
-
-
-function print(dataType, callback) {
-    // Ensure callback is a function
-    if (typeof callback !== 'function') {
-        console.error('Callback is not a function');
-        return;
-    }
-
-    $.ajax({
-        url: '/superAdmin/allData',
-        type: 'POST',
-        dataType: 'json',
-        success: function(data) {
-            console.log(data);
-            // Execute the callback with the requested dataType
-            callback(data[dataType]);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}

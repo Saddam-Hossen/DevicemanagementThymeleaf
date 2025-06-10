@@ -1,5 +1,6 @@
 package com.device.DeviceManagement.controller.departmentUser;
 
+import com.device.DeviceManagement.controller.service.*;
 import com.device.DeviceManagement.model.*;
 import com.device.DeviceManagement.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,31 @@ public class departmentUser {
     @Autowired
     private BranchUserRepository branchUserRepository;
 
+    @Autowired
+    private CategoriesService categoriesService;
+    @Autowired
+    private IndividualColumnsService individualColumnsService;
+    @Autowired
+    private UniversalColumnsService universalColumnsService;
+    @Autowired
+    private AddDataService addDataService;
+    @Autowired
+    private BranchUserService branchUserService;
+    @Autowired
+    private InternalUserService internalUserService;
+    @Autowired
+    private DesignationService designationService;
+    @Autowired
+    private  DropDownListService dropDownListService;
+    @Autowired
+    private  RequestColumnService requestColumnService;
+    @Autowired
+    private RequestDataService requestDataService;
+    @Autowired
+    private  ServiceRequestService serviceRequestService;
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/login")
     public String showLoginForm() {
         return "login";
@@ -67,7 +93,7 @@ public class departmentUser {
 
             // Save the Category object
             branchUserRepository.save(new BranchUser(departmentUserName,userName,userId,userJoinDate,userDesignation,currentDate,formattedDateTime,"1"));
-
+            branchUserService.update();
             // move to return "user/Home";
             return ResponseEntity.ok("Successfully added user");
         }else{
@@ -87,7 +113,7 @@ public class departmentUser {
                 request.setStatus("2");
                 branchUserRepository.save(request); // Save the updated category
 
-
+                 branchUserService.update();
                 return ResponseEntity.ok("User deleted successfully");
             } else {
                 return ResponseEntity.notFound().build();
@@ -124,7 +150,7 @@ public class departmentUser {
                     // Save the new user data
                     BranchUser newUser = new BranchUser(branchName, newUserName, newUserId, newUserJoinDate, newUserDesignation, currentDate, formattedDateTime, "1");
                     branchUserRepository.save(newUser);
-
+                    branchUserService.update();
                     return ResponseEntity.ok("Successfully updated user");
                 } else {
                     return ResponseEntity.ok("Sorry, Already user exist");
@@ -161,6 +187,7 @@ public class departmentUser {
         // add request id
         data.setVisibleRequestId(generateNewVisibleIdForRequest());
         requestDataRepository.save(data);
+        requestDataService.update();
 
 
         try {
@@ -182,7 +209,7 @@ public class departmentUser {
                 data.setStatus("2");
                 requestDataRepository.save(data); // Save the updated category
 
-
+                 requestDataService.update();
                 return ResponseEntity.ok("Requested data deleted successfully");
             } else {
                 return ResponseEntity.notFound().build();
@@ -229,7 +256,7 @@ public class departmentUser {
                 // generate new
                 requestDataRepository.save(new RequestData(requestId,data,departmentName,formattedDateTime,currentDate,allParams,"1",clonedData.getRequestMode(),null));
 
-
+                requestDataService.update();
                // requestDataRepository.save(data1);
 
                 return ResponseEntity.ok("Request data Updated successfully");
@@ -289,6 +316,7 @@ public class departmentUser {
        adddata.setDeviceUsers(list);
 
         addDataRepository.save(adddata);
+        addDataService.update();
 
         try {
 
@@ -337,7 +365,7 @@ public class departmentUser {
 
                  // generate new
                  addDataRepository.save(new AddData(deviceId,device,departmentName,categoryName,formattedDateTime,currentDate,allParams,"1"));
-
+                 addDataService.update();
 
                 return ResponseEntity.ok("Device Data Updated successfully");
             } else {
@@ -392,7 +420,7 @@ public class departmentUser {
         String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         serviceRequestRepository.save(new ServiceRequest(generateNewVisibleIdForServiceRequest(),categoryName,departmentName,currentDate,formattedDateTime,comment,deviceId,listData,listDataSolution,"1",adjustDate(currentDate,7)));
-
+        serviceRequestService.update();
         try {
 
             return ResponseEntity.ok("Data11 saved successfully");
@@ -413,7 +441,7 @@ public class departmentUser {
                 /// category.setCategoryName(newCategoryName);
                 device.setStatus("2");
                 addDataRepository.save(device); // Save the updated category
-
+                addDataService.update();
 
                 return ResponseEntity.ok("Device deleted successfully");
             } else {
@@ -442,6 +470,7 @@ public class departmentUser {
 
             // Save the updated RequestData document
             requestDataRepository.save(requestData);
+            requestDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");
         }
@@ -459,13 +488,7 @@ public class departmentUser {
             @RequestParam String departmentUserName,
             @RequestParam String departmentUserId) {
 
-        // Log method inputs for debugging
-        System.out.println("Received Request with Details:");
-        System.out.println("Service ID: " + serviceId);
-        System.out.println("Status: " + status);
-        System.out.println("Department Name: " + departmentName);
-        System.out.println("Department User Name: " + departmentUserName);
-        System.out.println("Department User ID: " + departmentUserId);
+
 
         // Find the RequestData document by requestId and status
         Optional<ServiceRequest> optionalRequestData = serviceRequestRepository.findDevicesIDS(serviceId, "1");
@@ -499,6 +522,8 @@ public class departmentUser {
 
             // Save the updated RequestData document
             serviceRequestRepository.save(requestData);
+            serviceRequestService.update();
+            addDataService.update();
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + serviceId + " not found.");
         }
@@ -517,13 +542,6 @@ public class departmentUser {
             String startingDate = requestData1.get("startingDate");
             String userName = requestData1.get("userName");
 
-            // Print received values
-            System.out.println("Service ID: " + serviceId);
-            System.out.println("Department Name: " + departmentName);//de
-            System.out.println("Department User Name: " + departmentUserName);//it
-            System.out.println("Department User ID: " + departmentUserId);//it
-            System.out.println("Starting Date: " + startingDate);
-            System.out.println("User Name: " + userName);// bij
             BranchUser  internalUser=branchUserRepository.findByBranchNameAndUserNameAndStatus(departmentUserName,userName,"1");
            String userId="";
             if(internalUser !=null){
@@ -557,6 +575,8 @@ public class departmentUser {
 
                 // Save the updated RequestData document
                 serviceRequestRepository.save(requestData);
+                serviceRequestService.update();
+                addDataService.update();
             }
 
             // Perform business logic here
@@ -620,6 +640,8 @@ public class departmentUser {
             list.add(new AddData.DeviceUser(departmentName,departmentUserName,departmentUserId,getCurrentDateTime(),"1"));
 
             addDataRepository.save(deviceRequestData);
+            requestDataService.update();
+            addDataService.update();
 
         } else {
             return ResponseEntity.status(404).body("RequestData with requestId " + requestId + " not found.");

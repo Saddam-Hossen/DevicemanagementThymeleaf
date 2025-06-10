@@ -9,7 +9,7 @@
 <body style="background-color:#fff5ec;">
 <nav th:include="inventory/topMenuBar:: topMenuBarDepartmentUser"></nav>
 <div style="padding-top:5em;"  class="mainBody" >
-    <section class="container mb-4   ">
+   <!-- <section class="container mb-4   ">
 
         <div th:include="inventory/requestData :: requestData" data-page="requestData"></div>
         <div th:include="inventory/unOrderedDevice :: unOrderedDevice" data-page="unOrderedDevice"></div>
@@ -21,7 +21,9 @@
         <div th:include="inventory/serviceAccessoriesDeliveryData :: serviceAccessoriesDeliveryData" data-page="serviceAccessoriesDeliveryData"></div>
         <div th:include="inventory/deviceInformation :: deviceInformation" data-page="deviceInformation"></div>
 
-    </section>
+    </section>-->
+    <div id="inventoryContainer" class="container mb-4" >
+    </div>
 
 </div>
 <div th:include="inventory/leftOffCanvas :: leftOffCanvas"></div>

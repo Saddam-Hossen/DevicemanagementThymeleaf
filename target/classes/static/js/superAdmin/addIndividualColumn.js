@@ -68,7 +68,7 @@ function editIndividualColumnBtn($row) {
           });
 
 }
-$(document).ready(function() {
+ window.initAddIndividualColumnGeneral = function () {
     $('#individualColumnTable tbody tr').click(function(event) {
         var $row = $(this); // Store the clicked row element
         var categoryName = $row.find('td:nth-child(2)').text();
@@ -166,7 +166,7 @@ $(document).ready(function() {
     });
 
 
-});
+};
 
 
 function addIndividualColumn(){
@@ -291,18 +291,10 @@ function selectionAndInputHandlerForAddColumn(){
 
 
 }
-function showModal(){
-$('#publicModal').modal('show');
-}
-function hideModal(){
-$('#publicModal').modal('hide');
-     $('#publicModal').on('hidden.bs.modal', function () {
-           $('.modal-backdrop').remove(); // Ensure backdrop is removed
-      });
-}
+
 
         //top searchbar
-      $(document).ready(function() {
+ $(document).ready(function() {
           // Handle item selection
           $('.individualTopSelection').on('click', function() {
               var text = $(this).text().trim().toLowerCase();
@@ -343,30 +335,6 @@ $('#publicModal').modal('hide');
               });
           });
       });
-
-
-
-function print(dataType, callback) {
-    // Ensure callback is a function
-    if (typeof callback !== 'function') {
-        console.error('Callback is not a function');
-        return;
-    }
-
-    $.ajax({
-        url: '/superAdmin/allData',
-        type: 'POST',
-        dataType: 'json',
-        success: function(data) {
-            console.log(data);
-            // Execute the callback with the requested dataType
-            callback(data[dataType]);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
 
  function inputTypes()
         {

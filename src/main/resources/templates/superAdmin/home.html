@@ -9,8 +9,9 @@
 <body style="background-color:#fff5ec;">
 <nav th:include="superAdmin/topMenuBarSuperAdmin:: topMenuBarSuperAdmin"></nav>
 <div style="padding-top:5em" class="mainBody">
-    <section class="container mb-4">
-        <div th:include="superAdmin/Category :: DeviceCategory" data-page="DeviceCategory"></div>
+   <!-- <section class="container mb-4">
+&lt;!&ndash;
+        <div th:include="superAdmin/Category :: Category" data-page="Category"></div>
         <div th:include="superAdmin/universalColumn :: universalColumn" data-page="universalColumn"></div>
         <div th:include="superAdmin/individualColumn :: individualColumn" data-page="individualColumn"></div>
         <div th:include="superAdmin/dropdownList :: dropdownList" data-page="dropdownList"></div>
@@ -30,8 +31,11 @@
 
         <div th:include="superAdmin/serviceRequest :: serviceRequest" data-page="serviceRequest"></div>
         <div th:include="superAdmin/serviceProposalData :: serviceProposalData" data-page="serviceProposalData"></div>
-        <div th:include="superAdmin/serviceReportData :: serviceReportData" data-page="serviceReportData"></div>
-    </section>
+        <div th:include="superAdmin/serviceReportData :: serviceReportData" data-page="serviceReportData"></div>&ndash;&gt;
+    </section>-->
+
+    <div id="fragmentContainer" class="container mb-4" >
+    </div>
 </div>
 
 <div th:include="superAdmin/leftOffCanvas :: leftOffCanvas"></div>

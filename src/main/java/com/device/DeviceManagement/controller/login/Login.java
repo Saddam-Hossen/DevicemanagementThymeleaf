@@ -1,12 +1,17 @@
 package com.device.DeviceManagement.controller.login;
 
 
+import com.device.DeviceManagement.controller.service.*;
 import com.device.DeviceManagement.model.*;
+import com.device.DeviceManagement.producer.KafkaProducer;
 import com.device.DeviceManagement.repository.*;
+import com.device.DeviceManagement.service.RedisRateLimiter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +32,11 @@ public class Login {
             "date", "month", "week", "time", "datetime-local", "color", "file",
             "checkbox", "radio", "button", "submit", "reset", "textarea"
     );
+    @Autowired
+    private final KafkaProducer kafkaProducer;
+    public Login(KafkaProducer kafkaProducer) {
+        this.kafkaProducer = kafkaProducer;
+    }
     @Autowired
     private RequestColumnRepository requestColumnRepository;
 
@@ -57,6 +67,33 @@ public class Login {
     }
     @Autowired
     private  RequestDataRepository requestDataRepository;
+    @Autowired
+    private RedisRateLimiter rateLimiter;
+
+    @Autowired
+    private CategoriesService categoriesService;
+    @Autowired
+    private IndividualColumnsService individualColumnsService;
+    @Autowired
+    private UniversalColumnsService universalColumnsService;
+    @Autowired
+    private AddDataService addDataService;
+    @Autowired
+    private BranchUserService branchUserService;
+    @Autowired
+    private InternalUserService internalUserService;
+    @Autowired
+    private DesignationService designationService;
+    @Autowired
+    private  DropDownListService dropDownListService;
+    @Autowired
+    private  RequestColumnService requestColumnService;
+    @Autowired
+    private RequestDataService requestDataService;
+    @Autowired
+    private  ServiceRequestService serviceRequestService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/hello")
     public String hello() {
@@ -76,17 +113,26 @@ public class Login {
         }
 
         if (authenticate(username,password)) {
-            List<Category> categories = categoryRepository.findByStatus("1");
-            List<Column> universalColumns = columnRepository.findByColumnTypeAndStatus("universal","1");
-            List<Column> individualColumns = columnRepository.findByColumnTypeAndStatus("individual","1");
-            List<AddData> allDeviceData=addDataRepository.findByStatus("1");
-            List<User> allUser=userRepository.findByStatus("1");
-            List<InternalUser> internalUsers=internalUserRepository.findByStatus("1");
-            List<RequestColumn> requestColumns=requestColumnRepository.findByStatus("1");
-            List<ServiceRequest> serviceRequests = serviceRequestRepository.findByStatus("1");
-            List<RequestData> requestData=requestDataRepository.findByStatus("1");
-            List<Designation> designations=designationRepository.findByStatus("1");
-            List<DropDownList> dropDownLists=dropDownListRepository.findByStatus("1");
+
+            List<Category> categories = categoriesService.Category();
+            List<Column> universalColumns = universalColumnsService.Universal();
+            List<Column> individualColumns = individualColumnsService.Individual();
+            List<AddData> allDeviceData=addDataService.add();
+            List<User> allUser=userService.add();
+            List<InternalUser> internalUsers=internalUserService.add();
+            List<RequestColumn> requestColumns=requestColumnService.add();
+            List<ServiceRequest> serviceRequests =serviceRequestService.add();
+            List<RequestData> requestData=requestDataService.add();
+            List<Designation> designations=designationService.add();
+            List<DropDownList> dropDownLists=dropDownListService.add();
+            List<BranchUser> userAccountData=branchUserService.add();
+
+            model.addAttribute("userAccountData",userAccountData);
+            if (rateLimiter.isBlocked(username)) {
+                model.addAttribute("error", "Too many failed attempts. Try again later.");
+                return "login/login"; // return the login.html view
+            }
+
 
             // If login successful, you can redirect to a success page
             String[] parts = userType(username,password).trim().split("_");
@@ -123,8 +169,7 @@ public class Login {
                 model.addAttribute("departmentUserName",username);
                 model.addAttribute("departmentPassword",password);
                 //add needed data
-                List<BranchUser> userAccountData=branchUserRepository.findByStatus("1");
-                model.addAttribute("userAccountData",userAccountData);
+
 
                 model.addAttribute("inputTypes", inputTypes);
                 model.addAttribute("data",categories);
@@ -150,8 +195,7 @@ public class Login {
                 model.addAttribute("departmentUserName",username);
                 model.addAttribute("departmentPassword",password);
                 //add needed data
-                List<BranchUser> userAccountData=branchUserRepository.findByStatus("1");
-                model.addAttribute("userAccountData",userAccountData);
+
                 model.addAttribute("inputTypes", inputTypes);
                 model.addAttribute("data",categories);
                 model.addAttribute("universalColumns",universalColumns);
@@ -172,8 +216,7 @@ public class Login {
                 model.addAttribute("departmentUserName",username);
                 model.addAttribute("departmentPassword",password);
                 //add needed data
-                List<BranchUser> userAccountData=branchUserRepository.findByStatus("1");
-                model.addAttribute("userAccountData",userAccountData);
+
 
                 model.addAttribute("inputTypes", inputTypes);
                 model.addAttribute("data",categories);
@@ -195,8 +238,7 @@ public class Login {
                 model.addAttribute("departmentUserName",username);
                 model.addAttribute("departmentPassword",password);
                 //add needed data
-                List<BranchUser> userAccountData=branchUserRepository.findByStatus("1");
-                model.addAttribute("userAccountData",userAccountData);
+
 
                 model.addAttribute("inputTypes", inputTypes);
                 model.addAttribute("data",categories);
@@ -218,8 +260,7 @@ public class Login {
                 model.addAttribute("departmentUserName",username);
                 model.addAttribute("departmentPassword",password);
                 //add needed data
-                List<BranchUser> userAccountData=branchUserRepository.findByStatus("1");
-                model.addAttribute("userAccountData",userAccountData);
+
 
                 model.addAttribute("inputTypes", inputTypes);
                 model.addAttribute("data",categories);
@@ -241,8 +282,7 @@ public class Login {
                 model.addAttribute("departmentUserName",username);
                 model.addAttribute("departmentPassword",password);
                 //add needed data
-                List<BranchUser> userAccountData=branchUserRepository.findByStatus("1");
-                model.addAttribute("userAccountData",userAccountData);
+
 
                 model.addAttribute("inputTypes", inputTypes);
                 model.addAttribute("data",categories);
@@ -256,6 +296,11 @@ public class Login {
                 model.addAttribute("requestData",requestData);
                 model.addAttribute("designations",designations);
                 model.addAttribute("dropDownLists",dropDownLists);
+                try {
+                   // kafkaProducer.sendMessage("This is an error message");
+                } catch (Exception e) {
+                    e.printStackTrace(); // or log properly
+                }
 
                 return "superAdmin/home"; // This will return the index.html Thymeleaf template
 
@@ -266,9 +311,7 @@ public class Login {
 
                    model.addAttribute("departmentUserName",username);
                    model.addAttribute("departmentPassword",password);
-                   //add needed data
-                   List<BranchUser> userAccountData=branchUserRepository.findByStatus("1");
-                   model.addAttribute("userAccountData",userAccountData);
+
 
                    model.addAttribute("inputTypes", inputTypes);
                    model.addAttribute("data",categories);
@@ -291,9 +334,7 @@ public class Login {
 
                     model.addAttribute("departmentUserName",username);
                     model.addAttribute("departmentPassword",password);
-                    //add needed data
-                    List<BranchUser> userAccountData=branchUserRepository.findByStatus("1");
-                    model.addAttribute("userAccountData",userAccountData);
+
 
                    model.addAttribute("inputTypes", inputTypes);
                    model.addAttribute("data",categories);
@@ -307,6 +348,8 @@ public class Login {
                    model.addAttribute("serviceRequests", serviceRequests);
                    model.addAttribute("requestData",requestData);
                    model.addAttribute("designations",designations);
+
+
                     return "inventory/home";
                 }
                else if(username.equals("customerCare")&& password.equals("customerCare")){
@@ -315,8 +358,7 @@ public class Login {
                    model.addAttribute("departmentUserName",username);
                    model.addAttribute("departmentPassword",password);
                    //add needed data
-                   List<BranchUser> userAccountData=branchUserRepository.findByStatus("1");
-                   model.addAttribute("userAccountData",userAccountData);
+
                    model.addAttribute("inputTypes", inputTypes);
                    model.addAttribute("data",categories);
                    model.addAttribute("universalColumns",universalColumns);
@@ -336,8 +378,7 @@ public class Login {
                    model.addAttribute("departmentUserName",username);
                    model.addAttribute("departmentPassword",password);
                    //add needed data
-                   List<BranchUser> userAccountData=branchUserRepository.findByStatus("1");
-                   model.addAttribute("userAccountData",userAccountData);
+
 
                    model.addAttribute("inputTypes", inputTypes);
                    model.addAttribute("data",categories);
@@ -357,9 +398,6 @@ public class Login {
 
                    model.addAttribute("departmentUserName",username);
                    model.addAttribute("departmentPassword",password);
-                   //add needed data
-                   List<BranchUser> userAccountData=branchUserRepository.findByStatus("1");
-                   model.addAttribute("userAccountData",userAccountData);
 
                    model.addAttribute("inputTypes", inputTypes);
                    model.addAttribute("data",categories);

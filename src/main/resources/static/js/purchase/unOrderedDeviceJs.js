@@ -264,7 +264,7 @@ function addDeviceInformationOfExtraDevice(){
 
 }
 
-$(document).ready(function() {
+window.initUnOrderedDeviceGeneral = function () {
   $('#unOrderedDeviceTable tbody tr').click(function(event) {
     const $row = $(this); // Store the clicked row element
    var categoryName = $row.find('td:nth-child(2)').text();
@@ -855,7 +855,7 @@ $(document).ready(function() {
       console.log(`Other button clicked: ${buttonText}`);
     }
   });
-});
+};
 
 function columnValue1(deviceId, columnName, callback) {
     print('allAddData', function(allAddData) {

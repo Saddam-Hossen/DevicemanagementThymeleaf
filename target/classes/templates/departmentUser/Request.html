@@ -29,41 +29,57 @@
                         <th scope="col" style="background-color: gray;color:white">Request Status in COO</th>
                         <th scope="col" style="background-color: gray;color:white">Device Received Status</th>
                         <th scope="col" style="background-color: gray;color:white">Create Time</th>
-                        <th scope="col" style="background-color: gray;color:white">Action</th>
+                        <th scope="col" style="background-color: gray;color:white" th:text="${departmentUserName}">Action</th>
                     </tr>
                     </thead>
                     <tbody id="requestTableBody">
-                    <tr th:each="device, iterStat : ${requestData}" onclick="printRowDataForCustomerCare(this)">
-                        <td  th:text="${device.visibleRequestId}" th:if="${device.departmentName == departmentUserName}">1</td>
-                        <td  th:text="${device.allData[category]}" th:if="${device.departmentName == departmentUserName}">1</td>
-                        <td th:each="individualColumn : ${requestColumns}"
-                            th:if="${device.departmentName == departmentUserName}">
+                    <tr th:each="device, iterStat : ${requestData}"
+                        th:if="${device.departmentName == departmentUserName}"
+                        onclick="printRowDataForCustomerCare(this)">
+
+                        <td th:text="${device.visibleRequestId}">1</td>
+                        <td th:text="${device.allData[category]}">1</td>
+
+                        <td th:each="individualColumn : ${requestColumns}">
                             <div th:if="${individualColumn.dataType == 'textarea'}">
-                                <textarea class="plain-textarea"  th:text="${device.allData[individualColumn.columnName]}"></textarea>
+                                <textarea class="plain-textarea" th:text="${device.allData[individualColumn.columnName]}"></textarea>
                             </div>
                             <div th:unless="${individualColumn.dataType == 'textarea'}"
                                  th:text="${device.allData[individualColumn.columnName]}">
-
                             </div>
                         </td>
-                        <td th:if="${device.departmentName == departmentUserName}">
-                            <span th:if="${device.requestMode == 'Denied'}">
-                                <a href="#" th:data-reject-cause="${device.rejectCause}" onclick="printRejectCause(this)" style="text-decoration:none">Denied</a>
-                            </span>
+
+                        <td>
+        <span th:if="${device.requestMode == 'Denied'}">
+            <a href="#" th:data-reject-cause="${device.rejectCause}" onclick="printRejectCause(this)" style="text-decoration:none">Denied</a>
+        </span>
                             <span th:unless="${device.requestMode == 'Denied'}" th:text="${device.requestMode}"></span>
                         </td>
-                        <td th:text="${device != null && device.customerCare?.customerCareToDepartmentDeviceSendingStatus != null ? device.customerCare?.customerCareToDepartmentDeviceSendingStatus : ' '}">
-                        </td>
+
+                        <td th:text="${device.customerCare?.customerCareToDepartmentDeviceSendingStatus ?: ' '}"></td>
                         <td th:text="${device.presentTime}">userPassword</td>
-                        <td th:if="${device.departmentName == departmentUserName}">
 
+                        <td>
                             <div class="d-flex justify-content-center align-items-center action-button-container">
-                                <button class="btn btn-sm  fas fa-pencil-alt text-primary small-button Edit ms-2" th:data-request-id="${device.id}" th:if="${device.requestMode!='Accepted'}"></button>
-                                <button class="btn btn-sm  fas fa-trash text-danger small-button Delete ms-2" th:data-request-id="${device.id}" th:if="${device.requestMode!='Accepted'}"></button>
-                                <button class=" btn fas fa-check-circle  btn btn-info btn-sm receiveButton"  th:data-request-id="${device.id}"  th:data-category-id="${device.allData['category']}" th:data-buyingdevice-id="${device.purchase ?.purchaseDeviceSenderToInventoryDeviceId}" th:data-alternativedevice-id="${device.inventory?.acceptedId}" th:if="${device.customerCare?.customerCareToDepartmentDeviceSendingStatus=='Pending'}" title="Received Device"></button>
-
+                                <button class="btn btn-sm fas fa-pencil-alt text-primary small-button Edit ms-2"
+                                        th:data-request-id="${device.id}"
+                                        th:if="${device.requestMode != 'Accepted'}">
+                                </button>
+                                <button class="btn btn-sm fas fa-trash text-danger small-button Delete ms-2"
+                                        th:data-request-id="${device.id}"
+                                        th:if="${device.requestMode != 'Accepted'}">
+                                </button>
+                                <button class="btn fas fa-check-circle btn btn-info btn-sm receiveButton"
+                                        th:data-request-id="${device.id}"
+                                        th:data-category-id="${device.allData['category']}"
+                                        th:data-buyingdevice-id="${device.purchase?.purchaseDeviceSenderToInventoryDeviceId}"
+                                        th:data-alternativedevice-id="${device.inventory?.acceptedId}"
+                                        th:if="${device.customerCare?.customerCareToDepartmentDeviceSendingStatus == 'Pending'}"
+                                        title="Received Device">
+                                </button>
                             </div>
                         </td>
+
                     </tr>
                     </tbody>
 

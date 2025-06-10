@@ -9,14 +9,15 @@
 <body style="background-color:#fff5ec;">
 <nav th:include="service/topMenuBar:: topMenuBarDepartmentUser"></nav>
 <div style="padding-top:5em;"  class="mainBody" >
-    <section class="container mb-4   ">
+   <!-- <section class="container mb-4   ">
 
         <div th:include="service/deviceInOutList :: deviceInOutList" data-page="deviceInOutList"></div>
         <div th:include="service/servicingList :: servicingList" data-page="servicingList"></div>
         <div th:include="service/cooFeedback :: cooFeedback" data-page="cooFeedback"></div>
         <div th:include="service/serviceAccessoriesListData :: serviceAccessoriesListData" data-page="serviceAccessoriesListData"></div>
-    </section>
-
+    </section>-->
+    <div id="serviceContainer" class="container mb-4" >
+    </div>
 </div>
 <div th:include="service/leftOffCanvas :: leftOffCanvas"></div>
 <div th:include="service/publicModal :: publicModal"></div>
